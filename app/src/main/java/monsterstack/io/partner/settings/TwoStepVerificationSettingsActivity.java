@@ -1,0 +1,98 @@
+package monsterstack.io.partner.settings;
+
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.Button;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import monsterstack.io.api.ServiceLocator;
+import monsterstack.io.api.UserSessionManager;
+import monsterstack.io.api.custom.UserServiceCustom;
+import monsterstack.io.api.listeners.OnResponseListener;
+import monsterstack.io.api.resources.AuthenticatedUser;
+import monsterstack.io.api.resources.HttpError;
+import monsterstack.io.api.resources.User;
+import monsterstack.io.partner.R;
+import monsterstack.io.partner.menu.SettingsActivity;
+
+public class TwoStepVerificationSettingsActivity extends DetailSettingsActivity {
+    @BindView(R.id.two_step_verify_enable_button)
+    Button enableTwoFactorButton;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        ButterKnife.bind(this);
+    }
+
+    @Override
+    public int getContentView() {
+        return R.layout.two_step_verification_settings;
+    }
+
+    @Override
+    public void setUpTransitions() {
+
+    }
+
+    @Override
+    public int getActionTitle() {
+        return R.string.detail_settings_two_step_verify;
+    }
+
+    @OnClick(R.id.two_step_verify_enable_button)
+    public void onEnable(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        ServiceLocator serviceLocator = ServiceLocator.getInstance(getApplicationContext());
+        final UserServiceCustom userService = serviceLocator.getUserService();
+
+        final UserSessionManager userSessionManager = new UserSessionManager(this);
+        final AuthenticatedUser userToUpdate = userSessionManager.getUserDetails();
+        userToUpdate.setTwoFactorAuth(true);
+        final String userId = userToUpdate.getId();
+
+        DialogInterface.OnClickListener enabled = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                userService.updateUser(userId, userToUpdate, new OnResponseListener<User, HttpError>() {
+                    @Override
+                    public void onResponse(User user, HttpError httpError) {
+                        if (null != user) {
+                            userSessionManager.createUserSession(userToUpdate);
+                            Intent intent = new Intent(TwoStepVerificationSettingsActivity.this, SettingsActivity.class);
+                            startActivity(intent, exitStageLeftBundle());
+                        } else {
+                            showHttpError(getResources().getString(getActionTitle()), httpError);
+                        }
+                    }
+                });
+
+            }
+        };
+
+        DialogInterface.OnClickListener no = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                Intent intent = new Intent(TwoStepVerificationSettingsActivity.this, SettingsActivity.class);
+                startActivity(intent, exitStageLeftBundle());
+            }
+        };
+
+        builder.setMessage(R.string.detail_settings_two_step_verify)
+                .setTitle(R.string.detail_settings_two_step_verify)
+                .setPositiveButton(R.string.dialogEnable, enabled)
+                .setNegativeButton(R.string.dialogNo, no);
+
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+    }
+}

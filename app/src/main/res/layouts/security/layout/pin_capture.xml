@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <include layout="@layout/toolbar_layout_back_btn"/>
+
+    <ImageButton
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:src="@drawable/ic_fiber_pin_black_24dp"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:text="Please enter your PIN for authentication!"
+        android:layout_width="250dp"
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        android:layout_height="wrap_content" />
+
+    <android.support.design.widget.TextInputEditText
+        android:id="@+id/pinCaptureEdit"
+        android:layout_gravity="center_horizontal"
+        android:textSize="25sp"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:gravity="center|bottom"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/pinCaptureButton"
+            android:layout_gravity="bottom"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:background="@color/colorPrimary"
+            android:text="@string/pin_capture_btn_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <android.inputmethodservice.KeyboardView
+            android:id="@+id/keyboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

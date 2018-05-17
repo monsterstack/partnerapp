@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="PartnerPref">
+
+    <PreferenceCategory
+        android:title="@string/pref_profile_group">
+        <Preference android:title="@string/detail_settings_wallet_id"/>
+        <Preference android:title="@string/detail_settings_email"/>
+        <Preference android:title="@string/detail_settings_mobileNumber"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_notification_group">
+        <CheckBoxPreference android:title="Email Notifications" android:key="user.email.notifications" android:defaultValue="false"/>
+        <CheckBoxPreference android:title="SMS Notifications" android:key="user.sms.notifications" android:defaultValue="false"/>
+        <Preference android:title="@string/detail_settings_local_currency" android:defaultValue="USD"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_security_group">
+        <Preference android:title="@string/detail_settings_two_step_verify"/>
+        <Preference android:title="@string/detail_settings_pin"/>
+        <CheckBoxPreference android:title="Swipe to Receive"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_about_group">
+        <Preference android:title="About Us"/>
+        <Preference android:title="Terms of Service"/>
+        <Preference android:title="Privacy Policy"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

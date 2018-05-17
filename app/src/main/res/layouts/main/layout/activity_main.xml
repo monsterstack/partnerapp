@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Use DrawerLayout as root container for activity -->
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+            <ImageButton
+                android:id="@+id/toolbar_navbutton"
+                android:src="@drawable/ic_view_headline_white_24dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_width="45dp"
+                android:layout_marginLeft="0sp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_marginTop="15dp"
+                android:text="Title"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_width="150dp"
+                android:layout_height="match_parent" />
+        </android.support.v7.widget.Toolbar>
+
+        <android.support.v4.view.ViewPager
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/main_pager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </android.support.v4.view.ViewPager>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_gravity="center|bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <android.support.v7.widget.Toolbar
+                android:layout_weight="1"
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimary"
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:id="@+id/action_tabs_groups"
+                    android:src="@drawable/ic_view_module_white_24dp"
+                    android:paddingRight="5dp"
+                    android:paddingLeft="5dp"
+
+                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp" />
+                <ImageButton
+                    android:id="@+id/action_tabs_friends"
+                    android:src="@drawable/ic_group_white_24dp"
+                    android:paddingRight="5dp"
+                    android:paddingLeft="5dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp" />
+                <ImageButton
+                    android:id="@+id/action_tabs_wallets"
+                    android:src="@drawable/ic_account_balance_wallet_white_24dp"
+                    android:paddingRight="5dp"
+                    android:paddingLeft="5dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp" />
+                <ImageButton
+                    android:id="@+id/action_tabs_inbox"
+                    android:src="@drawable/ic_speaker_notes_white_24dp"
+                    android:paddingRight="5dp"
+                    android:paddingLeft="5dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp" />
+                <ImageButton
+                    android:src="@drawable/ic_more_horiz_white_24dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_gravity="right"
+                    android:paddingRight="5dp"
+                    android:paddingLeft="5dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp" />
+            </android.support.v7.widget.Toolbar>
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <!-- Container for contents of drawer - use NavigationView to make configuration easier -->
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:menu="@menu/drawer_view"
+        app:itemBackground="@drawable/ripple_effect"
+        app:headerLayout="@layout/nav_header" />
+
+</android.support.v4.widget.DrawerLayout>

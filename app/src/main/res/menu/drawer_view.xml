@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/nav_menu_top"
+        android:color="@color/colorPrimaryDark" >
+        <item
+            android:id="@+id/nav_buy"
+            android:title="@string/buy_currency"
+            android:icon="@drawable/ic_payment_black_24dp">
+        </item>
+        <item
+            android:id="@+id/nav_backup"
+            android:title="@string/backup"
+            android:icon="@drawable/ic_lock_black_24dp"/>
+
+        <item
+            android:id="@+id/nav_wallets"
+            android:title="@string/wallets"
+            android:icon="@drawable/ic_account_balance_wallet_black_24dp"/>
+    </group>
+
+    <group android:id="@+id/nav_menu_middle"
+        android:color="@color/colorPrimaryDark">
+        <item
+            android:id="@+id/nav_settings"
+            android:title="@string/settings"
+            android:icon="@drawable/ic_settings_black_24dp"/>
+    </group>
+
+    <group android:id="@+id/nav_menu_bottom"
+        android:color="@color/colorPrimaryDark">
+
+        <item
+            android:id="@+id/nav_support"
+            android:title="@string/support"
+            android:icon="@drawable/ic_help_black_24dp"/>
+    </group>
+
+    <group android:id="@+id/nav_menu_exit"
+        android:color="@color/colorPrimary">
+        <item
+            android:id="@+id/nav_logout"
+            android:title="@string/logout"
+            android:icon="@drawable/ic_keyboard_backspace_black_24dp"/>
+    </group>
+</menu>

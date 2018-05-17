@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update">Update</string>
+    <string name="app_name"></string>
+    <string name="phone_capture_btn_label">Capture</string>
+    <string name="pin_capture_btn_label">Capture</string>
+    <string name="buy_currency">Buy Currency</string>
+    <string name="backup">Backup Funds</string>
+    <string name="settings">Settings</string>
+    <string name="wallets">Wallet Addresses</string>
+    <string name="support">Support</string>
+    <string name="logout">Logout</string>
+    <string name="pref_profile_group">Profile</string>
+    <string name="detail_settings_wallet_id">Wallet Id</string>
+    <string name="detail_settings_email">Email Address</string>
+    <string name="detail_settings_mobileNumber">Mobile Number</string>
+    <string name="pref_notification_group">Notifications</string>
+    <string name="detail_settings_local_currency">Local Currency</string>
+    <string name="pref_security_group">Security</string>
+    <string name="detail_settings_two_step_verify">2-Step Verification</string>
+    <string name="detail_settings_pin">Change PIN</string>
+    <string name="pref_about_group">About</string>
+    <string name="about_terms_of_service">Terms of Service</string>
+    <string name="dialogEnable">Enable</string>
+    <string name="dialogNo">No</string>
+    <string name="about_privacy_policy">Privacy Policy</string>
+    <string name="about_about_us">About Us</string>
+    <string name="registration">Registration</string>
+    <string name="profile_settings">Profile</string>
+    <string name="phone_capture">Capture</string>
+    <string name="transactions_title">Transactions</string>
+    <string name="members_title">Members</string>
+    <string name="pin_capture">Capture</string>
+    <string name="challenge_verification">Challenge Verification</string>
+    <string name="group_details_title">Group Details</string>
+    <string name="add_friends">Add Friends</string>
+    <string name="contact_already_partnering">Already Partnering</string>
+    <string name="search_friends_cancel_btn_label">Cancel</string>
+    <string name="add_contact">Add</string>
+    <string name="invite_contact">Invite</string>
+
+    <string name="sign_in">Sign In</string>
+    <string name="create_pin">Create PIN</string>
+
+    <string name="verification_code_not_found">Verification Code not found!</string>
+</resources>
