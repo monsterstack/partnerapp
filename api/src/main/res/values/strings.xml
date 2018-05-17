@@ -2,9 +2,9 @@
     <string name="app_name">Partner Client API</string>
 
     <!-- API settings -->
-    <string name="firebase_app_id">1:228745677680:android:f859c74e0036c0a2</string>
-    <string name="firebase_api_key">AIzaSyBQ4QdOIQGE-wcB1ZDMABhRKXS0o52JQGg</string>
-    <string name="firebase_database_url">https://partner-ba589.firebaseio.com</string>
+    <string name="firebase_app_id">${FB_APP_ID}</string>
+    <string name="firebase_api_key">${FB_API_KEY}</string>
+    <string name="firebase_database_url">${FB_DB_URL}</string>
 
-    <string name="api_base_url">https://us-central1-partner-ba589.cloudfunctions.net</string>
+    <string name="api_base_url">${FB_API_BASE_URL}</string>
 </resources>
