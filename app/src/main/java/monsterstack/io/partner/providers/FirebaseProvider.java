@@ -10,13 +10,18 @@ import android.support.annotation.Nullable;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 
+import monsterstack.io.partner.BuildConfig;
+
 public class FirebaseProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
+        String databaseUrl = BuildConfig.FB_DB_URL;
+        String apiKey = BuildConfig.FB_API_KEY;
+        String appId = BuildConfig.FB_APP_ID;
         FirebaseOptions.Builder builder = new FirebaseOptions.Builder()
-                .setApplicationId(getContext().getResources().getString(monsterstack.io.api.R.string.firebase_app_id))
-                .setApiKey(getContext().getResources().getString(monsterstack.io.api.R.string.firebase_api_key))
-                .setDatabaseUrl(getContext().getResources().getString(monsterstack.io.api.R.string.firebase_database_url));
+                .setApplicationId(appId)
+                .setApiKey(apiKey)
+                .setDatabaseUrl(databaseUrl);
         FirebaseApp.initializeApp(getContext(), builder.build());
 
         return true;

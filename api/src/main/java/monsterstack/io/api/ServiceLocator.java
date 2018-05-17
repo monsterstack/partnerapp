@@ -27,9 +27,10 @@ public class ServiceLocator {
     private static ServiceLocator instance;
 
     public static ServiceLocator getInstance(Context context) {
+        String apiBaseUrl = BuildConfig.FB_API_BASE_URL;
         if(null == instance) {
             try {
-                instance = new ServiceLocator(context, new URL(context.getString(R.string.api_base_url)));
+                instance = new ServiceLocator(context, new URL(apiBaseUrl));
             } catch (IOException ioException) {
                 throw new RuntimeException(ioException);
             }
