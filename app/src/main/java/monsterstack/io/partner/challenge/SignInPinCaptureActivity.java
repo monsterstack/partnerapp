@@ -5,7 +5,7 @@ import android.view.View;
 
 import butterknife.OnClick;
 import monsterstack.io.api.UserSessionManager;
-import monsterstack.io.api.resources.User;
+import monsterstack.io.api.resources.AuthenticatedUser;
 import monsterstack.io.partner.MainActivity;
 import monsterstack.io.partner.R;
 
@@ -23,10 +23,12 @@ public class SignInPinCaptureActivity extends PinCaptureActivity {
         String capturedPin = getCapturedPin();
 
         if (null != pin && capturedPin.equals(pin)) {
-            User user = sessionManager.getUserDetails();
+            AuthenticatedUser user = sessionManager.getUserDetails();
             Class destination = MainActivity.class;
             if (user.getTwoFactorAuth()) {
               destination = SignInPhoneCaptureActivity.class;
+            } else {
+                sessionManager.createUserSession(user);
             }
 
             Intent intent = new Intent(SignInPinCaptureActivity.this,

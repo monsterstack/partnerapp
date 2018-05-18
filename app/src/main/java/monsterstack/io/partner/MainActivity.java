@@ -26,6 +26,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import monsterstack.io.api.RedirectHandler;
 import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.resources.User;
+import monsterstack.io.api.service.RefreshTokenService;
 import monsterstack.io.partner.adapter.MainPagerAdapter;
 import monsterstack.io.partner.menu.BackupActivity;
 import monsterstack.io.partner.menu.BuyCurrencyActivity;
@@ -243,6 +244,8 @@ public class MainActivity extends AppCompatActivity {
                 sessionManager.logoutUser(new RedirectHandler() {
                     @Override
                     public void go(Context context) {
+                        RefreshTokenService.cancelRefreshTokenCheck(getApplicationContext());
+
                         Intent intent = new Intent(context, LaunchActivity.class);
                         Bundle bundle = ActivityOptions.makeCustomAnimation(getApplicationContext(),
                                 R.anim.back_slide_right, R.anim.back_slide_left).toBundle();

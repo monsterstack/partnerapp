@@ -8,11 +8,11 @@
 
     <ImageView
         android:id="@+id/launchLogo"
-        android:src="@drawable/ic_launcher_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_marginTop="150dp"
-        android:layout_gravity="center_vertical"/>
+        android:src="@drawable/ic_launcher_background" />
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

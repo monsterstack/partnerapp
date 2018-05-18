@@ -16,6 +16,7 @@ import monsterstack.io.api.custom.impl.ChallengeServiceCustomImpl;
 import monsterstack.io.api.custom.impl.RegistrationServiceCustomImpl;
 import monsterstack.io.api.custom.impl.UserServiceCustomImpl;
 import monsterstack.io.api.interceptors.AuthorizationInterceptor;
+import monsterstack.io.api.interceptors.RefreshIdTokenInterceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -41,7 +42,10 @@ public class ServiceLocator {
     ServiceLocator(Context context, URL baseUrl) {
         this.retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl.toString())
-                .client(new OkHttpClient.Builder().addInterceptor(new AuthorizationInterceptor(context)).build())
+                .client(new OkHttpClient.Builder()
+                        .addInterceptor(new RefreshIdTokenInterceptor(context))
+                        .addInterceptor(new AuthorizationInterceptor(context))
+                        .build())
                 .addConverterFactory(JacksonConverterFactory.create())
                 .build();
 

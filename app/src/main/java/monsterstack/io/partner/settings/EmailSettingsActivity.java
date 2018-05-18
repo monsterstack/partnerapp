@@ -36,6 +36,16 @@ public class EmailSettingsActivity extends DetailSettingsActivity {
 
         keyboardView.setActivated(true);
         keyboardView.setEnabled(true);
+
+        UserSessionManager userSessionManager = new UserSessionManager(this);
+        AuthenticatedUser user = userSessionManager.getUserDetails();
+
+        /* clear it */
+        editText.setText(null);
+
+        if(null != user) {
+            editText.setText(user.getEmailAddress());
+        }
     }
 
     @Override
@@ -70,7 +80,7 @@ public class EmailSettingsActivity extends DetailSettingsActivity {
         ServiceLocator serviceLocator = ServiceLocator.getInstance(this);
 
         UserServiceCustom userServiceCustom = serviceLocator.getUserService();
-        User userToUpdate = User.from(authenticatedUser);
+        final User userToUpdate = User.from(authenticatedUser);
 
         String newEmailAddress = editText.getText().toString();
         userToUpdate.setEmailAddress(newEmailAddress);
@@ -79,6 +89,8 @@ public class EmailSettingsActivity extends DetailSettingsActivity {
             @Override
             public void onResponse(User user, HttpError httpError) {
                 if (null != user) {
+                    authenticatedUser.setEmailAddress(user.getEmailAddress());
+                    sessionManager.createUserSession(authenticatedUser);
                     // then if alls good
                     Bundle bundle = ActivityOptions.makeCustomAnimation(getApplicationContext(),
                             R.anim.back_slide_right, R.anim.back_slide_left).toBundle();

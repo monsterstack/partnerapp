@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import monsterstack.io.api.resources.AuthenticatedUser;
+import monsterstack.io.api.service.RefreshTokenService;
 
 public class UserSessionManager {
     private static final String USER_ID = "user.id";
@@ -59,6 +60,7 @@ public class UserSessionManager {
 
         this.editor.commit();
 
+        RefreshTokenService.scheduleRefreshTokenCheck(context);
     }
 
     public AuthenticatedUser getUserDetails() {
@@ -87,6 +89,8 @@ public class UserSessionManager {
         // Clearing all data from Shared Preferences
         editor.putBoolean(IS_LOGIN, false);
         editor.commit();
+
+        RefreshTokenService.cancelRefreshTokenCheck(context);
 
         handler.go(this.context);
     }
