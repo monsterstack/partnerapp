@@ -63,6 +63,10 @@ public class UserSessionManager {
         RefreshTokenService.scheduleRefreshTokenCheck(context);
     }
 
+    public Object get(String key) {
+        return preferences.getAll().get(key);
+    }
+
     public AuthenticatedUser getUserDetails() {
         AuthenticatedUser user = new AuthenticatedUser();
         user.setId(preferences.getString(USER_ID, null));

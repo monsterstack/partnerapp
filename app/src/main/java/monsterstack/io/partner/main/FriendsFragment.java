@@ -90,4 +90,5 @@ public class FriendsFragment extends Fragment {
 
         startActivity(intent, bundle);
     }
+
 }

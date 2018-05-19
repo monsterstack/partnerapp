@@ -9,11 +9,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
+import monsterstack.io.avatarview.AvatarView;
+import monsterstack.io.avatarview.User;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.domain.Contact;
 
@@ -51,13 +50,11 @@ public class ContactArrayAdapter extends ArrayAdapter<Contact> {
             viewHolder.actionButton.setText(R.string.invite_contact);
         }
 
-        Glide.with(context).load(values[position].getAvatar())
-                .placeholder(R.drawable.ic_launcher_background)
-                .dontAnimate().into(viewHolder.imageView);
-
-        // change the icon for Windows and iPhone
-        //viewHolder.imageView.setImageResource(R.drawable.ic_launcher_background);
-
+        viewHolder.imageView.setUser(new User(
+                values[position].getFirstName() + " " + values[position].getLastName(),
+                null,
+                R.color.gray
+        ));
         return convertView;
     }
 
@@ -67,7 +64,7 @@ public class ContactArrayAdapter extends ArrayAdapter<Contact> {
         @BindView(R.id.secondLine) TextView secondLine;
 
         @BindView(R.id.icon)
-        CircleImageView imageView;
+        AvatarView imageView;
 
         @BindView(R.id.contact_action_button)
         Button actionButton;

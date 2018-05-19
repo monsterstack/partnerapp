@@ -18,15 +18,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 import monsterstack.io.api.RedirectHandler;
 import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.resources.User;
 import monsterstack.io.api.service.RefreshTokenService;
+import monsterstack.io.avatarview.AvatarView;
 import monsterstack.io.partner.adapter.MainPagerAdapter;
 import monsterstack.io.partner.menu.BackupActivity;
 import monsterstack.io.partner.menu.BuyCurrencyActivity;
@@ -43,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
-    CircleImageView avatar;
+    AvatarView avatar;
 
     View navHeader;
 
@@ -76,9 +74,10 @@ public class MainActivity extends AppCompatActivity {
 
         navHeader = navView.getHeaderView(0);
         avatar = navHeader.findViewById(R.id.userImage);
+        avatar.setUser(new monsterstack.io.avatarview.User("Zachary Rote", null, R.color.green));
 
-        Glide.with(this).load(user.getAvatarUrl()).placeholder(R.drawable.ic_launcher_background)
-                .dontAnimate().into(avatar);
+//        Glide.with(this).load(user.getAvatarUrl()).placeholder(R.drawable.ic_launcher_background)
+//                .dontAnimate().into(avatar);
         navHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

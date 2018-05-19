@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="100dp"
+    xmlns:avatarview="http://schemas.android.com/apk/monsterstack.io.avatarview"
     android:background="@color/offWhite"
     android:padding="16dp"
     android:orientation="vertical"
@@ -14,12 +15,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <monsterstack.io.avatarview.AvatarView
             android:id="@+id/userImage"
-            android:src="@drawable/ic_launcher_background"
-            android:layout_alignParentLeft="true"
             android:layout_width="60dp"
-            android:layout_height="60dp" />
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            avatarview:avatar_shape="avatarShape"/>
 
         <LinearLayout
             android:orientation="vertical"

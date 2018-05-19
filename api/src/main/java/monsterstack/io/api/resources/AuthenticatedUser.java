@@ -22,4 +22,8 @@ public class AuthenticatedUser extends User {
         this.setSmsNotifications(user.getSmsNotifications());
         this.setTwoFactorAuth(user.getTwoFactorAuth());
     }
+
+    public String getFullName() {
+        return this.getFirstName() + " " + this.getLastName();
+    }
 }

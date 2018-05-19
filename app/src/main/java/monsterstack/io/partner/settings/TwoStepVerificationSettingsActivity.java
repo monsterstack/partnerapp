@@ -30,6 +30,15 @@ public class TwoStepVerificationSettingsActivity extends DetailSettingsActivity 
         super.onCreate(savedInstanceState);
 
         ButterKnife.bind(this);
+
+        UserSessionManager userSessionManager = new UserSessionManager(this);
+        AuthenticatedUser user = userSessionManager.getUserDetails();
+
+        if(user.getTwoFactorAuth()) {
+            enableTwoFactorButton.setText("Disable Two-Factor Auth");
+        } else {
+            enableTwoFactorButton.setText("Enable Two-Factory Auth");
+        }
     }
 
     @Override
@@ -56,7 +65,10 @@ public class TwoStepVerificationSettingsActivity extends DetailSettingsActivity 
 
         final UserSessionManager userSessionManager = new UserSessionManager(this);
         final AuthenticatedUser userToUpdate = userSessionManager.getUserDetails();
-        userToUpdate.setTwoFactorAuth(true);
+        if(userToUpdate.getTwoFactorAuth())
+            userToUpdate.setTwoFactorAuth(false);
+        else
+            userToUpdate.setTwoFactorAuth(true);
         final String userId = userToUpdate.getId();
 
         DialogInterface.OnClickListener enabled = new DialogInterface.OnClickListener() {
@@ -88,7 +100,7 @@ public class TwoStepVerificationSettingsActivity extends DetailSettingsActivity 
 
         builder.setMessage(R.string.detail_settings_two_step_verify)
                 .setTitle(R.string.detail_settings_two_step_verify)
-                .setPositiveButton(R.string.dialogEnable, enabled)
+                .setPositiveButton("Change", enabled)
                 .setNegativeButton(R.string.dialogNo, no);
 
         AlertDialog dialog = builder.create();

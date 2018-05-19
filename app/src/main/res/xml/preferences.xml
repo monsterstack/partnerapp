@@ -5,8 +5,8 @@
     <PreferenceCategory
         android:title="@string/pref_profile_group">
         <Preference android:title="@string/detail_settings_wallet_id"/>
-        <Preference android:title="@string/detail_settings_email"/>
-        <Preference android:title="@string/detail_settings_mobileNumber"/>
+        <Preference android:title="@string/detail_settings_email" android:key="user.email"/>
+        <Preference android:title="@string/detail_settings_mobileNumber" android:key="user.phoneNumber"/>
     </PreferenceCategory>
 
     <PreferenceCategory

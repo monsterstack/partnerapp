@@ -52,11 +52,16 @@ public class MenuPreferenceFragment extends PreferenceFragment {
 
             if(preference instanceof PreferenceCategory) {
                 PreferenceCategory category = (PreferenceCategory)preference;
+
                 int count = category.getPreferenceCount();
 
                 for (int j = 0; j < count; j++) {
                     Preference subPreference = category.getPreference(j);
                     final CharSequence title = subPreference.getTitle();
+
+                    Object value = userSessionManager.get(subPreference.getKey());
+                    if(null != value)
+                        subPreference.setDefaultValue(value);
 
                     try {
                         final Class target = lookupByKey(title);

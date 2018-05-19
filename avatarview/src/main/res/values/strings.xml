@@ -1,0 +1,4 @@
+<resources>
+    <string name="circle">Circle</string>
+    <string name="rectangle">Rectangle</string>
+</resources>

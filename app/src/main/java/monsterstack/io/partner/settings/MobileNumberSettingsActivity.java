@@ -15,8 +15,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import monsterstack.io.api.ServiceLocator;
+import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.custom.ChallengeServiceCustom;
 import monsterstack.io.api.listeners.OnResponseListener;
+import monsterstack.io.api.resources.AuthenticatedUser;
 import monsterstack.io.api.resources.Challenge;
 import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.partner.R;
@@ -49,6 +51,13 @@ public class MobileNumberSettingsActivity extends DetailSettingsActivity {
 
         keyboardView.setActivated(true);
         keyboardView.setEnabled(true);
+
+        UserSessionManager userSessionManager = new UserSessionManager(this);
+        AuthenticatedUser user = userSessionManager.getUserDetails();
+
+        if(null != user.getPhoneNumber()) {
+            editText.setText(user.getPhoneNumber());
+        }
     }
 
     public int getContentView() {

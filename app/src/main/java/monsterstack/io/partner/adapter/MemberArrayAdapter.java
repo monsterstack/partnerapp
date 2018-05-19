@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -43,10 +41,10 @@ public class MemberArrayAdapter extends ArrayAdapter<Member> {
         viewHolder.firstLine.setText(values[position].getFirstName() + " " + values[position].getLastName());
         viewHolder.secondLine.setText("Draw Slot - " + values[position].getSlotNumber());
         // change the icon for Windows and iPhone
-        Glide.with(context).load(values[position].getAvatar())
-                .placeholder(R.drawable.ic_launcher_background)
-                .dontAnimate()
-                .into(viewHolder.imageView);
+        //Glide.with(context).load(values[position].getAvatar())
+        //        .placeholder(R.drawable.ic_launcher_background)
+        //        .dontAnimate()
+        //        .into(viewHolder.imageView);
 
         return convertView;
     }

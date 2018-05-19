@@ -8,11 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
+import monsterstack.io.avatarview.AvatarView;
+import monsterstack.io.avatarview.User;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.domain.Friend;
 
@@ -42,9 +41,12 @@ public class FriendArrayAdapter extends ArrayAdapter<Friend> {
 
         viewHolder.firstLine.setText(values[position].getFirstName() + " " + values[position].getLastName());
         viewHolder.secondLine.setText(values[position].getEmailAddress());
-        // change the icon for Windows and iPhone
-        Glide.with(context).load(values[position].getAvatar()).placeholder(R.drawable.ic_launcher_background)
-                .dontAnimate().into(viewHolder.imageView);
+
+        viewHolder.imageView.setUser(new User(
+                values[position].getFirstName() + " " + values[position].getLastName(),
+                null,
+                R.color.gray
+        ));
 
         return convertView;
     }
@@ -55,7 +57,7 @@ public class FriendArrayAdapter extends ArrayAdapter<Friend> {
         @BindView(R.id.secondLine) TextView secondLine;
 
         @BindView(R.id.icon)
-        CircleImageView imageView;
+        AvatarView imageView;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
