@@ -31,6 +31,8 @@ import monsterstack.io.partner.settings.TwoStepVerificationSettingsActivity;
 import monsterstack.io.partner.settings.WalletSettingsActivity;
 import monsterstack.io.partner.utils.NavigationUtils;
 
+import static android.content.Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS;
+
 public class MenuPreferenceFragment extends PreferenceFragment {
     private Map<CharSequence, Class> namespace;
 
@@ -76,6 +78,10 @@ public class MenuPreferenceFragment extends PreferenceFragment {
                             subPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                                 @Override
                                 public boolean onPreferenceChange(Preference preference, Object newValue) {
+                                    if (preference.getKey() == null) {
+                                        return true;
+                                    }
+
                                     if(preference.getKey().equals(UserSessionManager.USER_EMAIL_NOTIFY)) {
                                         authenticatedUser.setEmailNotifications((Boolean)newValue);
                                     } else if(preference.getKey().equals(UserSessionManager.USER_SMS_NOTIFY)) {
@@ -108,6 +114,7 @@ public class MenuPreferenceFragment extends PreferenceFragment {
     private boolean navigate(Context context, Class destination) {
         Bundle bundle = NavigationUtils.enterStageRightBundle(context);
         Intent intent = new Intent(context, destination);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         intent.putExtra("source", this.getClass().getCanonicalName());
         startActivity(intent, bundle);
 

@@ -4,14 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.resources.MinimalUser;
 import monsterstack.io.api.resources.Registration;
@@ -21,8 +22,6 @@ import monsterstack.io.partner.common.BasicActivity;
 import monsterstack.io.partner.utils.NavigationUtils;
 
 public class RegistrationActivity extends BasicActivity {
-    @BindView(R.id.signUpButton)
-    Button signUpButton;
 
     @BindView(R.id.first_name)
     EditText firstNameEdit;
@@ -35,6 +34,9 @@ public class RegistrationActivity extends BasicActivity {
 
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
+
+    @BindView(R.id.my_toolbar)
+    Toolbar toolbar;
 
     private ServiceLocator serviceLocator;
 
@@ -58,12 +60,26 @@ public class RegistrationActivity extends BasicActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.next_action, menu);
+
+        menu.findItem(R.id.next_button).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                onNext(item);
+                return false;
+            }
+        });
+        return true;
+    }
+
+    @Override
     public int getActionTitle() {
         return R.string.registration;
     }
 
-    @OnClick(R.id.signUpButton)
-    public void onSignUp(View view){
+    public void onNext(MenuItem menuItem){
         progressBar.setVisibility(View.VISIBLE);
 
         final Registration registration = buildRegistrationFromBindingData();

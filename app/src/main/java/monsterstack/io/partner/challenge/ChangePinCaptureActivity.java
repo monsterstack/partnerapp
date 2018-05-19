@@ -19,7 +19,6 @@ public class ChangePinCaptureActivity extends PinCaptureActivity {
         if (null != pin && capturedPin.equals(pin)) {
             Intent intent = new Intent(ChangePinCaptureActivity.this,
                     PinSettingsActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("source", ChangePinCaptureActivity.class.getCanonicalName());
             startActivity(intent, enterStageRightBundle());
         } else {

@@ -1,7 +1,5 @@
 package monsterstack.io.partner.menu;
 
-import android.app.ActivityOptions;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import monsterstack.io.partner.MainActivity;
 import monsterstack.io.partner.R;
 
 public abstract class PreferenceMenuActivity extends AppCompatActivity implements ClosableMenu {
@@ -51,11 +48,7 @@ public abstract class PreferenceMenuActivity extends AppCompatActivity implement
         return new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Bundle bundle = ActivityOptions.makeCustomAnimation(getApplicationContext(), 0, R.anim.slide_down).toBundle();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("openDrawer", Boolean.TRUE);
-                startActivity(intent, bundle);
-
+                finish();
                 return false;
             }
         };

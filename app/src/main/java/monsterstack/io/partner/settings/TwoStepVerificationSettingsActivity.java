@@ -1,7 +1,6 @@
 package monsterstack.io.partner.settings;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -19,7 +18,6 @@ import monsterstack.io.api.resources.AuthenticatedUser;
 import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.api.resources.User;
 import monsterstack.io.partner.R;
-import monsterstack.io.partner.menu.SettingsActivity;
 
 public class TwoStepVerificationSettingsActivity extends DetailSettingsActivity {
     @BindView(R.id.two_step_verify_enable_button)
@@ -79,8 +77,7 @@ public class TwoStepVerificationSettingsActivity extends DetailSettingsActivity 
                     public void onResponse(User user, HttpError httpError) {
                         if (null != user) {
                             userSessionManager.createUserSession(userToUpdate);
-                            Intent intent = new Intent(TwoStepVerificationSettingsActivity.this, SettingsActivity.class);
-                            startActivity(intent, exitStageLeftBundle());
+                            finish();
                         } else {
                             showHttpError(getResources().getString(getActionTitle()), httpError);
                         }
@@ -93,8 +90,7 @@ public class TwoStepVerificationSettingsActivity extends DetailSettingsActivity 
         DialogInterface.OnClickListener no = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
-                Intent intent = new Intent(TwoStepVerificationSettingsActivity.this, SettingsActivity.class);
-                startActivity(intent, exitStageLeftBundle());
+                finish();
             }
         };
 

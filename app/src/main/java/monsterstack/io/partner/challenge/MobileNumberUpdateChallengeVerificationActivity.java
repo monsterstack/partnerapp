@@ -79,7 +79,8 @@ public class MobileNumberUpdateChallengeVerificationActivity extends ChallengeVe
                     sessionManager.createUserSession(authenticatedUser);
 
                     Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                     startActivity(intent, exitStageLeftBundle());
                     progressBar.setVisibility(GONE);
                 } else {

@@ -22,6 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import monsterstack.io.api.RedirectHandler;
 import monsterstack.io.api.UserSessionManager;
+import monsterstack.io.api.resources.AuthenticatedUser;
 import monsterstack.io.api.resources.User;
 import monsterstack.io.api.service.RefreshTokenService;
 import monsterstack.io.avatarview.AvatarView;
@@ -71,13 +72,14 @@ public class MainActivity extends AppCompatActivity {
         ImageButton navButton = findViewById(R.id.toolbar_navbutton);
         NavigationView navView = findViewById(R.id.nav_view);
 
-
+        UserSessionManager userSessionManager = new UserSessionManager(this);
+        AuthenticatedUser authenticatedUser = userSessionManager.getUserDetails();
         navHeader = navView.getHeaderView(0);
         avatar = navHeader.findViewById(R.id.userImage);
-        avatar.setUser(new monsterstack.io.avatarview.User("Zachary Rote", null, R.color.green));
+        avatar.setUser(new monsterstack.io.avatarview.User(authenticatedUser.getFullName(), null, R.color.green));
 
-//        Glide.with(this).load(user.getAvatarUrl()).placeholder(R.drawable.ic_launcher_background)
-//                .dontAnimate().into(avatar);
+        TextView profileFullName = navHeader.findViewById(R.id.profile_fulllname);
+        profileFullName.setText(authenticatedUser.getFullName());
         navHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

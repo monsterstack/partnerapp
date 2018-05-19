@@ -55,6 +55,7 @@ public class PinSettingsActivity extends DetailSettingsActivity {
         if(null != pin) {
             sessionManager.createUserPin(pin);
             Intent intent = new Intent(PinSettingsActivity.this, SettingsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent, exitStageLeftBundle());
         } else {
             showError(getResources().getString(getActionTitle()), "Invalid PIN!");

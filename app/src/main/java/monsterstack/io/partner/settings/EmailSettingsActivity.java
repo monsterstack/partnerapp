@@ -1,7 +1,5 @@
 package monsterstack.io.partner.settings;
 
-import android.app.ActivityOptions;
-import android.content.Intent;
 import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,7 +17,6 @@ import monsterstack.io.api.resources.AuthenticatedUser;
 import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.api.resources.User;
 import monsterstack.io.partner.R;
-import monsterstack.io.partner.menu.SettingsActivity;
 
 public class EmailSettingsActivity extends DetailSettingsActivity {
     @BindView(R.id.emailEdit)
@@ -92,10 +89,6 @@ public class EmailSettingsActivity extends DetailSettingsActivity {
                     authenticatedUser.setEmailAddress(user.getEmailAddress());
                     sessionManager.createUserSession(authenticatedUser);
                     // then if alls good
-                    Bundle bundle = ActivityOptions.makeCustomAnimation(getApplicationContext(),
-                            R.anim.back_slide_right, R.anim.back_slide_left).toBundle();
-                    startActivity(new Intent(getApplicationContext(), SettingsActivity.class), bundle);
-
                 } else {
                     showHttpError(getResources().getString(getActionTitle()), httpError);
                 }
