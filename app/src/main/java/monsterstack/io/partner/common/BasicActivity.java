@@ -7,9 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -42,22 +41,24 @@ public abstract class BasicActivity extends AppCompatActivity {
         setContentView(getContentView());
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
-        TextView toolbarTitle = myToolbar.findViewById(R.id.toolbar_title);
-        toolbarTitle.setText(getActionTitle());
+        myToolbar.setTitle(getActionTitle());
         setSupportActionBar(myToolbar);
 
-        // Register Close action
-        ImageButton backButton = findViewById(R.id.back_button);
-        ImageButton closeButton = findViewById(R.id.modal_close_button);
-        if(null != backButton) {
-            backButton.setOnClickListener(getBackListener());
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if(null != closeButton) {
-            this.isClosable = Boolean.TRUE;
-            closeButton.setOnClickListener(getCloseListener());
-        }
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // API 5+ solution
+                onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public ServiceLocator getServiceLocator() {

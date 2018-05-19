@@ -1,8 +1,9 @@
 package monsterstack.io.partner.menu;
 
-import android.view.View;
+import android.view.MenuItem;
+
 
 public interface ClosableActivity {
-    View.OnClickListener getCloseListener();
+    MenuItem.OnMenuItemClickListener getCloseListener();
     int getContentView();
 }

@@ -1,12 +1,10 @@
 package monsterstack.io.partner.menu;
 
 import android.os.Bundle;
-
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import monsterstack.io.partner.R;
 
@@ -17,22 +15,27 @@ public abstract class MenuActivity extends AppCompatActivity implements Closable
         setContentView(getContentView());
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
-        TextView toolbarTitle = myToolbar.findViewById(R.id.toolbar_title);
-        toolbarTitle.setText(getActionTitle());
+        myToolbar.setTitle(getActionTitle());
         setSupportActionBar(myToolbar);
-
-
-        // Register Close action
-        ImageButton closeButton = findViewById(R.id.modal_close_button);
-        closeButton.setOnClickListener(getCloseListener());
     }
 
     @Override
-    public View.OnClickListener getCloseListener() {
-        return new View.OnClickListener() {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.close_action, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.modal_close_button);
+        menuItem.setOnMenuItemClickListener(getCloseListener());
+        return true;
+    }
+
+
+    public MenuItem.OnMenuItemClickListener getCloseListener() {
+        return new MenuItem.OnMenuItemClickListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onMenuItemClick(MenuItem item) {
                 finish();
+                return false;
             }
         };
     }
