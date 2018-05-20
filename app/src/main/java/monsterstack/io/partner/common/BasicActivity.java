@@ -8,7 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.ProgressBar;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -17,6 +17,7 @@ import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.utils.NavigationUtils;
 
+import static android.view.View.GONE;
 import static java.lang.Boolean.FALSE;
 
 public abstract class BasicActivity extends AppCompatActivity {
@@ -44,8 +45,19 @@ public abstract class BasicActivity extends AppCompatActivity {
         myToolbar.setTitle(getActionTitle());
         setSupportActionBar(myToolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(displayHomeAsUp())
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        ProgressBar progressBar = findViewById(R.id.progressbar);
+
+        if(null != progressBar) {
+            progressBar.setVisibility(GONE);
+        }
+
+    }
+
+    public boolean displayHomeAsUp() {
+        return true;
     }
 
     @Override
@@ -71,24 +83,6 @@ public abstract class BasicActivity extends AppCompatActivity {
 
     public void setUpTransitions() {
         // do nothing.
-    }
-
-    public View.OnClickListener getBackListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-            }
-        };
-    }
-
-    public View.OnClickListener getCloseListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-            }
-        };
     }
 
     @Override

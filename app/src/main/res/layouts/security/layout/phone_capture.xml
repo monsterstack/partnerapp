@@ -6,12 +6,7 @@
 
     <include layout="@layout/toolbar_layout"/>
 
-    <ProgressBar
-        android:id="@+id/progressbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:progressDrawable="@drawable/circular_drawable"/>
+    <include layout="@layout/progress_bar"/>
 
     <ImageButton
         android:layout_marginTop="20dp"
@@ -38,24 +33,6 @@
         android:layout_width="220dp"
         android:layout_height="wrap_content" />
 
-    <RelativeLayout
-        android:gravity="center|bottom"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical">
-        <Button
-            android:id="@+id/phoneCaptureButton"
-            android:layout_gravity="bottom"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:background="@color/colorPrimary"
-            android:text="@string/phone_capture_btn_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"/>
-
-    </RelativeLayout>
 
     <android.inputmethodservice.KeyboardView
         android:id="@+id/keyboard"

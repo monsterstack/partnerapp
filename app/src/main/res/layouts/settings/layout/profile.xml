@@ -4,7 +4,13 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <include layout="@layout/toolbar_layout" />
+    <include layout="@layout/toolbar_layout"/>
+
+    <include layout="@layout/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="280dp"/>
 
     <monsterstack.io.avatarview.AvatarView
         android:id="@+id/userImage"
@@ -16,5 +22,14 @@
         avatarview:nameSize="40dp"
         avatarview:avatar_shape="avatarShape"/>
 
-
+    <TextView
+        android:id="@+id/userFullName"
+        android:text="Foo Bar"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:layout_below="@id/userImage"
+        android:layout_width="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

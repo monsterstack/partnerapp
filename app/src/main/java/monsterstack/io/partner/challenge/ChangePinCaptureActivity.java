@@ -1,17 +1,13 @@
 package monsterstack.io.partner.challenge;
 
 import android.content.Intent;
-import android.view.View;
 
-import butterknife.OnClick;
 import monsterstack.io.api.UserSessionManager;
-import monsterstack.io.partner.R;
 import monsterstack.io.partner.settings.PinSettingsActivity;
 
 public class ChangePinCaptureActivity extends PinCaptureActivity {
-
-    @OnClick(R.id.pinCaptureButton)
-    public void onPinCapture(View view) {
+    @Override
+    public void onNext() {
         UserSessionManager sessionManager = new UserSessionManager(this);
         String pin = sessionManager.getUserPin();
         String capturedPin = getCapturedPin();

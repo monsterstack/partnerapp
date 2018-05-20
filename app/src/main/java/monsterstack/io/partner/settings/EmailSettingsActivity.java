@@ -3,12 +3,12 @@ package monsterstack.io.partner.settings;
 import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.custom.UserServiceCustom;
@@ -46,6 +46,21 @@ public class EmailSettingsActivity extends DetailSettingsActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.update_action, menu);
+
+        menu.findItem(R.id.update_button).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                onUpdate();
+                return false;
+            }
+        });
+        return true;
+    }
+
+    @Override
     public int getContentView() {
         return R.layout.email_settings;
     }
@@ -65,8 +80,7 @@ public class EmailSettingsActivity extends DetailSettingsActivity {
         finish();
     }
 
-    @OnClick(R.id.emailUpdateButton)
-    public void performUpdate(View view) {
+    public void onUpdate() {
         updateEmailAddress();
     }
 
@@ -89,6 +103,7 @@ public class EmailSettingsActivity extends DetailSettingsActivity {
                     authenticatedUser.setEmailAddress(user.getEmailAddress());
                     sessionManager.createUserSession(authenticatedUser);
                     // then if alls good
+                    finish();
                 } else {
                     showHttpError(getResources().getString(getActionTitle()), httpError);
                 }

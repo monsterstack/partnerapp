@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="150dp"
     xmlns:avatarview="http://schemas.android.com/apk/monsterstack.io.avatarview"
-    android:background="@color/offWhite"
+    android:background="?selectableItemBackground"
     android:padding="16dp"
     android:orientation="vertical"
     android:gravity="bottom">
@@ -23,31 +23,67 @@
             avatarview:avatar_shape="avatarShape"/>
 
         <LinearLayout
+            android:id="@+id/viewProfile"
             android:orientation="vertical"
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@id/userImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/profile_fulllname"
+                android:id="@+id/profile_fullname"
                 android:layout_marginTop="1dp"
-                android:text="Zachary Rote"
                 android:textStyle="bold"
+                android:textColor="@color/colorPrimaryText"
+                android:fontFamily="block"
                 android:textSize="20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <TextView
-                android:text="View Profile"
-                android:textSize="15sp"
+
+            <LinearLayout
+                android:id="@+id/raisedFunds"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:layout_below="@id/viewProfile"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent">
+                <TextView
+                    android:text="$500.00"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimaryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:text="Raised"
+                    android:paddingLeft="5dp"
+                    android:textColor="@color/colorSecondaryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_below="@id/raisedFunds"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+                <TextView
+                    android:text="$410.00"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimaryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:text="Contributed"
+                    android:textColor="@color/colorSecondaryText"
+                    android:paddingLeft="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
         </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
     </RelativeLayout>
+
+    <View
+        style="@style/Divider"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>

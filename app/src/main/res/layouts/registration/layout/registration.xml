@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/toolbar_layout"/>
@@ -24,8 +25,11 @@
                 <EditText
                     android:id="@+id/first_name"
                     android:hint="First Name"
+                    android:background="@drawable/rounded_edit_text"
+                    android:layout_marginLeft="10sp"
+                    android:layout_marginRight="10sp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="@dimen/edit_text_height" />
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_last_name"
@@ -35,8 +39,11 @@
                 <EditText
                     android:id="@+id/last_name"
                     android:hint="Last Name"
+                    android:background="@drawable/rounded_edit_text"
+                    android:layout_marginLeft="10sp"
+                    android:layout_marginRight="10sp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="@dimen/edit_text_height" />
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_email_address"
@@ -47,13 +54,16 @@
                     android:id="@+id/email_address"
                     android:hint="Email Address"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10sp"
+                    android:layout_marginRight="10sp"
+                    android:background="@drawable/rounded_edit_text"
+                    android:layout_height="@dimen/edit_text_height"
                     android:layout_below="@id/input_layout_last_name"/>
                 <TextView
-                    android:layout_marginLeft="10dp"
-                    android:text="This will not be shared!"
+                    android:layout_marginLeft="22sp"
+                    android:text="This will not be shared"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="@dimen/help_text_height" />
             </android.support.design.widget.TextInputLayout>
         </RelativeLayout>
 

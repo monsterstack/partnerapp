@@ -10,35 +10,11 @@
     <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
     <FrameLayout
         android:id="@+id/content_frame"
+        app:layout_insetEdge="bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/my_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
-            <ImageButton
-                android:id="@+id/toolbar_navbutton"
-                android:src="@drawable/ic_view_headline_white_24dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:layout_width="45dp"
-                android:layout_marginLeft="0sp"
-                android:layout_height="match_parent" />
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_marginTop="15dp"
-                android:text="Title"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_width="150dp"
-                android:layout_height="match_parent" />
-        </android.support.v7.widget.Toolbar>
+        <include layout="@layout/toolbar_layout"/>
 
         <android.support.v4.view.ViewPager
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -53,55 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <include layout="@layout/bottom_bar"/>
 
-            <android.support.v7.widget.Toolbar
-                android:layout_weight="1"
-                android:layout_gravity="bottom"
-                android:layout_width="match_parent"
-                android:background="@color/colorPrimary"
-                android:layout_height="wrap_content">
-                <ImageButton
-                    android:id="@+id/action_tabs_groups"
-                    android:src="@drawable/ic_view_module_white_24dp"
-                    android:paddingRight="5dp"
-                    android:paddingLeft="5dp"
-
-                    android:background="?android:attr/selectableItemBackground"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp" />
-                <ImageButton
-                    android:id="@+id/action_tabs_friends"
-                    android:src="@drawable/ic_group_white_24dp"
-                    android:paddingRight="5dp"
-                    android:paddingLeft="5dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp" />
-                <ImageButton
-                    android:id="@+id/action_tabs_wallets"
-                    android:src="@drawable/ic_account_balance_wallet_white_24dp"
-                    android:paddingRight="5dp"
-                    android:paddingLeft="5dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp" />
-                <ImageButton
-                    android:id="@+id/action_tabs_inbox"
-                    android:src="@drawable/ic_speaker_notes_white_24dp"
-                    android:paddingRight="5dp"
-                    android:paddingLeft="5dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp" />
-                <ImageButton
-                    android:src="@drawable/ic_more_horiz_white_24dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:layout_gravity="right"
-                    android:paddingRight="5dp"
-                    android:paddingLeft="5dp"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp" />
-            </android.support.v7.widget.Toolbar>
         </LinearLayout>
 
     </FrameLayout>

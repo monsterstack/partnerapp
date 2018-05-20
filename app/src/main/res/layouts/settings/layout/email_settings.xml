@@ -6,6 +6,7 @@
     <!-- change name -->
     <include layout="@layout/toolbar_layout"/>
 
+    <include layout="@layout/progress_bar"/>
     <TextView
         android:layout_marginTop="30dp"
         android:text="Your email address is used to send draw and contribution alerts, ID reminders, and login codes."
@@ -28,34 +29,18 @@
         android:text="Verified"
         android:maxLines="1"
         android:layout_marginTop="10dp"
-        android:textColor="@color/green"
+        android:textColor="@color/colorPrimaryText"
         android:textAlignment="center"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"/>
 
 
-    <RelativeLayout
-        android:gravity="center|bottom"
-        android:layout_weight="1"
+    <android.inputmethodservice.KeyboardView
+        android:id="@+id/keyboard"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical">
-        <Button
-            android:id="@+id/emailUpdateButton"
-            android:layout_gravity="bottom"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:background="@color/colorPrimary"
-            android:text="Update"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <android.inputmethodservice.KeyboardView
-            android:id="@+id/keyboard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            />
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        />
 
 </LinearLayout>

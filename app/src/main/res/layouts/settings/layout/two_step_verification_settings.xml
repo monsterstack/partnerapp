@@ -44,7 +44,7 @@
             android:layout_marginBottom="0dp"
             android:textColor="@color/white"
             android:textSize="20dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorSecondary"
             android:text="Enable 2-Step for SMS"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

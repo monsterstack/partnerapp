@@ -6,4 +6,22 @@
 
     <include layout="@layout/toolbar_layout"/>
 
+
+    <RelativeLayout
+        android:gravity="center|bottom"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/buy_button"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="0dp"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:background="@color/colorSecondary"
+            android:text="Buy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
 </android.support.constraint.ConstraintLayout>

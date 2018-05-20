@@ -38,7 +38,7 @@
             android:layout_gravity="bottom"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorSecondary"
             android:text="Backup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

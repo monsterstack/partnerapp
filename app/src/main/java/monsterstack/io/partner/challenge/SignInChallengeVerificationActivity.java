@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import butterknife.OnClick;
 import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.custom.AuthServiceCustom;
@@ -20,14 +19,13 @@ import static android.view.View.GONE;
 public class SignInChallengeVerificationActivity extends ChallengeVerificationActivity {
 
     @Override
-    @OnClick(R.id.challengeVerificationButton)
-    public void onClick(View view) {
+    public void onVerify() {
         progressBar.setVisibility(View.VISIBLE);
 
         ServiceLocator serviceLocator = getServiceLocator();
         final AuthServiceCustom authServiceCustom = serviceLocator.getAuthService();
 
-        String code = editText.getText().toString();
+        String code = editText.getEnteredText();
 
         final UserSessionManager sessionManager = new UserSessionManager(getApplicationContext());
 

@@ -3,7 +3,6 @@ package monsterstack.io.partner.challenge;
 import android.content.Intent;
 import android.view.View;
 
-import butterknife.OnClick;
 import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.custom.ChallengeServiceCustom;
@@ -21,15 +20,14 @@ import static android.view.View.GONE;
 public class MobileNumberUpdateChallengeVerificationActivity extends ChallengeVerificationActivity {
 
     @Override
-    @OnClick(R.id.challengeVerificationButton)
-    public void onClick(View view) {
+    public void onVerify() {
         progressBar.setVisibility(View.VISIBLE);
 
         ServiceLocator serviceLocator = getServiceLocator();
         final ChallengeServiceCustom challengeServiceCustom = serviceLocator.getChallengeService();
         final UserServiceCustom userServiceCustom = serviceLocator.getUserService();
 
-        String code = editText.getText().toString();
+        String code = editText.getEnteredText();
 
         final UserSessionManager sessionManager = new UserSessionManager(getApplicationContext());
         final AuthenticatedUser authenticatedUser = sessionManager.getUserDetails();

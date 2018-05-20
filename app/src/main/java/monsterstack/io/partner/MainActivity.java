@@ -4,6 +4,9 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -14,9 +17,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +28,7 @@ import monsterstack.io.api.resources.User;
 import monsterstack.io.api.service.RefreshTokenService;
 import monsterstack.io.avatarview.AvatarView;
 import monsterstack.io.partner.adapter.MainPagerAdapter;
+import monsterstack.io.partner.common.BasicActivity;
 import monsterstack.io.partner.menu.BackupActivity;
 import monsterstack.io.partner.menu.BuyCurrencyActivity;
 import monsterstack.io.partner.menu.ProfileActivity;
@@ -35,12 +37,20 @@ import monsterstack.io.partner.menu.WalletsActivity;
 import monsterstack.io.partner.utils.NavigationUtils;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BasicActivity {
+    private static final int PROFILE_UPDATE_REQUEST_CODE = 0;
+
     private MainPagerAdapter mainPagerAdapter;
     private ViewPager viewPager;
 
+    @BindView(R.id.bottom_navigation)
+    BottomNavigationView bottomNavigationView;
+
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
+
+    @BindView(R.id.my_toolbar)
+    Toolbar toolbar;
 
     AvatarView avatar;
 
@@ -49,12 +59,39 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        asyncInit();
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_view_headline_white_24dp);
+        init();
     }
 
-    protected void asyncInit() {
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+
+        if(drawerLayout.isDrawerOpen(Gravity.START)) {
+            drawerLayout.closeDrawer(Gravity.START);
+        } else {
+            drawerLayout.openDrawer(Gravity.START);
+        }
+    }
+
+    protected void init() {
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                if(itemId == R.id.action_tabs_groups) {
+                    viewPager.setCurrentItem(0);
+                } else if(itemId == R.id.action_tabs_friends) {
+                    viewPager.setCurrentItem(1);
+                } else if(itemId == R.id.action_tabs_wallets) {
+                    viewPager.setCurrentItem(2);
+                }
+
+                return false;
+            }
+        });
+
         final UserSessionManager sessionManager = new UserSessionManager(getApplicationContext());
 
         User user = sessionManager.getUserDetails();
@@ -66,19 +103,17 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.openDrawer(Gravity.START);
 
         final Toolbar myToolbar = findViewById(R.id.my_toolbar);
-        final TextView toolbarTitle = myToolbar.findViewById(R.id.toolbar_title);
-        toolbarTitle.setText("Groups");
-
-        ImageButton navButton = findViewById(R.id.toolbar_navbutton);
+        myToolbar.setTitle("Groups");
         NavigationView navView = findViewById(R.id.nav_view);
 
         UserSessionManager userSessionManager = new UserSessionManager(this);
         AuthenticatedUser authenticatedUser = userSessionManager.getUserDetails();
         navHeader = navView.getHeaderView(0);
         avatar = navHeader.findViewById(R.id.userImage);
-        avatar.setUser(new monsterstack.io.avatarview.User(authenticatedUser.getFullName(), null, R.color.green));
+        avatar.setUser(new monsterstack.io.avatarview.User(authenticatedUser.getFullName(),
+                authenticatedUser.getAvatarUrl(), R.color.colorAccent));
 
-        TextView profileFullName = navHeader.findViewById(R.id.profile_fulllname);
+        TextView profileFullName = navHeader.findViewById(R.id.profile_fullname);
         profileFullName.setText(authenticatedUser.getFullName());
         navHeader.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,41 +127,20 @@ public class MainActivity extends AppCompatActivity {
         // Order Matters
         this.registerMenuItemActions(menu);
 
-        navButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-
-                if(drawerLayout.isDrawerOpen(Gravity.START)) {
-                    drawerLayout.closeDrawer(Gravity.START);
-                } else {
-                    drawerLayout.openDrawer(Gravity.START);
-                }
-            }
-        });
-
-
         viewPager = findViewById(R.id.main_pager);
         viewPager.setCurrentItem(0);
 
         this.mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mainPagerAdapter);
 
-        // Action Bar at Bottom
-        initializeFriendsControl(viewPager);
-        initializeGroupsControl(viewPager);
-        initializeWalletsControl(viewPager);
-        initializeInboxControl(viewPager);
-
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             // This method will be invoked when a new page becomes selected.
             @Override
             public void onPageSelected(int position) {
-                Toast.makeText(MainActivity.this,
-                        "Selected page position: " + position, Toast.LENGTH_SHORT).show();
                 Fragment fragment = MainActivity.this.mainPagerAdapter.getItem(position);
                 String title = (String)fragment.getArguments().get("title");
-                toolbarTitle.setText(title);
+                toolbar.setTitle(title);
             }
 
             // This method will be invoked when the current page is scrolled
@@ -144,50 +158,39 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public int getContentView() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    public AppCompatActivity getActivity() {
+        return this;
+    }
+
+    @Override
+    public int getActionTitle() {
+        return R.string.app_name;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, final int resultCode, Intent data) {
+        UserSessionManager sessionManager = new UserSessionManager(this);
+        AuthenticatedUser authenticatedUser = sessionManager.getUserDetails();
+        avatar.setUser(new monsterstack.io.avatarview.User(authenticatedUser.getFullName(),
+                authenticatedUser.getAvatarUrl(), R.color.colorAccent));
+        avatar.refreshDrawableState();
+    }
+
     public void onProfileClicked(View view) {
-        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-        startActivity(intent, NavigationUtils.enterStageBottom(MainActivity.this));
-    }
-
-    private void initializeFriendsControl(final ViewPager viewPager) {
-        ImageButton friendsButton = findViewById(R.id.action_tabs_friends);
-        friendsButton.setOnClickListener(new View.OnClickListener() {
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onClick(View v) {
-                viewPager.setCurrentItem(1);
+            public void run() {
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivityForResult(intent, PROFILE_UPDATE_REQUEST_CODE);
+                overridePendingTransition(R.anim.slide_up, R.anim.hold);
             }
-        });
-    }
-
-    private void initializeGroupsControl(final ViewPager viewPager) {
-        ImageButton groupsButton = findViewById(R.id.action_tabs_groups);
-        groupsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager.setCurrentItem(0);
-            }
-        });
-
-    }
-
-    private void initializeWalletsControl(final ViewPager viewPager) {
-        ImageButton walletsButton = findViewById(R.id.action_tabs_wallets);
-        walletsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager.setCurrentItem(2);
-            }
-        });
-    }
-
-    private void initializeInboxControl(final ViewPager viewPager) {
-        ImageButton inboxButton = findViewById(R.id.action_tabs_inbox);
-        inboxButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager.setCurrentItem(3);
-            }
-        });
+        }, 300);
     }
 
     private void registerMenuItemActions(Menu menu) {

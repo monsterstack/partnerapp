@@ -3,20 +3,17 @@ package monsterstack.io.partner.challenge;
 import android.content.Intent;
 import android.view.View;
 
-import butterknife.OnClick;
 import monsterstack.io.api.custom.ChallengeServiceCustom;
 import monsterstack.io.api.listeners.OnResponseListener;
 import monsterstack.io.api.resources.Challenge;
 import monsterstack.io.api.resources.HttpError;
-import monsterstack.io.partner.R;
 
 import static android.view.View.GONE;
 
 public class RegistrationPhoneCaptureActivity extends PhoneCaptureActivity {
 
     @Override
-    @OnClick(R.id.phoneCaptureButton)
-    public void onCapture(View view) {
+    public void onCapture() {
         progressBar.setVisibility(View.VISIBLE);
 
         Challenge challenge = new Challenge();

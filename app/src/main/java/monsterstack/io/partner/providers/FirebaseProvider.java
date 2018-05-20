@@ -18,9 +18,11 @@ public class FirebaseProvider extends ContentProvider {
         String databaseUrl = BuildConfig.FB_DB_URL;
         String apiKey = BuildConfig.FB_API_KEY;
         String appId = BuildConfig.FB_APP_ID;
+        String storageBucket = BuildConfig.FB_STORAGE_BUCKET;
         FirebaseOptions.Builder builder = new FirebaseOptions.Builder()
                 .setApplicationId(appId)
                 .setApiKey(apiKey)
+                .setStorageBucket(storageBucket)
                 .setDatabaseUrl(databaseUrl);
         FirebaseApp.initializeApp(getContext(), builder.build());
 
@@ -29,7 +31,9 @@ public class FirebaseProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
+    public Cursor query(@NonNull Uri uri, @Nullable String[] projection,
+                        @Nullable String selection, @Nullable String[] selectionArgs,
+                        @Nullable String sortOrder) {
         return null;
     }
 
@@ -46,12 +50,14 @@ public class FirebaseProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, @Nullable String selection,
+                      @Nullable String[] selectionArgs) {
         return 0;
     }
 
     @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
+    public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection,
+                      @Nullable String[] selectionArgs) {
         return 0;
     }
 }

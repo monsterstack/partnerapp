@@ -6,14 +6,14 @@ import android.content.res.Configuration;
 import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.custom.ChallengeServiceCustom;
@@ -27,8 +27,6 @@ import monsterstack.io.partner.challenge.MobileNumberUpdateChallengeVerification
 import static android.view.View.GONE;
 
 public class MobileNumberSettingsActivity extends DetailSettingsActivity {
-    @BindView(R.id.phoneSettingsUpdateButton)
-    Button phoneSettingsUpdate;
 
     @BindView(R.id.mobileEdit)
     EditText editText;
@@ -44,7 +42,6 @@ public class MobileNumberSettingsActivity extends DetailSettingsActivity {
         super.onCreate(savedInstanceState);
 
         ButterKnife.bind(this);
-        progressBar.setVisibility(GONE);
 
         editText.setSelection(editText.getText().length());
         editText.setRawInputType(Configuration.KEYBOARD_12KEY);
@@ -65,6 +62,21 @@ public class MobileNumberSettingsActivity extends DetailSettingsActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.next_action, menu);
+
+        menu.findItem(R.id.next_button).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                onNext();
+                return false;
+            }
+        });
+        return true;
+    }
+
+    @Override
     public void onBackPressed() {
         finish();
     }
@@ -79,8 +91,7 @@ public class MobileNumberSettingsActivity extends DetailSettingsActivity {
         return R.string.detail_settings_mobileNumber;
     }
 
-    @OnClick(R.id.phoneSettingsUpdateButton)
-    public void onPhoneSettingsUpdate(View view) {
+    public void onNext() {
         ServiceLocator serviceLocator = getServiceLocator();
         ChallengeServiceCustom challengeService = serviceLocator.getChallengeService();
 

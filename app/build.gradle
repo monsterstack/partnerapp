@@ -36,6 +36,7 @@ android {
         it.buildConfigField "String", "FB_APP_ID", getSecret("FB_APP_ID")
         it.buildConfigField "String", "FB_API_KEY", getSecret("FB_API_KEY")
         it.buildConfigField "String", "FB_DB_URL", getSecret("FB_DB_URL")
+        it.buildConfigField "String", "FB_STORAGE_BUCKET", getSecret("FB_STORAGE_BUCKET")
         it.buildConfigField "String", "FB_API_BASE_URL", getSecret("FB_API_BASE_URL")
     }
 
@@ -72,7 +73,7 @@ dependencies {
     implementation "com.andkulikov:transitionseverywhere:1.7.9"
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.jakewharton:butterknife:8.8.1'
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.github.bumptech.glide:glide:4.5.0'
     implementation 'com.google.android:flexbox:0.3.2'
     compileOnly "org.projectlombok:lombok:1.16.20"
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
@@ -87,6 +88,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-config:15.0.2'
     implementation 'com.google.firebase:firebase-auth:15.1.0'
     implementation 'com.google.firebase:firebase-analytics:15.0.2'
+    implementation 'com.google.firebase:firebase-storage:15.0.2'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
 
     implementation 'com.google.firebase:firebase-invites:15.0.1'
@@ -96,5 +98,6 @@ dependencies {
     implementation project(":api")
     implementation project(":streamview")
     implementation project(":avatarview")
+    implementation project(":pincapture")
 }
 

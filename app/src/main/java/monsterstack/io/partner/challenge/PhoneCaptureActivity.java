@@ -6,13 +6,14 @@ import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import monsterstack.io.api.custom.ChallengeServiceCustom;
 import monsterstack.io.api.listeners.OnResponseListener;
 import monsterstack.io.api.resources.Challenge;
@@ -58,12 +59,29 @@ public class PhoneCaptureActivity extends BasicActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.next_action, menu);
+
+        MenuItem nextButton = menu.findItem(R.id.next_button);
+
+        nextButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                onCapture();
+                return false;
+            }
+        });
+
+        return true;
+    }
+
+    @Override
     public int getActionTitle() {
         return R.string.phone_capture;
     }
 
-    @OnClick(R.id.phoneCaptureButton)
-    public void onCapture(View view) {
+    public void onCapture() {
         progressBar.setVisibility(View.VISIBLE);
 
         Challenge challenge = new Challenge();

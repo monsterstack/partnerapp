@@ -1,7 +1,6 @@
 package monsterstack.io.partner.adapter;
 
 import android.view.View;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -16,8 +15,6 @@ public class GroupAdapter extends CardPagerAdapter<Group> {
 
     @Override
     public void bind(Group data, View view) {
-        TextView titleTextView = view.findViewById(R.id.groupName);
-        titleTextView.setText(data.getName());
     }
 
     @Override

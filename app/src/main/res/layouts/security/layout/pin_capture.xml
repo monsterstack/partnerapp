@@ -2,8 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:pin="http://schemas.android.com/apk/monsterstack.io.pincapture"
     android:orientation="vertical">
     <include layout="@layout/toolbar_layout"/>
+
+    <include layout="@layout/progress_bar"/>
 
     <ImageButton
         android:layout_marginTop="20dp"
@@ -23,34 +26,19 @@
         android:textSize="15sp"
         android:layout_height="wrap_content" />
 
-    <android.support.design.widget.TextInputEditText
+    <monsterstack.io.pincapture.PinCapture
         android:id="@+id/pinCaptureEdit"
+        android:layout_marginTop="50dp"
+        android:layout_width="246dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:textSize="25sp"
-        android:layout_width="220dp"
-        android:layout_height="wrap_content" />
+        pin:editTextCount="4" />
 
-    <RelativeLayout
-        android:gravity="center|bottom"
-        android:layout_weight="1"
+    <android.inputmethodservice.KeyboardView
+        android:id="@+id/keyboard"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical">
-        <Button
-            android:id="@+id/pinCaptureButton"
-            android:layout_gravity="bottom"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:background="@color/colorPrimary"
-            android:text="@string/pin_capture_btn_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <android.inputmethodservice.KeyboardView
-            android:id="@+id/keyboard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            />
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        />
 
 </LinearLayout>

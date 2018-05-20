@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_tabs_groups"
+        android:icon="@drawable/ic_view_module_white_24dp"
+        android:title="Groups"/>
+
+    <item android:title=""/>
+
+    <item
+        android:id="@+id/action_tabs_friends"
+        android:icon="@drawable/ic_group_white_24dp"
+        android:title="Friends"/>
+
+    <item
+        android:id="@+id/action_tabs_wallets"
+        android:icon="@drawable/ic_account_balance_wallet_white_24dp"
+        android:title="Wallets"/>
+
+</menu>
+
+
+

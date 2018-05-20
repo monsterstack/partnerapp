@@ -35,7 +35,7 @@ public class TwoStepVerificationSettingsActivity extends DetailSettingsActivity 
         if(user.getTwoFactorAuth()) {
             enableTwoFactorButton.setText("Disable Two-Factor Auth");
         } else {
-            enableTwoFactorButton.setText("Enable Two-Factory Auth");
+            enableTwoFactorButton.setText("Enable Two-Factor Auth");
         }
     }
 

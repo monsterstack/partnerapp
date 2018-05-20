@@ -33,26 +33,11 @@
         android:text="Verified"
         android:maxLines="1"
         android:layout_marginTop="10dp"
-        android:textColor="@color/green"
+        android:textColor="@color/colorAccent"
         android:textAlignment="center"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:gravity="center|bottom"
-        android:layout_weight="1">
-        <Button android:id="@+id/phoneSettingsUpdateButton"
-            android:text="@string/update"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_gravity="bottom"/>
-    </RelativeLayout>
 
     <android.inputmethodservice.KeyboardView
         android:id="@+id/keyboard"

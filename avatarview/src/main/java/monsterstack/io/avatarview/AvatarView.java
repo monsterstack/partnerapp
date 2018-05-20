@@ -21,6 +21,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 public class AvatarView extends AppCompatImageView {
 
@@ -200,11 +201,13 @@ public class AvatarView extends AppCompatImageView {
         setDrawable();
 
         if (user.getAvatarUrl() != null) {
-            Glide.with(getContext())
-                    .load(user.getAvatarUrl())
-                    .placeholder(drawable)
+            RequestOptions requestOptions = RequestOptions.placeholderOf(drawable)
                     .centerCrop()
-                    .override(imageSize, imageSize)
+                    .override(imageSize, imageSize);
+            Glide.with(getContext())
+                    .asDrawable()
+                    .load(user.getAvatarUrl())
+                    .apply(requestOptions)
                     .into(this);
         } else {
             setImageDrawable(drawable);

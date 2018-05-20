@@ -6,7 +6,6 @@ import android.view.View;
 
 import java.io.Serializable;
 
-import butterknife.OnClick;
 import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.custom.ChallengeServiceCustom;
@@ -24,15 +23,14 @@ import static android.view.View.GONE;
 public class RegistrationChallengeVerificationActivity extends ChallengeVerificationActivity {
 
     @Override
-    @OnClick(R.id.challengeVerificationButton)
-    public void onClick(View view) {
+    public void onVerify() {
         progressBar.setVisibility(View.VISIBLE);
 
         final ServiceLocator serviceLocator = getServiceLocator();
         ChallengeServiceCustom challengeServiceCustom = serviceLocator.getChallengeService();
         final RegistrationServiceCustom registrationServiceCustom = serviceLocator.getRegistrationService();
 
-        String code = editText.getText().toString();
+        String code = editText.getEnteredText();
 
         final UserSessionManager sessionManager = new UserSessionManager(getApplicationContext());
 

@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import monsterstack.io.partner.main.FriendsFragment;
 import monsterstack.io.partner.main.GroupsFragment;
-import monsterstack.io.partner.main.MessagesFragment;
 import monsterstack.io.partner.main.WalletsFragment;
 
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
@@ -16,7 +15,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+        return 3;
     }
 
     @Override
@@ -28,8 +27,6 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
             fragment = FriendsFragment.newInstance("Friends");
         } else if(position == 2) {
             fragment = WalletsFragment.newInstance("Wallets");
-        } else if(position == 3) {
-            fragment = MessagesFragment.newInstance("Messages");
         }
         return fragment;
     }

@@ -1,23 +1,22 @@
 package monsterstack.io.partner.settings;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
-import android.widget.EditText;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.menu.SettingsActivity;
+import monsterstack.io.pincapture.PinCapture;
 
 public class PinSettingsActivity extends DetailSettingsActivity {
-    @BindView(R.id.pinUpdateEdit)
-    EditText editText;
+    @BindView(R.id.pinCaptureEdit)
+    PinCapture editText;
     @BindView(R.id.keyboard)
     KeyboardView keyboardView;
 
@@ -25,8 +24,12 @@ public class PinSettingsActivity extends DetailSettingsActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        editText.setSelection(editText.getText().length());
-        editText.setRawInputType(Configuration.KEYBOARD_12KEY);
+        editText.setOnFinishListener(new PinCapture.OnFinishListener() {
+            @Override
+            public void onFinish(String enteredText) {
+
+            }
+        });
 
         keyboardView.setActivated(true);
         keyboardView.setEnabled(true);
@@ -43,14 +46,28 @@ public class PinSettingsActivity extends DetailSettingsActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.update_action, menu);
+
+        menu.findItem(R.id.update_button).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                onUpdate();
+                return false;
+            }
+        });
+        return true;
+    }
+
+    @Override
     public int getActionTitle() {
         return R.string.detail_settings_pin;
     }
 
-    @OnClick(R.id.pinUpdateButton)
-    public void onPinUpdate(View view) {
+    public void onUpdate() {
         UserSessionManager sessionManager = new UserSessionManager(this);
-        String pin = editText.getText().toString();
+        String pin = editText.getEnteredText();
 
         if(null != pin) {
             sessionManager.createUserPin(pin);

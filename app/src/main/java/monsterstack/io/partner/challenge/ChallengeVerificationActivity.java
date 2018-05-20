@@ -1,16 +1,15 @@
 package monsterstack.io.partner.challenge;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.custom.ChallengeServiceCustom;
 import monsterstack.io.api.listeners.OnResponseListener;
@@ -21,12 +20,13 @@ import monsterstack.io.partner.R;
 import monsterstack.io.partner.common.BasicActivity;
 import monsterstack.io.partner.menu.SettingsActivity;
 import monsterstack.io.partner.settings.MobileNumberSettingsActivity;
+import monsterstack.io.pincapture.PinCapture;
 
 import static android.view.View.GONE;
 
 public class ChallengeVerificationActivity extends BasicActivity {
     @BindView(R.id.challengeVerificationEdit)
-    EditText editText;
+    PinCapture editText;
 
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
@@ -42,8 +42,12 @@ public class ChallengeVerificationActivity extends BasicActivity {
 
         progressBar.setVisibility(GONE);
 
-        editText.setSelection(editText.getText().length());
-        editText.setRawInputType(Configuration.KEYBOARD_12KEY);
+        editText.setOnFinishListener(new PinCapture.OnFinishListener() {
+            @Override
+            public void onFinish(String enteredText) {
+
+            }
+        });
     }
 
     @Override
@@ -57,6 +61,24 @@ public class ChallengeVerificationActivity extends BasicActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.submit_action, menu);
+
+        MenuItem submitButton = menu.findItem(R.id.submit_button);
+
+        submitButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                onVerify();
+                return false;
+            }
+        });
+
+        return true;
+    }
+
+    @Override
     public int getActionTitle() {
         return R.string.challenge_verification;
     }
@@ -66,15 +88,14 @@ public class ChallengeVerificationActivity extends BasicActivity {
         return this;
     }
 
-    @OnClick(R.id.challengeVerificationButton)
-    public void onClick(View view) {
+    public void onVerify() {
         progressBar.setVisibility(View.VISIBLE);
 
         final String source = (String)getIntent().getExtras().get("source");
 
         ChallengeServiceCustom challengeServiceCustom = serviceLocator.getChallengeService();
 
-        String code = editText.getText().toString();
+        String code = editText.getEnteredText();
         challengeServiceCustom.verifyChallengeCode(code, new OnResponseListener<Challenge, HttpError>() {
             @Override
             public void onResponse(Challenge challenge, HttpError httpError) {
