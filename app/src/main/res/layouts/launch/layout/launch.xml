@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -9,29 +10,40 @@
     <ImageView
         android:id="@+id/launchLogo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="196dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="84dp"
         android:src="@drawable/ic_launcher_background" />
+
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp">
 
         <Button
             android:id="@+id/signUpButton"
-            android:text="Sign Up"
-            android:layout_width="wrap_content"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"/>
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginTop="114dp"
+            android:text="Sign Up" />
+
         <Button
             android:id="@+id/signInButton"
-            android:text="Sign In"
-            android:layout_toRightOf="@id/signUpButton"
 
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"/>
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="22dp"
+            android:elevation="24dp"
+            android:text="Sign In" />
     </RelativeLayout>
 
 
