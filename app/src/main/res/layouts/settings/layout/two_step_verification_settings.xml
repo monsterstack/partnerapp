@@ -1,55 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
     <include layout="@layout/toolbar_layout"/>
 
-    <ImageButton
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:src="@drawable/ic_settings_cell_black_24dp"
-        android:layout_alignParentRight="true"
-        android:scaleType="fitCenter" />
+    <include layout="@layout/progress_bar"/>
 
-    <TextView
-        android:text="Two-Step Verification"
-        android:layout_marginTop="20dp"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:layout_gravity="center_horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
-    <TextView
-        android:layout_marginTop="20dp"
-        android:textAlignment="center"
-        android:layout_gravity="center_horizontal"
-        android:textSize="18dp"
-        android:text="Protext your wallet from unauthorized access by enabling 2-Step Verification.  You can choose to use a free app or your mobile phone number to secure your wallet.  This code will be requested when you try to access your wallet."
-        android:layout_width="290dp"
-        android:layout_height="wrap_content" />
-    <RelativeLayout
-        android:gravity="center|bottom"
-        android:layout_weight="1"
+    <LinearLayout
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/two_step_verify_enable_button"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="0dp"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:background="@color/colorSecondary"
-            android:text="Enable 2-Step for SMS"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_settings_cell_black_24dp"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:text="Two-Step Verification"
+            android:layout_marginTop="20dp"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-    </RelativeLayout>
 
-
-
-</LinearLayout>
+        <TextView
+            android:layout_marginTop="20dp"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:textSize="18dp"
+            android:text="Protext your wallet from unauthorized access by enabling 2-Step Verification.  You can choose to use a free app or your mobile phone number to secure your wallet.  This code will be requested when you try to access your wallet."
+            android:layout_width="290dp"
+            android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:gravity="center|bottom"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/two_step_verify_enable_button"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="0dp"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:background="@color/colorSecondary"
+                android:text="Enable 2-Step for SMS"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

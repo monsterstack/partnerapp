@@ -61,6 +61,7 @@ public class MainActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_view_headline_white_24dp);
+
         init();
     }
 
@@ -79,15 +80,8 @@ public class MainActivity extends BasicActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                if(itemId == R.id.action_tabs_groups) {
-                    viewPager.setCurrentItem(0);
-                } else if(itemId == R.id.action_tabs_friends) {
-                    viewPager.setCurrentItem(1);
-                } else if(itemId == R.id.action_tabs_wallets) {
-                    viewPager.setCurrentItem(2);
-                }
-
+                item.setChecked(true);
+                onItemSelected(item);
                 return false;
             }
         });
@@ -141,6 +135,15 @@ public class MainActivity extends BasicActivity {
                 Fragment fragment = MainActivity.this.mainPagerAdapter.getItem(position);
                 String title = (String)fragment.getArguments().get("title");
                 toolbar.setTitle(title);
+
+                if(title.equals("Groups"))
+                    bottomNavigationView.setSelectedItemId(R.id.action_tabs_groups);
+                else if(title.equals("Friends"))
+                    bottomNavigationView.setSelectedItemId(R.id.action_tabs_friends);
+                else if(title.equals("Wallets"))
+                    bottomNavigationView.setSelectedItemId(R.id.action_tabs_wallets);
+                else if(title.equals("Messages"))
+                    bottomNavigationView.setSelectedItemId(R.id.action_tabs_messages);
             }
 
             // This method will be invoked when the current page is scrolled
@@ -191,6 +194,20 @@ public class MainActivity extends BasicActivity {
                 overridePendingTransition(R.anim.slide_up, R.anim.hold);
             }
         }, 300);
+    }
+
+    public void onItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if(itemId == R.id.action_tabs_groups) {
+            viewPager.setCurrentItem(0);
+        } else if(itemId == R.id.action_tabs_friends) {
+            viewPager.setCurrentItem(1);
+        } else if(itemId == R.id.action_tabs_wallets) {
+            viewPager.setCurrentItem(2);
+        } else if(itemId == R.id.action_tabs_messages) {
+            viewPager.setCurrentItem(3);
+        }
+
     }
 
     private void registerMenuItemActions(Menu menu) {

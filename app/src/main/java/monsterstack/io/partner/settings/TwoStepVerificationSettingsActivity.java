@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +23,9 @@ import monsterstack.io.partner.R;
 public class TwoStepVerificationSettingsActivity extends DetailSettingsActivity {
     @BindView(R.id.two_step_verify_enable_button)
     Button enableTwoFactorButton;
+
+    @BindView(R.id.progressbar)
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,13 +76,19 @@ public class TwoStepVerificationSettingsActivity extends DetailSettingsActivity 
         DialogInterface.OnClickListener enabled = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
+                progressBar.setVisibility(View.VISIBLE);
+
                 userService.updateUser(userId, userToUpdate, new OnResponseListener<User, HttpError>() {
                     @Override
                     public void onResponse(User user, HttpError httpError) {
                         if (null != user) {
                             userSessionManager.createUserSession(userToUpdate);
+                            progressBar.setVisibility(View.GONE);
+
                             finish();
                         } else {
+                            progressBar.setVisibility(View.GONE);
+
                             showHttpError(getResources().getString(getActionTitle()), httpError);
                         }
                     }

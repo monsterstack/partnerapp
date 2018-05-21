@@ -17,17 +17,17 @@
         app:itemBackground="@color/colorPrimary"
         app:menu="@menu/bottom_menu" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:backgroundTint="@color/colorSecondary"
-        android:tint="@color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="20dp"
-        android:clickable="true"
-        app:elevation="8dp"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:focusable="true" />
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/floatingActionButton"-->
+        <!--android:backgroundTint="@color/colorSecondary"-->
+        <!--android:tint="@color/white"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom|center_horizontal"-->
+        <!--android:layout_marginBottom="20dp"-->
+        <!--android:clickable="true"-->
+        <!--app:elevation="8dp"-->
+        <!--app:srcCompat="@android:drawable/ic_input_add"-->
+        <!--android:focusable="true" />-->
 
 </android.support.design.widget.CoordinatorLayout>

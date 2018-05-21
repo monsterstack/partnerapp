@@ -1,42 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    android:layout_height="match_parent">
     <include layout="@layout/toolbar_layout"/>
 
     <include layout="@layout/progress_bar"/>
 
-    <ImageButton
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:background="@color/white"
-        android:src="@drawable/ic_perm_phone_msg_black_24dp"
-        android:scaleType="fitCenter" />
-
-    <TextView
-        android:layout_marginTop="20dp"
-        android:text="Please enter your phone number for authentication!"
-        android:layout_width="250dp"
-        android:layout_gravity="center_horizontal"
-        android:textAlignment="center"
-        android:textSize="15sp"
-        android:layout_height="wrap_content" />
-
-    <android.support.design.widget.TextInputEditText
-        android:id="@+id/phoneCaptureEdit"
-        android:layout_gravity="center_horizontal"
-        android:textSize="25sp"
-        android:layout_width="220dp"
-        android:layout_height="wrap_content" />
-
-
-    <android.inputmethodservice.KeyboardView
-        android:id="@+id/keyboard"
+    <LinearLayout
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:src="@drawable/ic_perm_phone_msg_black_24dp"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:text="Please enter your phone number for authentication!"
+            android:layout_width="250dp"
+            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:layout_height="wrap_content" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/phoneCaptureEdit"
+            android:layout_gravity="center_horizontal"
+            android:textSize="25sp"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content" />
+
+
+        <android.inputmethodservice.KeyboardView
+            android:id="@+id/keyboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+</RelativeLayout>

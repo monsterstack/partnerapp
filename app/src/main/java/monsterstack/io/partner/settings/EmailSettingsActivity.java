@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,11 +20,16 @@ import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.api.resources.User;
 import monsterstack.io.partner.R;
 
+import static android.view.View.GONE;
+
 public class EmailSettingsActivity extends DetailSettingsActivity {
     @BindView(R.id.emailEdit)
     EditText editText;
     @BindView(R.id.keyboard)
     KeyboardView keyboardView;
+
+    @BindView(R.id.progressbar)
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,7 +92,7 @@ public class EmailSettingsActivity extends DetailSettingsActivity {
     }
 
     private void updateEmailAddress() {
-
+        progressBar.setVisibility(View.VISIBLE);
         final UserSessionManager sessionManager = new UserSessionManager(getApplicationContext());
         final AuthenticatedUser authenticatedUser = sessionManager.getUserDetails();
         ServiceLocator serviceLocator = ServiceLocator.getInstance(this);
@@ -103,8 +110,10 @@ public class EmailSettingsActivity extends DetailSettingsActivity {
                     authenticatedUser.setEmailAddress(user.getEmailAddress());
                     sessionManager.createUserSession(authenticatedUser);
                     // then if alls good
+                    progressBar.setVisibility(GONE);
                     finish();
                 } else {
+                    progressBar.setVisibility(GONE);
                     showHttpError(getResources().getString(getActionTitle()), httpError);
                 }
             }

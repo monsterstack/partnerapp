@@ -1,42 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:pin="http://schemas.android.com/apk/monsterstack.io.pincapture"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:pin="http://schemas.android.com/apk/monsterstack.io.pincapture"
     android:layout_height="match_parent">
     <include layout="@layout/toolbar_layout"/>
 
     <include layout="@layout/progress_bar"/>
 
-    <ImageButton
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:background="@color/white"
-        android:src="@drawable/ic_receipt_black_24dp"
-        android:scaleType="fitCenter" />
-
-    <TextView
-        android:layout_marginTop="20dp"
-        android:text="You will receive a challenge code via SMS soon. Please enter the code below to proceed!"
-        android:layout_width="250dp"
-        android:layout_gravity="center_horizontal"
-        android:textAlignment="center"
-        android:textSize="15sp"
-        android:layout_height="wrap_content" />
-
-    <monsterstack.io.pincapture.PinCapture
-        android:id="@+id/challengeVerificationEdit"
+    <LinearLayout
         android:layout_marginTop="50dp"
-        android:layout_width="246dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        pin:editTextCount="4" />
-
-    <android.inputmethodservice.KeyboardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:src="@drawable/ic_receipt_black_24dp"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:text="You will receive a challenge code via SMS soon. Please enter the code below to proceed!"
+            android:layout_width="250dp"
+            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:layout_height="wrap_content" />
+
+        <monsterstack.io.pincapture.PinCapture
+            android:id="@+id/challengeVerificationEdit"
+            android:layout_marginTop="50dp"
+            android:layout_width="246dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            pin:editTextCount="4" />
+
+        <android.inputmethodservice.KeyboardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</RelativeLayout>
