@@ -43,4 +43,8 @@
     <string name="create_pin">Create PIN</string>
 
     <string name="verification_code_not_found">Verification Code not found!</string>
+
+
+    <!-- Version -->
+    <string name="version_number">v.0.0.0</string>
 </resources>
