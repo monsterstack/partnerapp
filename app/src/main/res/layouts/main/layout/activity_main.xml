@@ -16,12 +16,12 @@
 
         <include layout="@layout/toolbar_layout"/>
 
-        <android.support.v4.view.ViewPager
+        <monsterstack.io.partner.pager.NonSwipeableViewPager
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/main_pager"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-        </android.support.v4.view.ViewPager>
+        </monsterstack.io.partner.pager.NonSwipeableViewPager>
 
         <LinearLayout
             android:orientation="vertical"

@@ -34,6 +34,7 @@ import monsterstack.io.partner.menu.BuyCurrencyActivity;
 import monsterstack.io.partner.menu.ProfileActivity;
 import monsterstack.io.partner.menu.SettingsActivity;
 import monsterstack.io.partner.menu.WalletsActivity;
+import monsterstack.io.partner.pager.NonSwipeableViewPager;
 import monsterstack.io.partner.utils.NavigationUtils;
 
 
@@ -41,7 +42,7 @@ public class MainActivity extends BasicActivity {
     private static final int PROFILE_UPDATE_REQUEST_CODE = 0;
 
     private MainPagerAdapter mainPagerAdapter;
-    private ViewPager viewPager;
+    private NonSwipeableViewPager viewPager;
 
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
