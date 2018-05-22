@@ -2,5 +2,6 @@
 <resources>
     <declare-styleable name="PinCapture">
         <attr name="entryCount" format="integer" />
+        <attr name="password" format="boolean" />
     </declare-styleable>
 </resources>

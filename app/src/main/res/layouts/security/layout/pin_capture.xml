@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:pin="http://schemas.android.com/apk/monsterstack.io.pincapture"
+    xmlns:attr="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
     <include layout="@layout/toolbar_layout"/>
 
@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <ImageButton
+    <ImageView
         android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="100dp"
@@ -38,7 +38,8 @@
         android:layout_width="246dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        pin:editTextCount="4" />
+        attr:password="true"
+        attr:entryCount="4"/>
 
     <android.inputmethodservice.KeyboardView
         android:id="@+id/keyboard"

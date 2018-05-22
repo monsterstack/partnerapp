@@ -2,6 +2,7 @@ package monsterstack.io.pincapture;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -63,19 +64,28 @@ public class PinCapture extends LinearLayout {
         for (int i = 0; i < entryCount; i++) {
 
             //creates edittext based on the no. of count
-            addView(initialiseAndAddChildInLayout(i, context), i);
+            addView(initialiseAndAddChildInLayout(i, context, attrs), i);
         }
 
     }
 
-    private View initialiseAndAddChildInLayout(int index, Context context) {
+    private View initialiseAndAddChildInLayout(int index, Context context, AttributeSet attrs) {
+        TypedArray a = context.obtainStyledAttributes(attrs,
+                R.styleable.PinCapture, 0, 0);
+
         final EditText editText = new EditText(context);
         editText.setMaxWidth(1);
         editText.setTag(index);
         editText.setGravity(Gravity.CENTER);
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(EDITTEXT_MAX_LENGTH)});
         editText.setTextSize(EDITTEXT_TEXTSIZE);
+
+        boolean isPassword = a.getBoolean(R.styleable.PinCapture_password, false);
+        if (isPassword) {
+            editText.setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD | InputType.TYPE_CLASS_NUMBER);
+        } else {
+            editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        }
 
         LayoutParams param = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 1);
         editText.setLayoutParams(param);
@@ -89,9 +99,9 @@ public class PinCapture extends LinearLayout {
                 currentIndex = Integer.parseInt(editText.getTag().toString());
 
                 if (editText.getText().toString().length() == 1 && !disableTextWatcher) {
-                    getNextEditext(currentIndex);
+                    getNextEditText(currentIndex);
                 } else if (editText.getText().toString().length() == 0 && !disableTextWatcher) {// && !isFirstTimeGetFocused && !backKeySet) {
-                    getPreviousEditext(currentIndex);
+                    getPreviousEditText(currentIndex);
                 }
 
             }
@@ -106,7 +116,7 @@ public class PinCapture extends LinearLayout {
                 if (keyCode == KeyEvent.KEYCODE_DEL) {
                     currentIndex = Integer.parseInt(editText.getTag().toString());
                     if (editText.getText().toString().length() == 0 && !disableTextWatcher) {
-                        getPreviousEditextFocus(currentIndex);
+                        getPreviousEditTextFocus(currentIndex);
                     } else {
                         disableTextWatcher = true;
                         editText.setText("");
@@ -137,7 +147,7 @@ public class PinCapture extends LinearLayout {
     }
 
     //method focuses of previous editext
-    private void getPreviousEditext(int index) {
+    private void getPreviousEditText(int index) {
         if (index > 0) {
             EditText editText = (EditText) getChildAt(index - 1);
             disableTextWatcher = true;
@@ -150,7 +160,7 @@ public class PinCapture extends LinearLayout {
     }
 
     //method focuses of previous editext
-    private void getPreviousEditextFocus(int index) {
+    private void getPreviousEditTextFocus(int index) {
         if (index > 0) {
             EditText editText = (EditText) getChildAt(index - 1);
             disableTextWatcher = true;
@@ -161,10 +171,16 @@ public class PinCapture extends LinearLayout {
 
 
     //method to focus on next edittext
-    private void getNextEditext(int index) {
+    private void getNextEditText(final int index) {
         if (index < entryCount - 1) {
-            EditText editText = (EditText) getChildAt(index + 1);
-            editText.requestFocus();
+            // use Handler for 1 second delay so that it will change text
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    EditText editText = (EditText) getChildAt(index + 1);
+                    editText.requestFocus();
+                }
+            },200);
         }
     }
 

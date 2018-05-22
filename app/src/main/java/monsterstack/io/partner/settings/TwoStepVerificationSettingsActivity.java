@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +25,9 @@ public class TwoStepVerificationSettingsActivity extends DetailSettingsActivity 
     @BindView(R.id.two_step_verify_enable_button)
     Button enableTwoFactorButton;
 
+    @BindView(R.id.two_step_verify_description)
+    TextView description;
+
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
 
@@ -38,8 +42,10 @@ public class TwoStepVerificationSettingsActivity extends DetailSettingsActivity 
 
         if(user.getTwoFactorAuth()) {
             enableTwoFactorButton.setText("Disable Two-Factor Auth");
+            description.setText(R.string.disable_two_factor_description);
         } else {
             enableTwoFactorButton.setText("Enable Two-Factor Auth");
+            description.setText(R.string.enable_two_factor_description);
         }
     }
 
@@ -71,6 +77,7 @@ public class TwoStepVerificationSettingsActivity extends DetailSettingsActivity 
             userToUpdate.setTwoFactorAuth(false);
         else
             userToUpdate.setTwoFactorAuth(true);
+
         final String userId = userToUpdate.getId();
 
         DialogInterface.OnClickListener enabled = new DialogInterface.OnClickListener() {

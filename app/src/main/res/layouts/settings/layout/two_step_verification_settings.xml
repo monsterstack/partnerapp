@@ -34,13 +34,15 @@
             android:layout_height="wrap_content" />
 
         <TextView
+            android:id="@+id/two_step_verify_description"
             android:layout_marginTop="20dp"
             android:textAlignment="center"
             android:layout_gravity="center_horizontal"
-            android:textSize="18dp"
-            android:text="Protext your wallet from unauthorized access by enabling 2-Step Verification.  You can choose to use a free app or your mobile phone number to secure your wallet.  This code will be requested when you try to access your wallet."
+            android:textSize="18sp"
             android:layout_width="290dp"
             android:layout_height="wrap_content" />
+
+
         <RelativeLayout
             android:gravity="center|bottom"
             android:layout_weight="1"

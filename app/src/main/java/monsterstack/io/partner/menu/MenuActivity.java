@@ -61,7 +61,21 @@ public abstract class MenuActivity extends AppCompatActivity implements Closable
     protected void showHttpError(String title, String message, HttpError error) {
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle(title);
-        alertDialog.setMessage(message);
+
+        if (null != message) {
+            alertDialog.setMessage(message);
+        } else {
+            if (error.getStatusCode() == 401) {
+                alertDialog.setMessage("Access unauthorized");
+            } else if (error.getStatusCode() == 403) {
+                alertDialog.setMessage("Access forbidden");
+            } else if (error.getStatusCode() == 404) {
+                alertDialog.setMessage("Resource not found");
+            } else if (error.getStatusCode() == 500) {
+                alertDialog.setMessage("Server error");
+            }
+        }
+
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

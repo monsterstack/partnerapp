@@ -44,7 +44,14 @@
 
     <string name="verification_code_not_found">Verification Code not found!</string>
 
+    <!-- Descriptions -->
+    <string name="enable_two_factor_description">
+        Protect your wallet from unauthorized access by enabling 2-Step Verification.  You can choose to use a free app or your mobile phone number to secure your wallet.  This code will be requested when you try to access your wallet.
+    </string>
 
+    <string name="disable_two_factor_description">
+        Disabling 2-step Verification puts your wallet at risk. Protect your wallet from unauthorized access by having 2-Step Verification enabled.
+    </string>
     <!-- Version -->
     <string name="version_number">v.0.0.0</string>
 </resources>
