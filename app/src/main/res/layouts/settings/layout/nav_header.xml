@@ -6,31 +6,37 @@
     android:background="?selectableItemBackground"
     android:padding="16dp"
     android:orientation="vertical"
-    android:gravity="bottom">
+    android:paddingBottom="0dp">
 
     <RelativeLayout
         android:id="@+id/nav_header"
-
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="0dp"
+        android:paddingBottom="0dp"
+        android:layout_gravity="bottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <monsterstack.io.avatarview.AvatarView
             android:id="@+id/userImage"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_marginTop="10dp"
             android:layout_alignParentLeft="true"
+            android:layout_gravity="center_vertical"
             avatarview:avatar_shape="avatarShape"/>
 
         <LinearLayout
             android:id="@+id/viewProfile"
             android:orientation="vertical"
+            android:layout_marginTop="13dp"
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@id/userImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/profile_fullname"
+                android:text="Zachary Rote"
                 android:layout_marginTop="1dp"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimaryText"
@@ -39,51 +45,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <LinearLayout
-                android:id="@+id/raisedFunds"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal"
-                android:layout_below="@id/viewProfile"
+            <TextView
+                android:id="@+id/profile_email"
+                android:text="zachary.rote@gmail.com"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-                <TextView
-                    android:text="$500.00"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorPrimaryText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
-                <TextView
-                    android:text="Raised"
-                    android:paddingLeft="5dp"
-                    android:textColor="@color/colorSecondaryText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_below="@id/raisedFunds"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-                <TextView
-                    android:text="$410.00"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorPrimaryText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
-                <TextView
-                    android:text="Contributed"
-                    android:textColor="@color/colorSecondaryText"
-                    android:paddingLeft="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
     </RelativeLayout>
-
-    <View
-        style="@style/Divider"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="10dp" />
 
 </LinearLayout>

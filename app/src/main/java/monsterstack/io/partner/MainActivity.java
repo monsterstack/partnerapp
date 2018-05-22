@@ -110,6 +110,8 @@ public class MainActivity extends BasicActivity {
 
         TextView profileFullName = navHeader.findViewById(R.id.profile_fullname);
         profileFullName.setText(authenticatedUser.getFullName());
+        TextView email = navHeader.findViewById(R.id.profile_email);
+        email.setText(authenticatedUser.getEmailAddress());
         navHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
