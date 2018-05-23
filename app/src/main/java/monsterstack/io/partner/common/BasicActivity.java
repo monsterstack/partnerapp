@@ -126,6 +126,8 @@ public abstract class BasicActivity extends AppCompatActivity {
                 alertDialog.setMessage("Resource not found");
             } else if (error.getStatusCode() == 500) {
                 alertDialog.setMessage("Server error");
+            } else if (error.getStatusCode() == 0) {
+                alertDialog.setMessage("Unknown Server Error");
             }
         }
 

@@ -1,6 +1,7 @@
 package monsterstack.io.api.interceptors;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -23,12 +24,13 @@ public class RefreshIdTokenInterceptor implements Interceptor {
     }
 
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public Response intercept(@NonNull Chain chain) throws IOException {
         final UserSessionManager sessionManager = new UserSessionManager(this.context);
         final AuthenticatedUser authenticatedUser = sessionManager.getUserDetails();
 
-        if(null != authenticatedUser.getId()) {
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(null != authenticatedUser.getId() && user != null) {
             Task<GetTokenResult> getTokenResultTask = user.getIdToken(true);
             getTokenResultTask.addOnSuccessListener(new OnSuccessListener<GetTokenResult>() {
                 @Override

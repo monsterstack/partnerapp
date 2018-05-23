@@ -57,8 +57,9 @@ public class RefreshTokenService extends JobService {
         // Do some work here
         final UserSessionManager userSessionManager = new UserSessionManager(this);
         final AuthenticatedUser authenticatedUser = userSessionManager.getUserDetails();
-        if(null != authenticatedUser.getId()) {
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(null != authenticatedUser.getId() && null != user) {
             user.getIdToken(true).addOnSuccessListener(new OnSuccessListener<GetTokenResult>() {
                 @Override
                 public void onSuccess(GetTokenResult getTokenResult) {

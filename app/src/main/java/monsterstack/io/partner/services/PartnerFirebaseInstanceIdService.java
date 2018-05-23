@@ -38,7 +38,7 @@ public class PartnerFirebaseInstanceIdService extends FirebaseInstanceIdService 
 
         if (null != authenticatedUser.getId()) {
             // Set device id
-            //authenticatedUser.setDeviceId(refreshToken);
+            authenticatedUser.setPushRegistrationToken(refreshToken);
 
             UserServiceCustom userServiceCustom = ServiceLocator.getInstance(context).getUserService();
             userServiceCustom.updateUser(authenticatedUser.getId(), authenticatedUser, new OnResponseListener<User, HttpError>() {

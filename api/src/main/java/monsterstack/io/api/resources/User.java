@@ -21,6 +21,9 @@ public class User extends MinimalUser {
     @JsonProperty("two_factor_auth")
     private Boolean twoFactorAuth;
 
+    @JsonProperty("push_registration_token")
+    private String pushRegistrationToken;
+
     @JsonProperty("wallet")
     private Wallet wallet;
 
@@ -43,6 +46,8 @@ public class User extends MinimalUser {
         user.setEmailNotifications(authenticatedUser.getEmailNotifications());
         user.setSmsNotifications(authenticatedUser.getSmsNotifications());
         user.setTwoFactorAuth(authenticatedUser.getTwoFactorAuth());
+
+        user.setPushRegistrationToken(authenticatedUser.getPushRegistrationToken());
 
         return user;
     }
