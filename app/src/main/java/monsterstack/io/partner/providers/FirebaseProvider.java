@@ -24,7 +24,8 @@ public class FirebaseProvider extends ContentProvider {
                 .setApiKey(apiKey)
                 .setStorageBucket(storageBucket)
                 .setDatabaseUrl(databaseUrl);
-        FirebaseApp.initializeApp(getContext(), builder.build());
+        if (FirebaseApp.getInstance() == null)
+            FirebaseApp.initializeApp(getContext(), builder.build());
 
         return true;
     }

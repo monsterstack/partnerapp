@@ -1,6 +1,7 @@
 *iml
 .env
 .gradle
+/app/google-services.json
 /local.properties
 /.idea/libraries
 /.idea/modules.xml

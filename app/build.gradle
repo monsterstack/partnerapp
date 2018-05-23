@@ -103,3 +103,5 @@ dependencies {
     implementation project(":avatarview")
     implementation project(":pincapture")
 }
+
+apply plugin: 'com.google.gms.google-services'
