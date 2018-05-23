@@ -1,12 +1,21 @@
 package monsterstack.io.partner.services;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class MessagingService extends FirebaseMessagingService {
     private static final String TAG = "FCM";
+    private static final String PARTNER_TOPIC = "partner.topic";
+
+    public static void initialize(Context context) {
+        String token = FirebaseInstanceId.getInstance().getToken();
+        new PartnerFirebaseInstanceIdService().sendRegistrationToServer(token, context);
+    }
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // ...

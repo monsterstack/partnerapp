@@ -8,6 +8,7 @@ import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.resources.AuthenticatedUser;
 import monsterstack.io.partner.MainActivity;
 import monsterstack.io.partner.R;
+import monsterstack.io.partner.services.MessagingService;
 
 public class SignInPinCaptureActivity extends PinCaptureActivity {
     private static final String TAG = "SIGN_IN_PIN_CAPTURE";
@@ -33,6 +34,8 @@ public class SignInPinCaptureActivity extends PinCaptureActivity {
                     destination = SignInPhoneCaptureActivity.class;
                 } else {
                     sessionManager.createUserSession(user);
+
+                    MessagingService.initialize(getApplicationContext());
                 }
             }
 

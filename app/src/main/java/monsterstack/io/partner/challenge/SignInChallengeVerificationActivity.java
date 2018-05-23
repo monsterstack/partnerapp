@@ -12,6 +12,7 @@ import monsterstack.io.api.resources.AuthenticatedUser;
 import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.partner.MainActivity;
 import monsterstack.io.partner.R;
+import monsterstack.io.partner.services.MessagingService;
 import monsterstack.io.partner.utils.NavigationUtils;
 
 import static android.view.View.GONE;
@@ -35,6 +36,7 @@ public class SignInChallengeVerificationActivity extends ChallengeVerificationAc
                 if(null != user) {
                     /* Add to session */
                     sessionManager.createUserSession(user);
+                    MessagingService.initialize(getApplicationContext());
 
                     String pin = sessionManager.getUserPin();
 

@@ -26,12 +26,11 @@ public class PartnerFirebaseInstanceIdService extends FirebaseInstanceIdService 
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
-        sendRegistrationToServer(refreshedToken);
+        sendRegistrationToServer(refreshedToken, getApplicationContext());
     }
 
 
-    private void sendRegistrationToServer(String refreshToken) {
-        Context context = getApplicationContext();
+    public void sendRegistrationToServer(String refreshToken, Context context) {
 
         final UserSessionManager userSessionManager = new UserSessionManager(context);
         AuthenticatedUser authenticatedUser = userSessionManager.getUserDetails();

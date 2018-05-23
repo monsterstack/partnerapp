@@ -11,6 +11,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 
 import monsterstack.io.partner.BuildConfig;
+import monsterstack.io.partner.services.PartnerFirebaseInstanceIdService;
 
 public class FirebaseProvider extends ContentProvider {
     @Override
@@ -24,8 +25,9 @@ public class FirebaseProvider extends ContentProvider {
                 .setApiKey(apiKey)
                 .setStorageBucket(storageBucket)
                 .setDatabaseUrl(databaseUrl);
-        if (FirebaseApp.getInstance() == null)
+        if (FirebaseApp.getInstance() == null) {
             FirebaseApp.initializeApp(getContext(), builder.build());
+        }
 
         return true;
     }
