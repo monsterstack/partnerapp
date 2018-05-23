@@ -94,6 +94,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-invites:15.0.1'
 
     implementation 'com.github.esafirm.android-image-picker:imagepicker:1.13.0'
+    implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
 
     implementation project(":api")
     implementation project(":streamview")

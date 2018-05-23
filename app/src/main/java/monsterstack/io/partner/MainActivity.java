@@ -19,6 +19,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import monsterstack.io.api.RedirectHandler;
@@ -37,7 +39,6 @@ import monsterstack.io.partner.menu.WalletsActivity;
 import monsterstack.io.partner.pager.NonSwipeableViewPager;
 import monsterstack.io.partner.utils.NavigationUtils;
 
-
 public class MainActivity extends BasicActivity {
     private static final int PROFILE_UPDATE_REQUEST_CODE = 0;
 
@@ -45,7 +46,7 @@ public class MainActivity extends BasicActivity {
     private NonSwipeableViewPager viewPager;
 
     @BindView(R.id.bottom_navigation)
-    BottomNavigationView bottomNavigationView;
+    BottomNavigationViewEx bottomNavigationView;
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
@@ -78,6 +79,7 @@ public class MainActivity extends BasicActivity {
     }
 
     protected void init() {
+        bottomNavigationView.enableShiftingMode(false);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
