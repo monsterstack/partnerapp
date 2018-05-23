@@ -25,6 +25,18 @@
             </intent-filter>
         </service>
 
+        <service android:name=".services.PartnerFirebaseInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service android:name=".services.MessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
         <activity android:name=".MainActivity">
 
         </activity>
@@ -152,18 +164,6 @@
 
         <activity android:name=".challenge.ChangePinCaptureActivity"
             android:windowSoftInputMode="adjustResize">
-
-        </activity>
-        <!-- Detail Screens -->
-        <activity android:name=".main.details.MembersActivity">
-
-        </activity>
-
-        <activity android:name=".main.details.TransactionsActivity">
-
-        </activity>
-
-        <activity android:name=".main.details.GroupDetailsActivity">
 
         </activity>
 
