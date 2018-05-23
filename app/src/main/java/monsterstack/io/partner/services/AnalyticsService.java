@@ -14,9 +14,11 @@ public class AnalyticsService {
     }
 
     public void logPageView(String page) {
-        Bundle bundle = new Bundle();
-        bundle.putString("name", page);
-        bundle.putString("userId", FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber());
-        this.firebaseAnalytics.logEvent("page_view", bundle);
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString("name", page);
+            bundle.putString("userId", FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber());
+            this.firebaseAnalytics.logEvent("page_view", bundle);
+        }
     }
 }
