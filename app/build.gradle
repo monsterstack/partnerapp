@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
 
-def getSecret(String property){
+def getSecret(String property) {
     Properties properties = new Properties()
     properties.load(new FileInputStream("./.env"))
-    return "\"" + properties.getProperty(property) +"\""
+    return "\"" + properties.getProperty(property) + "\""
 }
 
 android {

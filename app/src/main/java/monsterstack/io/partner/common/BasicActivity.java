@@ -10,11 +10,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
-
 import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.partner.R;
+import monsterstack.io.partner.services.AnalyticsService;
 import monsterstack.io.partner.utils.NavigationUtils;
 
 import static android.view.View.GONE;
@@ -26,15 +25,15 @@ public abstract class BasicActivity extends AppCompatActivity {
     public abstract int getContentView();
     public abstract AppCompatActivity getActivity();
 
-    private FirebaseAnalytics mFirebaseAnalytics;
-
     private ServiceLocator serviceLocator;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Obtain the FirebaseAnalytics instance.
-        this.mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        AnalyticsService analyticsService = new AnalyticsService(this);
+        analyticsService.logPageView(getActivity().getClass().getSimpleName());
+
         this.serviceLocator = ServiceLocator.getInstance(getApplicationContext());
 
         setUpTransitions();
