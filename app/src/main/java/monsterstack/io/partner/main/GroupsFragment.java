@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.leinardi.android.speeddial.SpeedDialView;
+
 import java.util.Arrays;
 
 import butterknife.BindView;
@@ -21,6 +23,9 @@ public class GroupsFragment extends Fragment {
 
     @BindView(R.id.viewPager)
     ViewPager viewPager;
+
+    @BindView(R.id.speedDial)
+    SpeedDialView speedDialView;
 
     // Array of strings...
     private Group[] groupArray = {
@@ -54,6 +59,8 @@ public class GroupsFragment extends Fragment {
         viewPager.setAdapter(cardAdapter);
         viewPager.setPageTransformer(false, new ShadowTransformer(viewPager, cardAdapter));
         viewPager.setOffscreenPageLimit(3);
+
+        speedDialView.inflate(R.menu.group_view_speed_dial);
 
         return this.view;
     }
