@@ -15,10 +15,10 @@
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:paddingBottom="30dp"
-        android:paddingEnd="40dp"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        android:paddingStart="40dp" />
+        android:paddingEnd="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingStart="20dp" />
 
     <com.leinardi.android.speeddial.SpeedDialView
         android:id="@+id/speedDial"

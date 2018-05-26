@@ -43,7 +43,9 @@ public class PartnerFirebaseInstanceIdService extends FirebaseInstanceIdService 
             userServiceCustom.updateUser(authenticatedUser.getId(), authenticatedUser, new OnResponseListener<User, HttpError>() {
                 @Override
                 public void onResponse(User user, HttpError httpError) {
-                    userSessionManager.createUserSession(new AuthenticatedUser(user));
+                    if (null != user) {
+                        userSessionManager.createUserSession(new AuthenticatedUser(user));
+                    }
                 }
             });
         }

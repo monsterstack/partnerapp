@@ -3,30 +3,38 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_one"
+        android:id="@+id/add_group_action"
         android:orderInCategory="100"
         android:icon="@drawable/ic_close_white_24dp"
         app:showAsAction="ifRoom"
-        android:title="Action One" />
+        android:title="Add Group" />
 
     <item
-        android:id="@+id/action_two"
+        android:id="@+id/invite_members_action"
         android:orderInCategory="100"
         android:icon="@drawable/ic_close_white_24dp"
         app:showAsAction="ifRoom"
-        android:title="Action Two" />
+        android:title="Invite Members" />
 
     <item
-        android:id="@+id/action_three"
+        android:id="@+id/view_transactions_action"
         android:orderInCategory="100"
-        android:icon="@drawable/ic_close_white_24dp"
+        android:icon="@drawable/ic_compare_arrows_white_24dp"
         app:showAsAction="ifRoom"
-        android:title="Action Three" />
+        android:title="View Transactions" />
 
     <item
-        android:id="@+id/action_four"
+        android:id="@+id/view_schedule_action"
         android:orderInCategory="100"
-        android:icon="@drawable/ic_close_white_24dp"
+        android:icon="@drawable/ic_event_white_24dp"
         app:showAsAction="ifRoom"
-        android:title="Action Four" />
+        android:title="View Schedule" />
+
+    <item
+        android:id="@+id/group_chat_action"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_speaker_notes_white_24dp"
+        android:title="Group Chat"
+        app:showAsAction="ifRoom"/>
+
 </menu>

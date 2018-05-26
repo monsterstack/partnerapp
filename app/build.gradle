@@ -21,6 +21,13 @@ android {
 
     repositories {
         maven { url "https://jitpack.io" }
+        maven {
+            name 'glide-snapshot'
+            url 'http://oss.sonatype.org/content/repositories/snapshots'
+        }
+        maven {
+            url "https://starksoftware.github.io/SSForms"
+        }
     }
     dataBinding {
         enabled = false
@@ -69,13 +76,17 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
     implementation "com.andkulikov:transitionseverywhere:1.7.9"
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.jakewharton:butterknife:8.8.1'
     implementation 'com.github.bumptech.glide:glide:4.5.0'
+
+    implementation 'com.github.bumptech.glide:compiler:4.5.0'
+    implementation 'com.github.bumptech.glide:annotations:4.5.0'
+
     implementation 'com.google.android:flexbox:0.3.2'
-    implementation 'com.google.firebase:firebase-messaging:11.8.0'
     compileOnly "org.projectlombok:lombok:1.16.20"
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     testImplementation 'junit:junit:4.12'
@@ -99,11 +110,15 @@ dependencies {
     implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
 
     implementation "com.leinardi.android:speed-dial:1.0-alpha06"
+    implementation "com.elmargomez.typer:typerlib:1.0.0"
+    implementation "com.applandeo:material-calendar-view:1.4.0"
+    implementation "com.github.bassaer:chatmessageview:1.10.0"
 
     implementation project(":api")
     implementation project(":streamview")
     implementation project(":avatarview")
     implementation project(":pincapture")
+    implementation project(":horizontallistview")
 }
 
 apply plugin: 'com.google.gms.google-services'

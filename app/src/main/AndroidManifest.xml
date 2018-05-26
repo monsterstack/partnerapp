@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="monsterstack.io.partner">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -10,6 +12,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        tools:replace="android:icon"
         android:theme="@style/AppTheme">
 
         <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
@@ -173,6 +176,21 @@
 
         </activity>
 
+        <activity android:name=".main.GroupScheduleActivity">
+
+        </activity>
+
+        <activity android:name=".main.GroupChatActivity">
+
+        </activity>
+
+        <activity android:name=".main.GroupCreationActivity">
+
+        </activity>
+
+        <activity android:name=".main.GroupTransactionsActivity">
+
+        </activity>
     </application>
 
 </manifest>

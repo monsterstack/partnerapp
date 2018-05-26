@@ -1,1 +1,1 @@
-include ':app', ':api', ':streamview', ':avatarview', ':pincapture'
+include ':app', ':api', ':streamview', ':avatarview', ':pincapture', ':horizontallistview'

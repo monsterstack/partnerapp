@@ -39,8 +39,12 @@
     <string name="add_contact">Add</string>
     <string name="invite_contact">Invite</string>
 
+    <string name="group_schedule">Group Schedule</string>
+    <string name="group_chat">Group Chat</string>
     <string name="sign_in">Sign In</string>
     <string name="create_pin">Create PIN</string>
+    <string name="group_new">New Group</string>
+    <string name="group_transactions">Group Transactions</string>
 
     <string name="verification_code_not_found">Verification Code not found!</string>
 
@@ -52,6 +56,49 @@
     <string name="disable_two_factor_description">
         Disabling 2-step Verification puts your wallet at risk. Protect your wallet from unauthorized access by having 2-Step Verification enabled.
     </string>
+
+
+    <!-- Form choices -->
+    <string-array name="number_of_slots_array">
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+
+    <!-- Material Calander -->
+    <string name="material_calendar_monday">M</string>
+    <string name="material_calendar_tuesday">T</string>
+    <string name="material_calendar_wednesday">W</string>
+    <string name="material_calendar_thursday">T</string>
+    <string name="material_calendar_friday">F</string>
+    <string name="material_calendar_saturday">S</string>
+    <string name="material_calendar_sunday">S</string>
+
+    <array name="material_calendar_months_array">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </array>
+
+    <string name="material_calendar_today_button">Today</string>
+    <string name="material_calendar_positive_button">OK</string>
+    <string name="material_calendar_negative_button">Cancel</string>
+
     <!-- Version -->
     <string name="version_number">v.0.0.0</string>
 </resources>

@@ -11,6 +11,10 @@ public class Member {
     private Integer slotNumber;
     private String avatar;
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     public static String[] avatars = {
             "https://randomuser.me/api/portraits/women/17.jpg",
             "https://randomuser.me/api/portraits/women/78.jpg",
