@@ -44,14 +44,7 @@ public class GroupsFragment extends Fragment {
     SpeedDialView speedDialView;
 
     // Array of strings...
-    private Group[] groupArray = {
-            new Group("My First Group", 10),
-            new Group("My Second Group", 5),
-            new Group("My Third Group", 4),
-            new Group("My Fourth Group", 34),
-            new Group("My Fifth Group", 23),
-            new Group("My Sixth Group", 21)
-    };
+    private Group[] groupArray;
 
     public static GroupsFragment newInstance(String title) {
         Bundle args = new Bundle();
@@ -75,7 +68,8 @@ public class GroupsFragment extends Fragment {
         findGroupsAssociatedWithUser(new OnResponseListener<Group[], HttpError>() {
             @Override
             public void onResponse(Group[] groups, HttpError httpError) {
-                final GroupAdapter cardAdapter = new GroupAdapter(Arrays.asList(groupArray));
+                groupArray = groups;
+                final GroupAdapter cardAdapter = new GroupAdapter(getContext(), Arrays.asList(groupArray));
                 int margin = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, -20,
                         getResources().getDisplayMetrics());
                 viewPager.setPageMargin(-margin);

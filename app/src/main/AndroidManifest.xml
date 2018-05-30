@@ -191,6 +191,10 @@
         <activity android:name=".main.GroupTransactionsActivity">
 
         </activity>
+
+        <activity android:name=".main.MemberActivity">
+
+        </activity>
     </application>
 
 </manifest>

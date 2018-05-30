@@ -1,15 +1,29 @@
 package monsterstack.io.partner.domain;
 
-import lombok.AllArgsConstructor;
+import java.util.UUID;
+
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
+
 public class Member {
+    private String id;
     private String firstName;
     private String lastName;
     private Integer slotNumber;
     private String avatar;
+
+    public Member() {
+        this.id = UUID.randomUUID().toString();
+    }
+
+    public Member(String firstName, String lastName, Integer slotNumber, String avatar) {
+        this();
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.slotNumber = slotNumber;
+        this.avatar = avatar;
+    }
 
     public String getFullName() {
         return firstName + " " + lastName;

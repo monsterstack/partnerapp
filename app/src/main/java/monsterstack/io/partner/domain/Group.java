@@ -18,6 +18,7 @@ public class Group {
     private Double optionalDeposit;
     private Boolean active;
 
+    private Double drawAmount;
     private Double baseContribution;
 
 

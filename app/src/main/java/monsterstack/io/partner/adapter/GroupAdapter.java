@@ -1,5 +1,10 @@
 package monsterstack.io.partner.adapter;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,15 +20,19 @@ import monsterstack.io.horizontallistview.HorizontalListView;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.domain.Group;
 import monsterstack.io.partner.domain.Member;
+import monsterstack.io.partner.main.MemberActivity;
 import monsterstack.io.partner.utils.TypefaceUtils;
 import monsterstack.io.streamview.CardPagerAdapter;
 
 public class GroupAdapter extends CardPagerAdapter<Group> {
+    private Context context;
+
     @BindView(R.id.raisedToDateValue)
     TextView raisedToDateValue;
 
-    public GroupAdapter(List<Group> dataList) {
+    public GroupAdapter(Context context, List<Group> dataList) {
         super(dataList);
+        this.context = context;
     }
 
     @Override
@@ -35,23 +44,45 @@ public class GroupAdapter extends CardPagerAdapter<Group> {
 
         findGroupMembers(data, new OnResponseListener<Member[], HttpError>() {
             @Override
-            public void onResponse(Member[] members, HttpError httpError) {
-                int index = (int)Math.floor(Math.random()*5);
-                Member onDeck = members[index];
+            public void onResponse(final Member[] members, HttpError httpError) {
+                final int index = (int)Math.floor(Math.random()*5);
+                final Member onDeck = members[index];
 
-                AvatarView organizerAvatar = view.findViewById(R.id.onDeckAvatar);
-                TextView organizerName = view.findViewById(R.id.onDeckName);
-                TypefaceUtils.useRobotoRegular(view.getContext(), organizerName);
+                AvatarView onDeckAvatar = view.findViewById(R.id.onDeckAvatar);
 
-                organizerName.setText(onDeck.getFullName());
-                organizerAvatar.setUser(new User(onDeck.getFullName(),
+                onDeckAvatar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) { ;
+                        // Activity transition to Member Details
+                        Intent intent = new Intent(context, MemberActivity.class);
+                        intent.putExtra("memberId", onDeck.getId());
+                        Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
+                                view, 0, 0, view.getWidth(), view.getHeight()).toBundle();
+
+                        ActivityCompat.startActivity(context, intent, options);
+
+                    }
+                });
+
+                TextView onDeckName = view.findViewById(R.id.onDeckName);
+                TypefaceUtils.useRobotoRegular(view.getContext(), onDeckName);
+
+                onDeckName.setText(onDeck.getFullName());
+                onDeckAvatar.setUser(new User(onDeck.getFullName(),
                         onDeck.getAvatar(), R.color.colorAccent));
 
                 MemberRecyclerViewAdapter adapter = new MemberRecyclerViewAdapter(view.getContext(), members);
                 adapter.setClickListener(new MemberRecyclerViewAdapter.ItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
+                        Member clickedMember = members[position];
+                        // Activity transition to Member Details
+                        Intent intent = new Intent(context, MemberActivity.class);
+                        intent.putExtra("memberId", clickedMember.getId());
+                        Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
+                                view, 0, 0, view.getWidth(), view.getHeight()).toBundle();
 
+                        ActivityCompat.startActivity(context, intent, options);
                     }
                 });
 

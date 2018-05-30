@@ -57,20 +57,6 @@
         Disabling 2-step Verification puts your wallet at risk. Protect your wallet from unauthorized access by having 2-Step Verification enabled.
     </string>
 
-
-    <!-- Form choices -->
-    <string-array name="number_of_slots_array">
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-    </string-array>
-
     <!-- Material Calander -->
     <string name="material_calendar_monday">M</string>
     <string name="material_calendar_tuesday">T</string>
