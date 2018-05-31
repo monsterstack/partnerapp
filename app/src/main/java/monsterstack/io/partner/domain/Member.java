@@ -1,12 +1,13 @@
 package monsterstack.io.partner.domain;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import lombok.Data;
 
 @Data
 
-public class Member {
+public class Member implements Serializable {
     private String id;
     private String firstName;
     private String lastName;

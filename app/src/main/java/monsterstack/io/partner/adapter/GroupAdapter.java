@@ -55,7 +55,7 @@ public class GroupAdapter extends CardPagerAdapter<Group> {
                     public void onClick(View v) { ;
                         // Activity transition to Member Details
                         Intent intent = new Intent(context, MemberActivity.class);
-                        intent.putExtra("memberId", onDeck.getId());
+                        intent.putExtra("member", onDeck);
                         Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
                                 view, 0, 0, view.getWidth(), view.getHeight()).toBundle();
 
@@ -78,7 +78,7 @@ public class GroupAdapter extends CardPagerAdapter<Group> {
                         Member clickedMember = members[position];
                         // Activity transition to Member Details
                         Intent intent = new Intent(context, MemberActivity.class);
-                        intent.putExtra("memberId", clickedMember.getId());
+                        intent.putExtra("member", clickedMember);
                         Bundle options = ActivityOptionsCompat.makeScaleUpAnimation(
                                 view, 0, 0, view.getWidth(), view.getHeight()).toBundle();
 
