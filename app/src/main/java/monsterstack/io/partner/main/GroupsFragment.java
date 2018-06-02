@@ -117,6 +117,7 @@ public class GroupsFragment extends Fragment {
                     @Override
                     public void onPageSelected(int position) {
                         GroupsFragment.this.selectedGroup = groupArray[position];
+                        cardAdapter.reset();
                     }
 
                     @Override

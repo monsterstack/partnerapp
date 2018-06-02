@@ -63,6 +63,8 @@ public class AvatarView extends AppCompatImageView {
 
     int textSize;
 
+    String avatarShape;
+
     /*
      * Constants to define shape
      * */
@@ -110,7 +112,8 @@ public class AvatarView extends AppCompatImageView {
     }
 
     private void getAttributes(AttributeSet attrs) {
-        TypedArray a = getContext().getTheme().obtainStyledAttributes(
+
+        TypedArray a = getContext().obtainStyledAttributes(
                 attrs,
                 R.styleable.AvatarView,
                 0, 0);
@@ -120,7 +123,8 @@ public class AvatarView extends AppCompatImageView {
             /*
              * Get the shape and set shape field accordingly
              * */
-            String avatarShape = a.getString(R.styleable.AvatarView_avatar_shape);
+            avatarShape = a.getString(R.styleable.AvatarView_avatar_shape);
+
             textSize = a.getDimensionPixelSize(R.styleable.AvatarView_name_size,
                     getResources().getDimensionPixelSize(R.dimen.avatar_text_size));
             /*
@@ -185,7 +189,7 @@ public class AvatarView extends AppCompatImageView {
      * Set user specific fields in here
      * */
     private void setValues() {
-
+        this.setScaleType(ScaleType.FIT_XY);
         /*
          * user specific color for initial background
          * */
@@ -194,7 +198,7 @@ public class AvatarView extends AppCompatImageView {
         /*
          * Initials of member
          * */
-        text = Helper.getShortName(user.getName());
+        text = Helper.getShortName(user);
 
         borderWidth = getResources().getDimension(R.dimen.avatar_border_width);
 

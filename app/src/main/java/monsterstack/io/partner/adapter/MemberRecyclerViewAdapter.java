@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import monsterstack.io.api.UserSessionManager;
-import monsterstack.io.api.resources.AuthenticatedUser;
 import monsterstack.io.avatarview.AvatarView;
+import monsterstack.io.avatarview.EmptyUser;
 import monsterstack.io.avatarview.User;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.domain.Member;
@@ -39,16 +39,14 @@ public class MemberRecyclerViewAdapter extends RecyclerView.Adapter<MemberRecycl
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         UserSessionManager userSessionManager = new UserSessionManager(holder.context);
-        AuthenticatedUser authenticatedUser = userSessionManager.getUserDetails();
         Member member = members[position];
-        String fullName = member.getFirstName() + " " + member.getLastName();
-
-        if(authenticatedUser.getFullName().equalsIgnoreCase(fullName)) {
-            holder.fullNameView.setText("You");
+        if (member == null) {
+            // Empty slot
+            holder.avatarView.setUser(new EmptyUser(R.color.colorPrimaryDark));
         } else {
-            holder.fullNameView.setText(member.getFirstName());
+            String fullName = member.getFullName();
+            holder.avatarView.setUser(new User(fullName, member.getAvatar(), R.color.colorAccent));
         }
-        holder.avatarView.setUser(new User(fullName, member.getAvatar(), R.color.colorAccent));
     }
 
     // total number of rows
@@ -61,7 +59,6 @@ public class MemberRecyclerViewAdapter extends RecyclerView.Adapter<MemberRecycl
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         AvatarView avatarView;
         TextView fullNameView;
-
         Context context;
 
         ViewHolder(View itemView) {

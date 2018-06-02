@@ -119,6 +119,7 @@ dependencies {
     implementation project(":avatarview")
     implementation project(":pincapture")
     implementation project(":horizontallistview")
+    implementation project(":gridlistview")
 }
 
 apply plugin: 'com.google.gms.google-services'

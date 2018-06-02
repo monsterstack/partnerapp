@@ -195,6 +195,10 @@
         <activity android:name=".main.MemberActivity">
 
         </activity>
+
+        <activity android:name=".main.MiniMemberDetailsActivity">
+
+        </activity>
     </application>
 
 </manifest>

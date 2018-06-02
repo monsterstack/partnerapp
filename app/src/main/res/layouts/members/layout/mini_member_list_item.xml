@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:avatarview="http://schemas.android.com/apk/monsterstack.io.avatarview"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/miniMemberListItem"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <monsterstack.io.avatarview.AvatarView
         android:id="@+id/memberAvatarView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        avatarview:avatar_shape="avatarShape"
-        avatarview:name_size="20sp"/>
+        android:layout_width="78dp"
+        android:layout_height="78dp"
+        android:padding="0dp"
+        app:avatar_shape="Rectangle"
+        app:name_size="8sp"/>
 
+    <!-- Make invisible - remove later
     <TextView
         android:id="@+id/memberFullName"
         android:layout_marginTop="5dp"
@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:textAlignment="center"
+        android:visibility="gone"
         android:textSize="10sp"/>
-
+-->
 </LinearLayout>
