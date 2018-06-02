@@ -8,33 +8,54 @@ import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.domain.GroupEntryOpportunity;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class GroupCardJoinAnimator {
-    public void animateIn(CardView cardView, GroupEntryOpportunity data) {
-        hideMemberList(cardView);
-        showGroupJoin(cardView, data);
+public class GroupCardJoinAnimator extends ViewAnimator<CardView, GroupEntryOpportunity> {
+
+    @BindView(R.id.group_slot_label)
+    TextView slotLabel;
+
+    @BindView(R.id.miniGroupJoin)
+    RelativeLayout groupJoinView;
+
+    @BindView(R.id.capacity)
+    View capacityView;
+
+    @BindView(R.id.membersView)
+    RecyclerView membersView;
+
+    public GroupCardJoinAnimator(CardView root) {
+        ButterKnife.bind(this, root);
     }
 
-    public void animateOut(CardView cardView) {
-        showMemberList(cardView);
-        hideGroupJoin(cardView);
+    @Override
+    public void animateIn(GroupEntryOpportunity data) {
+        hideMemberList();
+        showGroupJoin(data);
     }
 
-    private void showGroupJoin(final View card, final GroupEntryOpportunity groupEntryOpportunity) {
+    @Override
+    public void animateOut() {
+        showMemberList();
+        hideGroupJoin();
+    }
+
+    private void showGroupJoin(final GroupEntryOpportunity groupEntryOpportunity) {
         // Bind member to entering view
-        final RelativeLayout groupJoinView = card.findViewById(R.id.miniGroupJoin);
-        bindGroupToGroupJoinView(groupJoinView, groupEntryOpportunity);
+        //final RelativeLayout groupJoinView = card.findViewById(R.id.miniGroupJoin);
+        bindGroupToGroupJoinView(groupEntryOpportunity);
 
         groupJoinView.setVisibility(VISIBLE);
-        View slotLabel = card.findViewById(R.id.group_slot_label);
+        //View slotLabel = card.findViewById(R.id.group_slot_label);
         slotLabel.setVisibility(VISIBLE);
 
-        Animation animation = new TranslateAnimation(-1200, 0, 0, 0);
+        Animation animation = new TranslateAnimation(1200, 0, 0, 0);
         animation.setDuration(1000);
         animation.setFillAfter(true);
 
@@ -43,11 +64,11 @@ public class GroupCardJoinAnimator {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                View slotLabel = card.findViewById(R.id.group_slot_label);
+                //View slotLabel = card.findViewById(R.id.group_slot_label);
                 slotLabel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        animateOut((CardView)card);
+                        animateOut();
                     }
                 });
             }
@@ -56,24 +77,24 @@ public class GroupCardJoinAnimator {
         groupJoinView.startAnimation(animation);
     }
 
-    private void showMemberList(final View card) {
-        View capacityView = card.findViewById(R.id.capacity);
+    private void showMemberList() {
+        //View capacityView = card.findViewById(R.id.capacity);
 
 
-        RecyclerView membersView = card.findViewById(R.id.membersView);
-        membersView.setVisibility(VISIBLE);
-        capacityView.setVisibility(VISIBLE);
-        Animation animation = new TranslateAnimation(1200, 0,0, 0); //May need to check the direction you want.
+        //RecyclerView membersView = card.findViewById(R.id.membersView);
+        this.membersView.setVisibility(VISIBLE);
+        this.capacityView.setVisibility(VISIBLE);
+        Animation animation = new TranslateAnimation(-1200, 0,0, 0); //May need to check the direction you want.
         animation.setDuration(1000);
         animation.setFillAfter(true);
 
-        membersView.startAnimation(animation);
-        capacityView.startAnimation(animation);
+        this.membersView.startAnimation(animation);
+        this.capacityView.startAnimation(animation);
     }
 
-    private void hideGroupJoin(final View card) {
-        final RelativeLayout groupJoinView = card.findViewById(R.id.miniGroupJoin);
-        Animation animation = new TranslateAnimation(0, -1200,0, 0); //May need to check the direction you want.
+    private void hideGroupJoin() {
+        //final RelativeLayout groupJoinView = card.findViewById(R.id.miniGroupJoin);
+        Animation animation = new TranslateAnimation(0, 1200,0, 0); //May need to check the direction you want.
         animation.setDuration(700);
         animation.setFillAfter(true);
 
@@ -81,34 +102,33 @@ public class GroupCardJoinAnimator {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                View slotLabel = card.findViewById(R.id.group_slot_label);
+                //View slotLabel = card.findViewById(R.id.group_slot_label);
                 slotLabel.setVisibility(View.INVISIBLE);
             }
         });
 
-        groupJoinView.startAnimation(animation);
+        this.groupJoinView.startAnimation(animation);
     }
 
     /**
      * Hide Member List from Card
-     * @param card View
      */
-    private void hideMemberList(final View card) {
-        View capacityView = card.findViewById(R.id.capacity);
+    private void hideMemberList() {
+        //View capacityView = card.findViewById(R.id.capacity);
 
-        final RecyclerView membersView = card.findViewById(R.id.membersView);
-        Animation animation = new TranslateAnimation(0, 1200,0, 0); //May need to check the direction you want.
+        //final RecyclerView membersView = card.findViewById(R.id.membersView);
+        Animation animation = new TranslateAnimation(0, -1200,0, 0); //May need to check the direction you want.
         animation.setDuration(700);
         animation.setFillAfter(true);
 
-        membersView.startAnimation(animation);
-        capacityView.startAnimation(animation);
-        capacityView.setVisibility(GONE);
-        membersView.setVisibility(GONE);
+        this.membersView.startAnimation(animation);
+        this.capacityView.startAnimation(animation);
+        this.capacityView.setVisibility(GONE);
+        this.membersView.setVisibility(GONE);
     }
 
-    private void bindGroupToGroupJoinView(View groupJoinView, GroupEntryOpportunity groupEntryOpportunity) {
-        TextView slotLabelView = groupJoinView.findViewById(R.id.group_slot_label);
-        slotLabelView.setText("Draw Slot - " + groupEntryOpportunity.getSlotNumber());
+    private void bindGroupToGroupJoinView(GroupEntryOpportunity groupEntryOpportunity) {
+        //TextView slotLabelView = groupJoinView.findViewById(R.id.group_slot_label);
+        this.slotLabel.setText("Draw Slot - " + groupEntryOpportunity.getSlotNumber());
     }
 }

@@ -54,9 +54,9 @@ public class GroupAdapter extends CardPagerAdapter<Group> {
                         if(recyclerView.getVisibility() == VISIBLE) {
                             if (null != members[position]) {
                                 Member clickedMember = members[position];
-                                new GroupCardMemberAnimator().animateIn((CardView) cardView, clickedMember);
+                                new GroupCardMemberAnimator((CardView) cardView).scaleUp(clickedMember);
                             } else {
-                                new GroupCardJoinAnimator().animateIn((CardView) cardView, new GroupEntryOpportunity(data, position+1));
+                                new GroupCardJoinAnimator((CardView) cardView).animateIn(new GroupEntryOpportunity(data, position+1));
                             }
                         }
                     }
