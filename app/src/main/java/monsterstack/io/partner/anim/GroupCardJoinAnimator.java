@@ -30,7 +30,10 @@ public class GroupCardJoinAnimator extends ViewAnimator<CardView, GroupEntryOppo
     @BindView(R.id.membersView)
     RecyclerView membersView;
 
-    public GroupCardJoinAnimator(CardView root) {
+    private AnimationOptions animationOptions;
+
+    public GroupCardJoinAnimator(CardView root, AnimationOptions animationOptions) {
+        super(animationOptions);
         ButterKnife.bind(this, root);
     }
 
@@ -47,16 +50,15 @@ public class GroupCardJoinAnimator extends ViewAnimator<CardView, GroupEntryOppo
     }
 
     private void showGroupJoin(final GroupEntryOpportunity groupEntryOpportunity) {
-        // Bind member to entering view
-        //final RelativeLayout groupJoinView = card.findViewById(R.id.miniGroupJoin);
         bindGroupToGroupJoinView(groupEntryOpportunity);
 
         groupJoinView.setVisibility(VISIBLE);
-        //View slotLabel = card.findViewById(R.id.group_slot_label);
         slotLabel.setVisibility(VISIBLE);
 
         Animation animation = new TranslateAnimation(1200, 0, 0, 0);
-        animation.setDuration(1000);
+        animation.setInterpolator(getAnimationOptions().getInterpolator());
+
+        animation.setDuration(getAnimationOptions().getExpandDuration());
         animation.setFillAfter(true);
 
         // When done animating, apply click listener to incoming view
@@ -78,14 +80,12 @@ public class GroupCardJoinAnimator extends ViewAnimator<CardView, GroupEntryOppo
     }
 
     private void showMemberList() {
-        //View capacityView = card.findViewById(R.id.capacity);
-
-
-        //RecyclerView membersView = card.findViewById(R.id.membersView);
         this.membersView.setVisibility(VISIBLE);
         this.capacityView.setVisibility(VISIBLE);
         Animation animation = new TranslateAnimation(-1200, 0,0, 0); //May need to check the direction you want.
-        animation.setDuration(1000);
+        animation.setInterpolator(getAnimationOptions().getInterpolator());
+
+        animation.setDuration(getAnimationOptions().getExpandDuration());
         animation.setFillAfter(true);
 
         this.membersView.startAnimation(animation);
@@ -93,16 +93,16 @@ public class GroupCardJoinAnimator extends ViewAnimator<CardView, GroupEntryOppo
     }
 
     private void hideGroupJoin() {
-        //final RelativeLayout groupJoinView = card.findViewById(R.id.miniGroupJoin);
         Animation animation = new TranslateAnimation(0, 1200,0, 0); //May need to check the direction you want.
-        animation.setDuration(700);
+        animation.setInterpolator(getAnimationOptions().getInterpolator());
+
+        animation.setDuration(getAnimationOptions().getCollapseDuration());
         animation.setFillAfter(true);
 
         animation.setAnimationListener(new AnimationListenerAdapter() {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                //View slotLabel = card.findViewById(R.id.group_slot_label);
                 slotLabel.setVisibility(View.INVISIBLE);
             }
         });
@@ -114,11 +114,10 @@ public class GroupCardJoinAnimator extends ViewAnimator<CardView, GroupEntryOppo
      * Hide Member List from Card
      */
     private void hideMemberList() {
-        //View capacityView = card.findViewById(R.id.capacity);
-
-        //final RecyclerView membersView = card.findViewById(R.id.membersView);
         Animation animation = new TranslateAnimation(0, -1200,0, 0); //May need to check the direction you want.
-        animation.setDuration(700);
+        animation.setInterpolator(getAnimationOptions().getInterpolator());
+
+        animation.setDuration(getAnimationOptions().getCollapseDuration());
         animation.setFillAfter(true);
 
         this.membersView.startAnimation(animation);
@@ -128,7 +127,6 @@ public class GroupCardJoinAnimator extends ViewAnimator<CardView, GroupEntryOppo
     }
 
     private void bindGroupToGroupJoinView(GroupEntryOpportunity groupEntryOpportunity) {
-        //TextView slotLabelView = groupJoinView.findViewById(R.id.group_slot_label);
         this.slotLabel.setText("Draw Slot - " + groupEntryOpportunity.getSlotNumber());
     }
 }

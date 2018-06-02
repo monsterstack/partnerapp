@@ -16,6 +16,7 @@ import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.gridlistview.GridListView;
 import monsterstack.io.gridlistview.SpacesItemDecoration;
 import monsterstack.io.partner.R;
+import monsterstack.io.partner.anim.AnimationOptions;
 import monsterstack.io.partner.anim.GroupCardJoinAnimator;
 import monsterstack.io.partner.anim.GroupCardMemberAnimator;
 import monsterstack.io.partner.domain.Group;
@@ -54,9 +55,11 @@ public class GroupAdapter extends CardPagerAdapter<Group> {
                         if(recyclerView.getVisibility() == VISIBLE) {
                             if (null != members[position]) {
                                 Member clickedMember = members[position];
-                                new GroupCardMemberAnimator((CardView) cardView).scaleUp(clickedMember);
+                                new GroupCardMemberAnimator((CardView) cardView,
+                                        AnimationOptions.options(350, 300)).animateIn(clickedMember);
                             } else {
-                                new GroupCardJoinAnimator((CardView) cardView).animateIn(new GroupEntryOpportunity(data, position+1));
+                                new GroupCardJoinAnimator((CardView) cardView,
+                                        AnimationOptions.options(350, 300)).animateIn(new GroupEntryOpportunity(data, position+1));
                             }
                         }
                     }
