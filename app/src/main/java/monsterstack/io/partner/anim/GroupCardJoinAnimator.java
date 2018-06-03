@@ -73,6 +73,8 @@ public class GroupCardJoinAnimator extends ViewAnimator<CardView, GroupEntryOppo
                         animateOut();
                     }
                 });
+
+                getAnimationOptions().getViewAnimatedListener().onViewExpanded();
             }
         });
 
@@ -104,6 +106,7 @@ public class GroupCardJoinAnimator extends ViewAnimator<CardView, GroupEntryOppo
             @Override
             public void onAnimationEnd(Animation animation) {
                 slotLabel.setVisibility(View.INVISIBLE);
+                getAnimationOptions().getViewAnimatedListener().onViewCollapsed();
             }
         });
 

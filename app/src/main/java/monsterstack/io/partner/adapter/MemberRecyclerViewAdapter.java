@@ -8,7 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import monsterstack.io.api.UserSessionManager;
+import java.util.Objects;
+
 import monsterstack.io.avatarview.AvatarView;
 import monsterstack.io.avatarview.EmptyUser;
 import monsterstack.io.avatarview.User;
@@ -21,8 +22,11 @@ public class MemberRecyclerViewAdapter extends RecyclerView.Adapter<MemberRecycl
     private ItemClickListener clickListener;
 
     // data is passed into the constructor
-    MemberRecyclerViewAdapter(Context context, Member[] members) {
+    MemberRecyclerViewAdapter(@NonNull Context context, @NonNull Member[] members) {
         super();
+        Objects.requireNonNull(context);
+        Objects.requireNonNull(members);
+
         this.inflater = LayoutInflater.from(context);
         this.members = members;
     }
@@ -38,7 +42,6 @@ public class MemberRecyclerViewAdapter extends RecyclerView.Adapter<MemberRecycl
     // binds the data to the view and textview in each row
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        UserSessionManager userSessionManager = new UserSessionManager(holder.context);
         Member member = members[position];
         if (member == null) {
             // Empty slot
@@ -76,7 +79,7 @@ public class MemberRecyclerViewAdapter extends RecyclerView.Adapter<MemberRecycl
     }
 
     // allows clicks events to be caught
-    public void setClickListener(ItemClickListener itemClickListener) {
+    public void setClickListener(@NonNull ItemClickListener itemClickListener) {
         this.clickListener = itemClickListener;
     }
 

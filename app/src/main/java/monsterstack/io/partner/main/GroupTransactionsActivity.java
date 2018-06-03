@@ -6,6 +6,8 @@ import monsterstack.io.partner.R;
 import monsterstack.io.partner.common.BasicActivity;
 
 public class GroupTransactionsActivity extends BasicActivity {
+    public static final String EXTRA_GROUP = "group";
+
     @Override
     public int getContentView() {
         return R.layout.group_transactions;

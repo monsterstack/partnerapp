@@ -196,7 +196,7 @@
 
         </activity>
 
-        <activity android:name=".main.MiniMemberDetailsActivity">
+        <activity android:name=".main.MiniMemberDetailsFragment">
 
         </activity>
     </application>

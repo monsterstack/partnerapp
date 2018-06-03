@@ -17,6 +17,7 @@ import monsterstack.io.partner.R;
 import monsterstack.io.partner.common.BasicActivity;
 
 public class GroupScheduleActivity extends BasicActivity {
+    public static final String EXTRA_GROUP = "group";
 
     @BindView(R.id.calendarView)
     CalendarView calendarView;

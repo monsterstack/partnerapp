@@ -33,9 +33,15 @@ public class GroupAdapter extends CardPagerAdapter<Group> {
     @BindView(R.id.membersView)
     RecyclerView memberDetailsView;
 
+    private ViewAnimatedListener viewAnimatedListener;
+
     public GroupAdapter(Context context, List<Group> dataList) {
         super(dataList);
         this.context = context;
+    }
+
+    public void setViewAnimatedListener(ViewAnimatedListener viewAnimated) {
+        this.viewAnimatedListener = viewAnimated;
     }
 
     @Override
@@ -43,6 +49,7 @@ public class GroupAdapter extends CardPagerAdapter<Group> {
         this.cardView = (CardView)cardView;
         ButterKnife.bind(this, cardView);
 
+        // @TODO: All falls apart when this is moved into method.
         final GridListView recyclerView = cardView.findViewById(R.id.membersView);
         recyclerView.addItemDecoration(new SpacesItemDecoration(context, R.dimen.member_grid_item_offset));
         findGroupMembers(data, new OnResponseListener<Member[], HttpError>() {
@@ -56,10 +63,14 @@ public class GroupAdapter extends CardPagerAdapter<Group> {
                             if (null != members[position]) {
                                 Member clickedMember = members[position];
                                 new GroupCardMemberAnimator((CardView) cardView,
-                                        AnimationOptions.options(350, 300)).animateIn(clickedMember);
+                                        AnimationOptions.options(350, 300)
+                                                .onViewAnimatedListener(viewAnimatedListener)
+                                ).animateIn(clickedMember);
                             } else {
                                 new GroupCardJoinAnimator((CardView) cardView,
-                                        AnimationOptions.options(350, 300)).animateIn(new GroupEntryOpportunity(data, position+1));
+                                        AnimationOptions.options(350, 300)
+                                                .onViewAnimatedListener(viewAnimatedListener)
+                                ).animateIn(new GroupEntryOpportunity(data, position+1));
                             }
                         }
                     }

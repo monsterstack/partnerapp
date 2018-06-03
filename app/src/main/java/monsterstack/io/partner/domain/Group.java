@@ -1,5 +1,6 @@
 package monsterstack.io.partner.domain;
 
+import java.io.Serializable;
 import java.util.Currency;
 import java.util.UUID;
 
@@ -8,7 +9,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Group {
+public class Group implements Serializable {
     private String id;
     private String name;
     private Integer numberOfSlots;

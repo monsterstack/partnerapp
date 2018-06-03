@@ -62,7 +62,9 @@ public class MainActivity extends BasicActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_view_headline_white_24dp);
+
+        if (null != getSupportActionBar())
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_view_headline_white_24dp);
 
         init();
     }
@@ -138,17 +140,23 @@ public class MainActivity extends BasicActivity {
             @Override
             public void onPageSelected(int position) {
                 Fragment fragment = MainActivity.this.mainPagerAdapter.getItem(position);
-                String title = (String)fragment.getArguments().get("title");
-                toolbar.setTitle(title);
 
-                if(title.equals("Groups"))
-                    bottomNavigationView.setSelectedItemId(R.id.action_tabs_groups);
-                else if(title.equals("Friends"))
-                    bottomNavigationView.setSelectedItemId(R.id.action_tabs_friends);
-                else if(title.equals("Wallets"))
-                    bottomNavigationView.setSelectedItemId(R.id.action_tabs_wallets);
-                else if(title.equals("Messages"))
-                    bottomNavigationView.setSelectedItemId(R.id.action_tabs_messages);
+                if (fragment.getArguments() != null) {
+                    String title = (String) fragment.getArguments().get("title");
+
+                    if (null != title) {
+                        toolbar.setTitle(title);
+
+                        if (title.equals("Groups"))
+                            bottomNavigationView.setSelectedItemId(R.id.action_tabs_groups);
+                        else if (title.equals("Friends"))
+                            bottomNavigationView.setSelectedItemId(R.id.action_tabs_friends);
+                        else if (title.equals("Wallets"))
+                            bottomNavigationView.setSelectedItemId(R.id.action_tabs_wallets);
+                        else if (title.equals("Messages"))
+                            bottomNavigationView.setSelectedItemId(R.id.action_tabs_messages);
+                    }
+                }
             }
 
             // This method will be invoked when the current page is scrolled
@@ -222,6 +230,7 @@ public class MainActivity extends BasicActivity {
         MenuItem walletsMenuItem = menu.getItem(2);
         MenuItem settingsMenuItem = menu.getItem(3);
 
+        // @TODO: support menu needs work
         MenuItem support = menu.getItem(4);
         MenuItem logoutMenuItem = menu.getItem(5);
 

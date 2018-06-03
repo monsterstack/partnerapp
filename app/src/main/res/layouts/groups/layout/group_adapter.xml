@@ -47,6 +47,7 @@
                         android:layout_height="wrap_content" />
 
                     <include layout="@layout/mini_member_details" android:visibility="gone"/>
+
                     <include layout="@layout/mini_group_join" android:visibility="gone"/>
 
                     <TextView

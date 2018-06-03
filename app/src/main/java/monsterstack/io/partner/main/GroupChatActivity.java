@@ -14,6 +14,8 @@ import monsterstack.io.partner.R;
 import monsterstack.io.partner.common.BasicActivity;
 
 public class GroupChatActivity extends BasicActivity {
+    public static final String EXTRA_GROUP = "group";
+
     @BindView(R.id.group_message_view)
     MessageView chatView;
 

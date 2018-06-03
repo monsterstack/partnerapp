@@ -25,6 +25,24 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 public class GroupCardMemberAnimator extends ViewAnimator<CardView, Member> {
+    private static final Integer DEFAULT_SCALE_UP_DURATION = 1000;
+    private static final Integer DEFAULT_SCALE_UP_START_X = 0;
+    private static final Integer DEFAULT_SCALE_UP_START_Y = 0;
+    private static final Integer DEFAULT_SCALE_UP_END_X = 1;
+    private static final Integer DEFAULT_SCALE_UP_END_Y = 1;
+
+    private static final Integer DEFAULT_SCALE_DOWN_START_X = 1;
+    private static final Integer DEFAULT_SCALE_DOWN_START_Y = 1;
+    private static final Integer DEFAULT_SCALE_DOWN_END_X = 0;
+    private static final Integer DEFAULT_SCALE_DOWN_END_Y = 0;
+
+
+    private static final Float DEFAULT_SCALE_PIVOT_X = 0.5f;
+    private static final Float DEFAULT_SCALE_PIVOT_Y = 0.5f;
+
+    private static final Float TRANSLATE_SLIDE_UP_START_Y = 0f;
+    private static final Float TRANSLATE_SLIDE_UP_END_Y = -450f;
+
     @BindView(R.id.membersView)
     RecyclerView membersView;
     @BindView(R.id.miniMemberDetails)
@@ -37,9 +55,13 @@ public class GroupCardMemberAnimator extends ViewAnimator<CardView, Member> {
     @BindView(R.id.group_details_container)
     FrameLayout groupViewContainer;
 
+    private CardView cardView;
+
     public GroupCardMemberAnimator(CardView root, AnimationOptions animationOptions) {
         super(animationOptions);
         ButterKnife.bind(this, root);
+
+        this.cardView = root;
     }
 
     @Override
@@ -55,9 +77,17 @@ public class GroupCardMemberAnimator extends ViewAnimator<CardView, Member> {
     }
 
     private void scaleUpMemberList() {
-        Animation animation = new ScaleAnimation(0,1,0,1,
-                Animation.RELATIVE_TO_SELF, (float)0.5, Animation.RELATIVE_TO_SELF, (float)0.5);
-        animation.setDuration(1000);
+        Animation animation = new ScaleAnimation(
+                DEFAULT_SCALE_UP_START_X,
+                DEFAULT_SCALE_UP_END_X,
+                DEFAULT_SCALE_UP_START_Y,
+                DEFAULT_SCALE_UP_END_Y,
+                Animation.RELATIVE_TO_SELF,
+                DEFAULT_SCALE_PIVOT_X,
+                Animation.RELATIVE_TO_SELF,
+                DEFAULT_SCALE_PIVOT_Y);
+
+        animation.setDuration(DEFAULT_SCALE_UP_DURATION);
         membersView.setVisibility(View.VISIBLE);
 
         animation.setAnimationListener(new AnimationListenerAdapter() {
@@ -71,8 +101,15 @@ public class GroupCardMemberAnimator extends ViewAnimator<CardView, Member> {
     }
 
     private void scaleDownMemberList() {
-        Animation animation = new ScaleAnimation(1,0,1,0,
-                Animation.RELATIVE_TO_SELF, (float)0.5, Animation.RELATIVE_TO_SELF, (float)0.5);
+        Animation animation = new ScaleAnimation(
+                DEFAULT_SCALE_DOWN_START_X,
+                DEFAULT_SCALE_DOWN_END_X,
+                DEFAULT_SCALE_DOWN_START_Y,
+                DEFAULT_SCALE_DOWN_END_Y,
+                Animation.RELATIVE_TO_SELF,
+                DEFAULT_SCALE_PIVOT_X,
+                Animation.RELATIVE_TO_SELF,
+                DEFAULT_SCALE_PIVOT_Y);
         animation.setDuration(800);
 
         capacityView.setVisibility(View.INVISIBLE);
@@ -91,26 +128,38 @@ public class GroupCardMemberAnimator extends ViewAnimator<CardView, Member> {
     private void scaleUpMemberDetails(final Member member) {
         bindMemberToMemberDetailsView(this.memberDetailsView, member);
 
-        ObjectAnimator slideUpAnimation = ObjectAnimator.ofFloat(groupViewContainer, "translationY", -450f);
+        ObjectAnimator slideUpAnimation = ObjectAnimator.ofFloat(groupViewContainer,
+                "translationY", TRANSLATE_SLIDE_UP_END_Y);
+
         slideUpAnimation.setDuration(getAnimationOptions().getExpandDuration());
         slideUpAnimation.setInterpolator(getAnimationOptions().getInterpolator());
 
+        capacityView.setVisibility(View.INVISIBLE);
         slotLabel.setVisibility(VISIBLE);
 
         slideUpAnimation.start();
 
         this.memberDetailsView.setVisibility(VISIBLE);
-        Animation animation = new ScaleAnimation(0,1,0,1,
-                Animation.RELATIVE_TO_SELF, (float)0.5, Animation.RELATIVE_TO_SELF, (float)0.5);
+        Animation animation = new ScaleAnimation(
+                DEFAULT_SCALE_UP_START_X,
+                DEFAULT_SCALE_UP_END_X,
+                DEFAULT_SCALE_UP_START_Y,
+                DEFAULT_SCALE_UP_END_Y,
+                Animation.RELATIVE_TO_SELF,
+                DEFAULT_SCALE_PIVOT_X,
+                Animation.RELATIVE_TO_SELF,
+                DEFAULT_SCALE_PIVOT_Y);
+
         animation.setInterpolator(new AccelerateDecelerateInterpolator());
 
-        animation.setDuration(350);
+        animation.setDuration(getAnimationOptions().getExpandDuration());
 
         // When done animating, apply click listener to incoming view
         animation.setAnimationListener(new AnimationListenerAdapter() {
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                getAnimationOptions().getViewAnimatedListener().onViewExpanded();
                 slotLabel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -124,14 +173,23 @@ public class GroupCardMemberAnimator extends ViewAnimator<CardView, Member> {
     }
 
     private void scaleDownMemberDetails() {
-        ObjectAnimator slideDownAnimation = ObjectAnimator.ofFloat(groupViewContainer, "translationY", 0f);
+        ObjectAnimator slideDownAnimation = ObjectAnimator.ofFloat(groupViewContainer,
+                "translationY", TRANSLATE_SLIDE_UP_START_Y);
         slideDownAnimation.setDuration(getAnimationOptions().getCollapseDuration());
         slideDownAnimation.setInterpolator(getAnimationOptions().getInterpolator());
         slideDownAnimation.start();
 
-        Animation animation = new ScaleAnimation(1,0,1,0,
-                Animation.RELATIVE_TO_SELF, (float)0.5, Animation.RELATIVE_TO_SELF, (float)0.5);
-        animation.setDuration(350);
+        Animation animation = new ScaleAnimation(
+                DEFAULT_SCALE_DOWN_START_X,
+                DEFAULT_SCALE_DOWN_END_X,
+                DEFAULT_SCALE_DOWN_START_Y,
+                DEFAULT_SCALE_DOWN_END_Y,
+                Animation.RELATIVE_TO_SELF,
+                DEFAULT_SCALE_PIVOT_X,
+                Animation.RELATIVE_TO_SELF,
+                DEFAULT_SCALE_PIVOT_Y);
+
+        animation.setDuration(getAnimationOptions().getCollapseDuration());
         animation.setInterpolator(getAnimationOptions().getInterpolator());
 
         slotLabel.setVisibility(GONE);
@@ -140,6 +198,8 @@ public class GroupCardMemberAnimator extends ViewAnimator<CardView, Member> {
             @Override
             public void onAnimationEnd(Animation animation) {
                 memberDetailsView.setVisibility(View.INVISIBLE);
+
+                getAnimationOptions().getViewAnimatedListener().onViewCollapsed();
             }
         });
         this.memberDetailsView.startAnimation(animation);
