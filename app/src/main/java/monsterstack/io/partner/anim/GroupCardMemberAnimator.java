@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -25,7 +26,10 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 public class GroupCardMemberAnimator extends ViewAnimator<CardView, Member> {
-    private static final Integer DEFAULT_SCALE_UP_DURATION = 1000;
+    private static final Integer DEFAULT_FADE_OUT_DURATION = 300;
+    private static final Integer DEFAULT_FADE_IN_DURATION = 250;
+    private static final Integer DEFAULT_SCALE_UP_DURATION = 600;
+    private static final Integer DEFAULT_SCALE_DOWN_DURATION = 500;
     private static final Integer DEFAULT_SCALE_UP_START_X = 0;
     private static final Integer DEFAULT_SCALE_UP_START_Y = 0;
     private static final Integer DEFAULT_SCALE_UP_END_X = 1;
@@ -97,10 +101,17 @@ public class GroupCardMemberAnimator extends ViewAnimator<CardView, Member> {
                 capacityView.setVisibility(VISIBLE);
             }
         });
+
+        ObjectAnimator animator = ObjectAnimator.ofFloat(this.membersView, "alpha",1.0f);
+        animator.setDuration(DEFAULT_FADE_IN_DURATION);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.start();
         this.membersView.startAnimation(animation);
     }
 
     private void scaleDownMemberList() {
+        capacityView.setVisibility(View.INVISIBLE);
+
         Animation animation = new ScaleAnimation(
                 DEFAULT_SCALE_DOWN_START_X,
                 DEFAULT_SCALE_DOWN_END_X,
@@ -110,9 +121,8 @@ public class GroupCardMemberAnimator extends ViewAnimator<CardView, Member> {
                 DEFAULT_SCALE_PIVOT_X,
                 Animation.RELATIVE_TO_SELF,
                 DEFAULT_SCALE_PIVOT_Y);
-        animation.setDuration(800);
+        animation.setDuration(DEFAULT_SCALE_DOWN_DURATION);
 
-        capacityView.setVisibility(View.INVISIBLE);
 
         animation.setAnimationListener(new AnimationListenerAdapter() {
 
@@ -122,6 +132,10 @@ public class GroupCardMemberAnimator extends ViewAnimator<CardView, Member> {
             }
         });
 
+        ObjectAnimator animator = ObjectAnimator.ofFloat(this.membersView, "alpha",0.0f);
+        animator.setDuration(DEFAULT_FADE_OUT_DURATION);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.start();
         this.membersView.startAnimation(animation);
     }
 
