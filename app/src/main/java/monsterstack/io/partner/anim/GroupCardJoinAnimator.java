@@ -14,9 +14,29 @@ import monsterstack.io.partner.R;
 import monsterstack.io.partner.domain.GroupEntryOpportunity;
 
 import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
 public class GroupCardJoinAnimator extends ViewAnimator<CardView, GroupEntryOpportunity> {
+    private static final Integer TRANSLATE_SLIDE_IN_JOIN_START_X = 1200;
+    private static final Integer TRANSLATE_SLIDE_IN_JOIN_END_X = 0;
+    private static final Integer TRANSLATE_SLIDE_IN_JOIN_START_Y = 0;
+    private static final Integer TRANSLATE_SLIDE_IN_JOIN_END_Y = 0;
+
+    private static final Integer TRANSLATE_SLIDE_OUT_JOIN_START_X = 0;
+    private static final Integer TRANSLATE_SLIDE_OUT_JOIN_END_X = 1200;
+    private static final Integer TRANSLATE_SLIDE_OUT_JOIN_START_Y = 0;
+    private static final Integer TRANSLATE_SLIDE_OUT_JOIN_END_Y = 0;
+
+    private static final Integer TRANSLATE_SLIDE_IN_MEMBERS_START_X = -1200;
+    private static final Integer TRANSLATE_SLIDE_IN_MEMBERS_END_X = 0;
+    private static final Integer TRANSLATE_SLIDE_IN_MEMBERS_START_Y = 0;
+    private static final Integer TRANSLATE_SLIDE_IN_MEMBERS_END_Y = 0;
+
+    private static final Integer TRANSLATE_SLIDE_OUT_MEMBERS_START_X = 0;
+    private static final Integer TRANSLATE_SLIDE_OUT_MEMBERS_END_X = -1200;
+    private static final Integer TRANSLATE_SLIDE_OUT_MEMBERS_START_Y = 0;
+    private static final Integer TRANSLATE_SLIDE_OUT_MEMBERS_END_Y = 0;
 
     @BindView(R.id.group_slot_label)
     TextView slotLabel;
@@ -55,7 +75,8 @@ public class GroupCardJoinAnimator extends ViewAnimator<CardView, GroupEntryOppo
         groupJoinView.setVisibility(VISIBLE);
         slotLabel.setVisibility(VISIBLE);
 
-        Animation animation = new TranslateAnimation(1200, 0, 0, 0);
+        Animation animation = new TranslateAnimation(TRANSLATE_SLIDE_IN_JOIN_START_X,
+                TRANSLATE_SLIDE_IN_JOIN_END_X, TRANSLATE_SLIDE_IN_JOIN_START_Y, TRANSLATE_SLIDE_IN_JOIN_END_Y);
         animation.setInterpolator(getAnimationOptions().getInterpolator());
 
         animation.setDuration(getAnimationOptions().getExpandDuration());
@@ -84,7 +105,9 @@ public class GroupCardJoinAnimator extends ViewAnimator<CardView, GroupEntryOppo
     private void showMemberList() {
         this.membersView.setVisibility(VISIBLE);
         this.capacityView.setVisibility(VISIBLE);
-        Animation animation = new TranslateAnimation(-1200, 0,0, 0); //May need to check the direction you want.
+        Animation animation = new TranslateAnimation(TRANSLATE_SLIDE_IN_MEMBERS_START_X,
+                TRANSLATE_SLIDE_IN_MEMBERS_END_X,TRANSLATE_SLIDE_IN_MEMBERS_START_Y,
+                TRANSLATE_SLIDE_IN_MEMBERS_END_Y); //May need to check the direction you want.
         animation.setInterpolator(getAnimationOptions().getInterpolator());
 
         animation.setDuration(getAnimationOptions().getExpandDuration());
@@ -95,7 +118,9 @@ public class GroupCardJoinAnimator extends ViewAnimator<CardView, GroupEntryOppo
     }
 
     private void hideGroupJoin() {
-        Animation animation = new TranslateAnimation(0, 1200,0, 0); //May need to check the direction you want.
+        Animation animation = new TranslateAnimation(TRANSLATE_SLIDE_OUT_JOIN_START_X,
+                TRANSLATE_SLIDE_OUT_JOIN_END_X,TRANSLATE_SLIDE_OUT_JOIN_START_Y,
+                TRANSLATE_SLIDE_OUT_JOIN_END_Y); //May need to check the direction you want.
         animation.setInterpolator(getAnimationOptions().getInterpolator());
 
         animation.setDuration(getAnimationOptions().getCollapseDuration());
@@ -105,7 +130,8 @@ public class GroupCardJoinAnimator extends ViewAnimator<CardView, GroupEntryOppo
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                slotLabel.setVisibility(View.INVISIBLE);
+                slotLabel.clearAnimation();
+                slotLabel.setVisibility(INVISIBLE);
                 getAnimationOptions().getViewAnimatedListener().onViewCollapsed();
             }
         });
@@ -117,15 +143,17 @@ public class GroupCardJoinAnimator extends ViewAnimator<CardView, GroupEntryOppo
      * Hide Member List from Card
      */
     private void hideMemberList() {
-        Animation animation = new TranslateAnimation(0, -1200,0, 0); //May need to check the direction you want.
+        Animation animation = new TranslateAnimation(TRANSLATE_SLIDE_OUT_MEMBERS_START_X,
+                TRANSLATE_SLIDE_OUT_MEMBERS_END_X,TRANSLATE_SLIDE_OUT_MEMBERS_START_Y,
+                TRANSLATE_SLIDE_OUT_MEMBERS_END_Y); //May need to check the direction you want.
         animation.setInterpolator(getAnimationOptions().getInterpolator());
 
         animation.setDuration(getAnimationOptions().getCollapseDuration());
         animation.setFillAfter(true);
+        this.capacityView.setVisibility(GONE);
 
         this.membersView.startAnimation(animation);
         this.capacityView.startAnimation(animation);
-        this.capacityView.setVisibility(GONE);
         this.membersView.setVisibility(GONE);
     }
 

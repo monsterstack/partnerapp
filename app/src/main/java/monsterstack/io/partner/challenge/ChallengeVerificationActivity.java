@@ -5,10 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ProgressBar;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.custom.ChallengeServiceCustom;
@@ -17,37 +14,24 @@ import monsterstack.io.api.resources.Challenge;
 import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.partner.MainActivity;
 import monsterstack.io.partner.R;
+import monsterstack.io.partner.challenge.presenter.ChallengeVerificationPresenter;
 import monsterstack.io.partner.common.BasicActivity;
 import monsterstack.io.partner.menu.SettingsActivity;
 import monsterstack.io.partner.settings.MobileNumberSettingsActivity;
-import monsterstack.io.pincapture.PinCapture;
-
-import static android.view.View.GONE;
 
 public class ChallengeVerificationActivity extends BasicActivity {
-    @BindView(R.id.challengeVerificationEdit)
-    PinCapture editText;
 
-    @BindView(R.id.progressbar)
-    ProgressBar progressBar;
-
+    protected ChallengeVerificationPresenter presenter;
     private ServiceLocator serviceLocator;
 
     @Override
     protected void onCreate(Bundle savedBundleState) {
         super.onCreate(savedBundleState);
         this.serviceLocator = ServiceLocator.getInstance(getApplicationContext());
+        presenter = new ChallengeVerificationPresenter();
+        ButterKnife.bind(presenter, this);
 
-        ButterKnife.bind(this);
-
-        progressBar.setVisibility(GONE);
-
-        editText.setOnFinishListener(new PinCapture.OnFinishListener() {
-            @Override
-            public void onFinish(String enteredText) {
-
-            }
-        });
+        presenter.present();
     }
 
     @Override
@@ -89,13 +73,13 @@ public class ChallengeVerificationActivity extends BasicActivity {
     }
 
     public void onVerify() {
-        progressBar.setVisibility(View.VISIBLE);
+        presenter.showProgressBar();
 
         final String source = (String)getIntent().getExtras().get("source");
 
         ChallengeServiceCustom challengeServiceCustom = serviceLocator.getChallengeService();
 
-        String code = editText.getEnteredText();
+        String code = presenter.getCapturedCode();
         challengeServiceCustom.verifyChallengeCode(code, new OnResponseListener<Challenge, HttpError>() {
             @Override
             public void onResponse(Challenge challenge, HttpError httpError) {
@@ -104,12 +88,12 @@ public class ChallengeVerificationActivity extends BasicActivity {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent, enterStageRightBundle());
-                        progressBar.setVisibility(GONE);
+                        presenter.showProgressBar();
                     } else if (source.equals(MobileNumberSettingsActivity.class.getCanonicalName())) {
                         Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent, exitStageLeftBundle());
-                        progressBar.setVisibility(GONE);
+                        presenter.hideProgressBar();
                     }
                 } else {
                     if (httpError.getStatusCode() == 404) {
@@ -121,7 +105,7 @@ public class ChallengeVerificationActivity extends BasicActivity {
                                 httpError);
                     }
 
-                    progressBar.setVisibility(GONE);
+                    presenter.hideProgressBar();
                 }
             }
         });

@@ -107,12 +107,12 @@ public class GroupAdapter extends CardPagerAdapter<Group> {
                 members[3] = new Member("Carl", "Morris", 4, Member.avatars[2]);
                 members[4] = new Member("Jay", "Darfler", 5, Member.avatars[4]);
                 members[5] = new Member("Zach", "Rote", 6, null);
-//                members[6] = new Member("James", "Red", 7, Member.avatars[1]);
-//                members[7] = new Member("Eddy", "Longin", 8, Member.avatars[3]);
-//                members[8] = new Member("Carlos", "Manuel", 9, null);
-//                members[9] = new Member("Jay", "Darfler", 10, Member.avatars[4]);
-//                members[10] = new Member("Peter", "Mist", 11, null);
-//                members[11] = new Member("Jeff", "Den", 12, Member.avatars[4]);
+                members[6] = new Member("James", "Red", 7, Member.avatars[1]);
+                members[7] = new Member("Eddy", "Longin", 8, Member.avatars[3]);
+                members[8] = new Member("Carlos", "Manuel", 9, null);
+                members[9] = new Member("Jay", "Darfler", 10, Member.avatars[4]);
+                members[10] = new Member("Peter", "Mist", 11, null);
+                members[11] = new Member("Jeff", "Den", 12, Member.avatars[4]);
 
                 final Member[] copy = members;
                 ((Activity)context).runOnUiThread(new Runnable() {

@@ -1,48 +1,33 @@
 package monsterstack.io.partner.challenge;
 
 import android.content.Intent;
-import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ProgressBar;
 
-import butterknife.BindView;
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import monsterstack.io.partner.MainActivity;
 import monsterstack.io.partner.R;
+import monsterstack.io.partner.challenge.presenter.PinCapturePresenter;
 import monsterstack.io.partner.common.BasicActivity;
 import monsterstack.io.partner.menu.MenuPreferenceFragment;
 import monsterstack.io.partner.settings.PinSettingsActivity;
-import monsterstack.io.pincapture.PinCapture;
 
 public class PinCaptureActivity extends BasicActivity {
-    @BindView(R.id.pinCaptureEdit)
-    PinCapture editText;
-    @BindView(R.id.keyboard)
-    KeyboardView keyboardView;
-
-    @BindView(R.id.progressbar)
-    ProgressBar progressBar;
+    @Inject
+    PinCapturePresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
+        presenter = new PinCapturePresenter();
 
-        editText.setOnFinishListener(new PinCapture.OnFinishListener() {
-            @Override
-            public void onFinish(String enteredText) {
-
-            }
-        });
-
-        progressBar.setVisibility(View.GONE);
-        keyboardView.setActivated(true);
-        keyboardView.setEnabled(true);
+        ButterKnife.bind(presenter, this);
+        presenter.present();
     }
 
     @Override
@@ -76,7 +61,7 @@ public class PinCaptureActivity extends BasicActivity {
     }
 
     public String getCapturedPin() {
-        return editText.getEnteredText();
+        return presenter.getEnteredPin();
     }
 
     public void onNext() {

@@ -2,7 +2,6 @@ package monsterstack.io.partner.challenge;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import java.io.Serializable;
 
@@ -18,19 +17,17 @@ import monsterstack.io.api.resources.Registration;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.utils.NavigationUtils;
 
-import static android.view.View.GONE;
-
 public class RegistrationChallengeVerificationActivity extends ChallengeVerificationActivity {
 
     @Override
     public void onVerify() {
-        progressBar.setVisibility(View.VISIBLE);
+        presenter.showProgressBar();
 
         final ServiceLocator serviceLocator = getServiceLocator();
         ChallengeServiceCustom challengeServiceCustom = serviceLocator.getChallengeService();
         final RegistrationServiceCustom registrationServiceCustom = serviceLocator.getRegistrationService();
 
-        String code = editText.getEnteredText();
+        String code = presenter.getCapturedCode();
 
         final UserSessionManager sessionManager = new UserSessionManager(getApplicationContext());
 
@@ -45,7 +42,7 @@ public class RegistrationChallengeVerificationActivity extends ChallengeVerifica
                         registerUser(sessionManager, registrationServiceCustom, myRegistration);
                     } else {
                         showError(getResources().getString(getActionTitle()), "Registration Missing!");
-                        progressBar.setVisibility(GONE);
+                        presenter.hideProgressBar();
                     }
                 } else {
                     if (httpError.getStatusCode() == 404) {
@@ -57,7 +54,7 @@ public class RegistrationChallengeVerificationActivity extends ChallengeVerifica
                                 httpError);
                     }
 
-                    progressBar.setVisibility(GONE);
+                    presenter.hideProgressBar();
                 }
             }
         });
@@ -79,9 +76,9 @@ public class RegistrationChallengeVerificationActivity extends ChallengeVerifica
                     Intent intent = new Intent(RegistrationChallengeVerificationActivity.this.getApplicationContext(), RegistrationPinCaptureActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent, bundle);
-                    progressBar.setVisibility(View.GONE);
+                    presenter.hideProgressBar();
                 } else {
-                    progressBar.setVisibility(View.GONE);
+                    presenter.hideProgressBar();
                     showHttpError(getResources().getString(getActionTitle()), httpError);
                 }
             }

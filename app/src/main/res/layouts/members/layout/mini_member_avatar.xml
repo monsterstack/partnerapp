@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/miniMemberAvatar">
+
+    <RelativeLayout
+        android:id="@+id/member_avatar_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <monsterstack.io.avatarview.AvatarView
+            android:id="@+id/memberAvatarView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
+            app:avatar_shape="Rectangle"
+            app:name_size="20dp" />
+
+        <Button
+            android:id="@+id/member_close_button"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:drawableRight="@drawable/ic_close_white_24dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+</LinearLayout>

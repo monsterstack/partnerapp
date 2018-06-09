@@ -1,23 +1,20 @@
 package monsterstack.io.partner.challenge;
 
 import android.content.Intent;
-import android.view.View;
 
 import monsterstack.io.api.custom.AuthServiceCustom;
 import monsterstack.io.api.listeners.OnResponseListener;
 import monsterstack.io.api.resources.Challenge;
 import monsterstack.io.api.resources.HttpError;
 
-import static android.view.View.GONE;
-
 public class SignInPhoneCaptureActivity extends PhoneCaptureActivity {
 
     @Override
     public void onCapture() {
-        progressBar.setVisibility(View.VISIBLE);
+        presenter.showProgressBar();
 
         Challenge challenge = new Challenge();
-        challenge.setPhoneNumber(editText.getText().toString());
+        challenge.setPhoneNumber(presenter.getPhoneNumber());
         AuthServiceCustom authService = getServiceLocator().getAuthService();
         authService.requestAccess(challenge, onResponseListener());
     }
@@ -34,11 +31,11 @@ public class SignInPhoneCaptureActivity extends PhoneCaptureActivity {
                     applySourceToIntent(intent, SignInPhoneCaptureActivity.class);
 
                     startActivity(intent, enterStageRightBundle());
-                    progressBar.setVisibility(GONE);
+                    presenter.hideProgressBar();
 
                 } else {
                     showHttpError(getResources().getString(getActionTitle()), httpError);
-                    progressBar.setVisibility(GONE);
+                    presenter.hideProgressBar();
                 }
             }
         };

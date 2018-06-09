@@ -20,65 +20,57 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:paddingBottom="0dp"
+                android:paddingBottom="1dp"
                 android:orientation="vertical">
 
                 <include layout="@layout/group_details_block"/>
             </LinearLayout>
 
-            <LinearLayout
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
+            <RelativeLayout
+                android:padding="0dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <RelativeLayout
-                    android:padding="0dp"
+                android:layout_height="match_parent">
+
+                <monsterstack.io.gridlistview.GridListView
+                    android:id="@+id/membersView"
+                    android:clipToPadding="false"
                     android:layout_width="match_parent"
-                    android:layout_height="320dp">
+                    android:layout_height="wrap_content" />
 
-                    <monsterstack.io.gridlistview.GridListView
-                        android:id="@+id/membersView"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
-                        android:clipToPadding="false"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                <!-- Mini Member Avatar
+                        here we allow for the display of the member avatar
+                        scaled up.  Closable of course.
+                    -->
+                <include layout="@layout/mini_member_avatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
 
-                    <!-- Fragment for Member Details -->
-                    <!--<RelativeLayout android:id="@+id/miniMemberDetails"-->
-                        <!--android:visibility="gone"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content">-->
-                        <!--<fragment-->
-                            <!--android:id="@+id/fooFragment"-->
-                            <!--android:name="monsterstack.io.partner.main.MiniMemberDetailsFragment"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"/>-->
-                    <!--</RelativeLayout>-->
+                <!-- Mini Group Join
+                        here we allow for the display of Join - where a user
+                        can easily join at a vacant draw slot.
+                    -->
+                <include layout="@layout/mini_group_join" android:visibility="gone"/>
 
-                    <include layout="@layout/mini_member_details" android:visibility="gone"/>
-                    <include layout="@layout/mini_group_join" android:visibility="gone"/>
-
-                    <TextView
-                        android:id="@+id/capacity"
-                        android:layout_below="@id/membersView"
-                        android:text="12 of 12"
-                        android:textStyle="bold"
-                        android:textSize="12sp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_alignParentBottom="true"
-                        android:textColor="@color/colorSecondaryText"
-                        android:textAlignment="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </RelativeLayout>
-
-            </LinearLayout>
-
+                <TextView
+                    android:id="@+id/capacity"
+                    android:layout_below="@id/membersView"
+                    android:text="12 of 12"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_alignParentBottom="true"
+                    android:textColor="@color/colorSecondaryText"
+                    android:textAlignment="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
         </LinearLayout>
-
     </FrameLayout>
 
+    <!-- Member Details View
+            here we allow for the display of selected member details
+            in particular - Full name, draw slot, next draw date, etc.
+        -->
+    <include layout="@layout/mini_member_details" android:visibility="gone"/>
 </android.support.v7.widget.CardView>

@@ -8,21 +8,9 @@
 
     <monsterstack.io.avatarview.AvatarView
         android:id="@+id/memberAvatarView"
-        android:layout_width="78dp"
-        android:layout_height="78dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:padding="0dp"
         app:avatar_shape="Rectangle"
         app:name_size="8sp"/>
-
-    <!-- Make invisible - remove later
-    <TextView
-        android:id="@+id/memberFullName"
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textAlignment="center"
-        android:visibility="gone"
-        android:textSize="10sp"/>
--->
 </LinearLayout>

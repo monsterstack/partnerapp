@@ -1,7 +1,6 @@
 package monsterstack.io.partner.challenge;
 
 import android.content.Intent;
-import android.view.View;
 
 import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.UserSessionManager;
@@ -15,19 +14,17 @@ import monsterstack.io.api.resources.User;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.menu.SettingsActivity;
 
-import static android.view.View.GONE;
-
 public class MobileNumberUpdateChallengeVerificationActivity extends ChallengeVerificationActivity {
 
     @Override
     public void onVerify() {
-        progressBar.setVisibility(View.VISIBLE);
+        presenter.showProgressBar();
 
         ServiceLocator serviceLocator = getServiceLocator();
         final ChallengeServiceCustom challengeServiceCustom = serviceLocator.getChallengeService();
         final UserServiceCustom userServiceCustom = serviceLocator.getUserService();
 
-        String code = editText.getEnteredText();
+        String code = presenter.getCapturedCode();
 
         final UserSessionManager sessionManager = new UserSessionManager(getApplicationContext());
         final AuthenticatedUser authenticatedUser = sessionManager.getUserDetails();
@@ -60,7 +57,7 @@ public class MobileNumberUpdateChallengeVerificationActivity extends ChallengeVe
                                 httpError);
                     }
 
-                    progressBar.setVisibility(GONE);
+                    presenter.hideProgressBar();
                 }
             }
         };
@@ -80,10 +77,10 @@ public class MobileNumberUpdateChallengeVerificationActivity extends ChallengeVe
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                     startActivity(intent, exitStageLeftBundle());
-                    progressBar.setVisibility(GONE);
+                    presenter.hideProgressBar();
                 } else {
                     showHttpError(getResources().getString(getActionTitle()), httpError);
-                    progressBar.setVisibility(GONE);
+                    presenter.hideProgressBar();
                 }
             }
         };

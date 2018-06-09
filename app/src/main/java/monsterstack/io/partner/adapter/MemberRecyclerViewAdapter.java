@@ -49,6 +49,8 @@ public class MemberRecyclerViewAdapter extends RecyclerView.Adapter<MemberRecycl
         } else {
             String fullName = member.getFullName();
             holder.avatarView.setUser(new User(fullName, member.getAvatar(), R.color.colorAccent));
+
+
         }
     }
 

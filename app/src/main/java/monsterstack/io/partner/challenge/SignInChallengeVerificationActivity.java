@@ -2,7 +2,6 @@ package monsterstack.io.partner.challenge;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.UserSessionManager;
@@ -15,18 +14,16 @@ import monsterstack.io.partner.R;
 import monsterstack.io.partner.services.MessagingService;
 import monsterstack.io.partner.utils.NavigationUtils;
 
-import static android.view.View.GONE;
-
 public class SignInChallengeVerificationActivity extends ChallengeVerificationActivity {
 
     @Override
     public void onVerify() {
-        progressBar.setVisibility(View.VISIBLE);
+        presenter.showProgressBar();
 
         ServiceLocator serviceLocator = getServiceLocator();
         final AuthServiceCustom authServiceCustom = serviceLocator.getAuthService();
 
-        String code = editText.getEnteredText();
+        String code = presenter.getCapturedCode();
 
         final UserSessionManager sessionManager = new UserSessionManager(getApplicationContext());
 
@@ -51,7 +48,7 @@ public class SignInChallengeVerificationActivity extends ChallengeVerificationAc
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent, bundle);
                     }
-                    progressBar.setVisibility(View.GONE);
+                    presenter.hideProgressBar();
                 } else {
                     if (httpError.getStatusCode() == 404) {
                         showHttpError(getResources().getString(getActionTitle()),
@@ -66,7 +63,7 @@ public class SignInChallengeVerificationActivity extends ChallengeVerificationAc
                                 httpError);
                     }
 
-                    progressBar.setVisibility(GONE);
+                    presenter.showProgressBar();
                 }
             }
         });
