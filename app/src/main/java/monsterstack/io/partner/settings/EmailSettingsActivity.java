@@ -1,15 +1,12 @@
 package monsterstack.io.partner.settings;
 
-import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 
-import butterknife.BindView;
+import java.util.Map;
+import java.util.Optional;
+
 import butterknife.ButterKnife;
 import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.UserSessionManager;
@@ -19,52 +16,23 @@ import monsterstack.io.api.resources.AuthenticatedUser;
 import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.api.resources.User;
 import monsterstack.io.partner.R;
-
-import static android.view.View.GONE;
+import monsterstack.io.partner.settings.presenter.EmailSettingsPresenter;
 
 public class EmailSettingsActivity extends DetailSettingsActivity {
-    @BindView(R.id.emailEdit)
-    EditText editText;
-    @BindView(R.id.keyboard)
-    KeyboardView keyboardView;
-
-    @BindView(R.id.progressbar)
-    ProgressBar progressBar;
+    protected EmailSettingsPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
+        presenter = new EmailSettingsPresenter(this);
+        ButterKnife.bind(presenter, this);
 
-        editText.setSelection(editText.getText().length());
-
-        keyboardView.setActivated(true);
-        keyboardView.setEnabled(true);
-
-        UserSessionManager userSessionManager = new UserSessionManager(this);
-        AuthenticatedUser user = userSessionManager.getUserDetails();
-
-        /* clear it */
-        editText.setText(null);
-
-        if(null != user) {
-            editText.setText(user.getEmailAddress());
-        }
+        presenter.present(Optional.<Map>empty());
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.update_action, menu);
-
-        menu.findItem(R.id.update_button).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                onUpdate();
-                return false;
-            }
-        });
-        return true;
+        return presenter.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -92,7 +60,7 @@ public class EmailSettingsActivity extends DetailSettingsActivity {
     }
 
     private void updateEmailAddress() {
-        progressBar.setVisibility(View.VISIBLE);
+        presenter.showProgressBar();
         final UserSessionManager sessionManager = new UserSessionManager(getApplicationContext());
         final AuthenticatedUser authenticatedUser = sessionManager.getUserDetails();
         ServiceLocator serviceLocator = ServiceLocator.getInstance(this);
@@ -100,7 +68,7 @@ public class EmailSettingsActivity extends DetailSettingsActivity {
         UserServiceCustom userServiceCustom = serviceLocator.getUserService();
         final User userToUpdate = User.from(authenticatedUser);
 
-        String newEmailAddress = editText.getText().toString();
+        String newEmailAddress = presenter.getCapturedEmailAddress();
         userToUpdate.setEmailAddress(newEmailAddress);
 
         userServiceCustom.updateUser(userToUpdate.getId(), userToUpdate, new OnResponseListener<User, HttpError>() {
@@ -110,10 +78,10 @@ public class EmailSettingsActivity extends DetailSettingsActivity {
                     authenticatedUser.setEmailAddress(user.getEmailAddress());
                     sessionManager.createUserSession(authenticatedUser);
                     // then if alls good
-                    progressBar.setVisibility(GONE);
+                    presenter.hideProgressBar();
                     finish();
                 } else {
-                    progressBar.setVisibility(GONE);
+                    presenter.hideProgressBar();
                     showHttpError(getResources().getString(getActionTitle()), httpError);
                 }
             }

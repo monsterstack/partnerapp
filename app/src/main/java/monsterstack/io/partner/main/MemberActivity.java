@@ -34,7 +34,6 @@ public class MemberActivity extends BasicActivity {
 
         ButterKnife.bind(this);
 
-
         this.member = (Member)getIntent().getSerializableExtra("member");
         memberNameView.setText(member.getFullName());
         avatarView.setUser(new User(member.getFullName(), member.getAvatar(), R.color.colorAccent ));

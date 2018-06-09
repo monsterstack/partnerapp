@@ -7,9 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
@@ -20,40 +17,30 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.util.Map;
+import java.util.Optional;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.custom.UserServiceCustom;
 import monsterstack.io.api.listeners.OnResponseListener;
 import monsterstack.io.api.resources.AuthenticatedUser;
 import monsterstack.io.api.resources.HttpError;
-import monsterstack.io.avatarview.AvatarView;
 import monsterstack.io.avatarview.User;
 import monsterstack.io.partner.R;
+import monsterstack.io.partner.menu.presenter.ProfilePresenter;
 
 public class ProfileActivity extends MenuActivity {
-    @BindView(R.id.userImage)
-    AvatarView avatarView;
-
-    @BindView(R.id.userFullName)
-    TextView fullName;
-
-    @BindView(R.id.progressbar)
-    ProgressBar progressBar;
+    protected ProfilePresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
+        presenter = new ProfilePresenter(this);
+        ButterKnife.bind(presenter, this);
 
-        UserSessionManager sessionManager = new UserSessionManager(this);
-        AuthenticatedUser authenticatedUser = sessionManager.getUserDetails();
-        fullName.setText(authenticatedUser.getFullName());
-        avatarView.setUser(new User(authenticatedUser.getFullName(),
-                authenticatedUser.getAvatarUrl(), R.color.colorAccent));
+        presenter.present(Optional.<Map>empty());
     }
 
     @Override
@@ -76,12 +63,6 @@ public class ProfileActivity extends MenuActivity {
         return getContentView();
     }
 
-    @OnClick(R.id.userImage)
-    public void onClick(View view) {
-        ImagePicker.create(this) // Activity or Fragment
-            .start();
-    }
-
     @Override
     public void finish() {
         Intent intent = new Intent();
@@ -93,8 +74,8 @@ public class ProfileActivity extends MenuActivity {
     @Override
     protected void onActivityResult(int requestCode, final int resultCode, Intent data) {
         if (ImagePicker.shouldHandle(requestCode, resultCode, data)) {
-            progressBar.setVisibility(View.VISIBLE);
-            progressBar.refreshDrawableState();
+            presenter.showProgressBar();
+
             // or get a single image only
             Image image = ImagePicker.getFirstImageOrNull(data);
 
@@ -121,7 +102,7 @@ public class ProfileActivity extends MenuActivity {
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                progressBar.setVisibility(View.GONE);
+                presenter.hideProgressBar();
                 // Handle unsuccessful uploads
                 showError("Failed to upload",
                         "We were unable to upload your Profile Avatar.");
@@ -155,12 +136,12 @@ public class ProfileActivity extends MenuActivity {
                     @Override
                     public void onResponse(monsterstack.io.api.resources.User user, HttpError httpError) {
                         if (null != user) {
-                            progressBar.setVisibility(View.GONE);
+                            presenter.hideProgressBar();
                             reload(new AuthenticatedUser(user));
 
                             announceAvatarUpdate();
                         } else {
-                            progressBar.setVisibility(View.GONE);
+                            presenter.hideProgressBar();
                             showHttpError(getResources().getString(getActionTitle()), httpError);
                         }
                     }
@@ -173,9 +154,9 @@ public class ProfileActivity extends MenuActivity {
     private void reload(AuthenticatedUser updatedUser) {
         UserSessionManager sessionManager = new UserSessionManager(this);
         sessionManager.createUserSession(updatedUser);
-        avatarView.setUser(new User(updatedUser.getFullName(),
-                updatedUser.getAvatarUrl(), R.color.colorAccent));
-        avatarView.refreshDrawableState();
+        presenter.setAvatarUser(new User(updatedUser.getFullName(),
+                        updatedUser.getAvatarUrl(), R.color.colorAccent));
+
     }
 
     private void announceAvatarUpdate() {

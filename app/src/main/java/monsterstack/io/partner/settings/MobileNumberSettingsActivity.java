@@ -2,59 +2,36 @@ package monsterstack.io.partner.settings;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 
-import butterknife.BindView;
+import java.util.Map;
+import java.util.Optional;
+
 import butterknife.ButterKnife;
 import monsterstack.io.api.ServiceLocator;
-import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.custom.ChallengeServiceCustom;
 import monsterstack.io.api.listeners.OnResponseListener;
-import monsterstack.io.api.resources.AuthenticatedUser;
 import monsterstack.io.api.resources.Challenge;
 import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.challenge.MobileNumberUpdateChallengeVerificationActivity;
-
-import static android.view.View.GONE;
+import monsterstack.io.partner.settings.presenter.MobileNumberSettingsPresenter;
 
 public class MobileNumberSettingsActivity extends DetailSettingsActivity {
 
-    @BindView(R.id.mobileEdit)
-    EditText editText;
-
-    @BindView(R.id.keyboard)
-    KeyboardView keyboardView;
-
-    @BindView(R.id.progressbar)
-    ProgressBar progressBar;
+    protected MobileNumberSettingsPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        presenter = new MobileNumberSettingsPresenter(this);
 
-        ButterKnife.bind(this);
+        ButterKnife.bind(presenter, this);
 
-        editText.setSelection(editText.getText().length());
-        editText.setRawInputType(Configuration.KEYBOARD_12KEY);
-
-        keyboardView.setActivated(true);
-        keyboardView.setEnabled(true);
-
-        UserSessionManager userSessionManager = new UserSessionManager(this);
-        AuthenticatedUser user = userSessionManager.getUserDetails();
-
-        if(null != user.getPhoneNumber()) {
-            editText.setText(user.getPhoneNumber());
-        }
+        presenter.present(Optional.<Map>empty());
     }
 
     public int getContentView() {
@@ -95,11 +72,11 @@ public class MobileNumberSettingsActivity extends DetailSettingsActivity {
         ServiceLocator serviceLocator = getServiceLocator();
         ChallengeServiceCustom challengeService = serviceLocator.getChallengeService();
 
-        String phoneNumber = editText.getText().toString();
+        String phoneNumber = presenter.getCapturedPhoneNumber();
 
         Challenge challenge = new Challenge();
         challenge.setPhoneNumber(phoneNumber);
-        progressBar.setVisibility(View.VISIBLE);
+        presenter.showProgressBar();
 
         challengeService.submitChallenge(challenge, onResponseListener());
 
@@ -117,11 +94,11 @@ public class MobileNumberSettingsActivity extends DetailSettingsActivity {
                     intent.putExtra("source", MobileNumberSettingsActivity.class.getCanonicalName());
 
                     startActivity(intent, bundle);
-                    progressBar.setVisibility(GONE);
+                    presenter.hideProgressBar();
 
                 } else {
                     showHttpError(getResources().getString(getActionTitle()), httpError);
-                    progressBar.setVisibility(GONE);
+                    presenter.hideProgressBar();
                 }
             }
         };

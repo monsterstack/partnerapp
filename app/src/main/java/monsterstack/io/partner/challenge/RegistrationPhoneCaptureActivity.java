@@ -8,6 +8,7 @@ import monsterstack.io.api.resources.Challenge;
 import monsterstack.io.api.resources.HttpError;
 
 public class RegistrationPhoneCaptureActivity extends PhoneCaptureActivity {
+    public static final String REGISTRATION_EXTRA = "registration";
 
     @Override
     public void onCapture() {

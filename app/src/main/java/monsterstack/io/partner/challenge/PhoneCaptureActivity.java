@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
-import android.view.MenuItem;
+
+import java.util.Map;
+import java.util.Optional;
 
 import butterknife.ButterKnife;
 import monsterstack.io.api.custom.ChallengeServiceCustom;
@@ -33,28 +35,15 @@ public class PhoneCaptureActivity extends BasicActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new PhoneCapturePresenter();
+        presenter = new PhoneCapturePresenter(this);
         ButterKnife.bind(presenter, this);
 
-        presenter.present();
+        presenter.present(Optional.<Map>empty());
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.next_action, menu);
-
-        MenuItem nextButton = menu.findItem(R.id.next_button);
-
-        nextButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                onCapture();
-                return false;
-            }
-        });
-
-        return true;
+        return presenter.onCreateOptionsMenu(menu);
     }
 
     @Override

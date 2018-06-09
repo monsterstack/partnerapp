@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
-import android.view.MenuItem;
+
+import java.util.Map;
+import java.util.Optional;
 
 import butterknife.ButterKnife;
 import monsterstack.io.api.ServiceLocator;
@@ -28,10 +30,10 @@ public class ChallengeVerificationActivity extends BasicActivity {
     protected void onCreate(Bundle savedBundleState) {
         super.onCreate(savedBundleState);
         this.serviceLocator = ServiceLocator.getInstance(getApplicationContext());
-        presenter = new ChallengeVerificationPresenter();
+        presenter = new ChallengeVerificationPresenter(this);
         ButterKnife.bind(presenter, this);
 
-        presenter.present();
+        presenter.present(Optional.<Map>empty());
     }
 
     @Override
@@ -46,20 +48,7 @@ public class ChallengeVerificationActivity extends BasicActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.submit_action, menu);
-
-        MenuItem submitButton = menu.findItem(R.id.submit_button);
-
-        submitButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                onVerify();
-                return false;
-            }
-        });
-
-        return true;
+        return presenter.onCreateOptionsMenu(menu);
     }
 
     @Override
