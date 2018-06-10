@@ -8,14 +8,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 import butterknife.ButterKnife;
+import monsterstack.io.api.listeners.OnResponseListener;
+import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.common.BasicActivity;
 import monsterstack.io.partner.domain.Member;
+import monsterstack.io.partner.domain.Transaction;
+import monsterstack.io.partner.domain.TransactionType;
 import monsterstack.io.partner.main.control.MemberControl;
 import monsterstack.io.partner.main.presenter.MemberPresenter;
 
@@ -88,5 +93,18 @@ public class MemberActivity extends BasicActivity implements MemberControl {
                 return false;
             }
         };
+    }
+
+
+    public void findTransactionsForMemberGroup(OnResponseListener<Transaction[], HttpError> listener) {
+        Transaction[] transactions = new Transaction[] {
+                new Transaction(Instant.now(), TransactionType.DEBIT, 50.00 ),
+                new Transaction(Instant.now(), TransactionType.CREDIT, 5.00),
+                new Transaction(Instant.now(), TransactionType.DEBIT, 23.45),
+                new Transaction(Instant.now(), TransactionType.DEBIT, 50.00),
+                new Transaction(Instant.now(), TransactionType.DEBIT, 5.00)
+        };
+
+        listener.onResponse(transactions, null);
     }
 }

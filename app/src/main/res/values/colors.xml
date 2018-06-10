@@ -16,4 +16,8 @@
     <color name="colorIconText">#FFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="offWhite">#fcfcfc</color>
+
+
+    <color name="red">#f16448</color>
+    <color name="green">#66e2ce</color>
 </resources>

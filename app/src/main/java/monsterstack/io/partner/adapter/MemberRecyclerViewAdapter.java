@@ -61,6 +61,7 @@ public class MemberRecyclerViewAdapter extends RecyclerView.Adapter<MemberRecycl
     }
 
     // stores and recycles views as they are scrolled off screen
+    // needs to isolate resources away from adapter -- see GroupAdapterPresenter
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         AvatarView avatarView;
         TextView fullNameView;
