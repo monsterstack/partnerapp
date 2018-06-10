@@ -107,7 +107,7 @@ public abstract class BasicActivity extends AppCompatActivity {
         return NavigationUtils.exitStageLeftBundle(getApplicationContext());
     }
 
-    public  void showHttpError(String title, HttpError error) {
+    public void showHttpError(String title, HttpError error) {
         showHttpError(title, error.getMessage(), error);
     }
 

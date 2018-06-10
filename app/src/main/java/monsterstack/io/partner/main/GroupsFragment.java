@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,38 +13,26 @@ import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 
-import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import monsterstack.io.api.listeners.OnResponseListener;
 import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.adapter.GroupAdapter;
-import monsterstack.io.partner.adapter.MemberRecyclerViewAdapter;
 import monsterstack.io.partner.adapter.ViewAnimatedListener;
 import monsterstack.io.partner.domain.Group;
+import monsterstack.io.partner.main.control.GroupFragmentControl;
+import monsterstack.io.partner.main.presenter.GroupFragmentPresenter;
 import monsterstack.io.partner.utils.NavigationUtils;
-import monsterstack.io.streamview.PausingViewPager;
-import monsterstack.io.streamview.ShadowTransformer;
 
-import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
-import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
-
-public class GroupsFragment extends Fragment {
+public class GroupsFragment extends Fragment implements GroupFragmentControl {
     private View view;
 
-    private MemberRecyclerViewAdapter adapter;
     private Group selectedGroup;
 
-    @BindView(R.id.viewPager)
-    PausingViewPager viewPager;
-
-    @BindView(R.id.speedDial)
-    SpeedDialView speedDialView;
-
-    // Array of strings...
-    private Group[] groupArray;
+    private GroupFragmentPresenter presenter;
 
     public static GroupsFragment newInstance(String title) {
         Bundle args = new Bundle();
@@ -64,13 +50,15 @@ public class GroupsFragment extends Fragment {
         this.view = inflater.inflate(
                 R.layout.fragment_groups, container, false);
 
-        ButterKnife.bind(this, this.view);
+        presenter = new GroupFragmentPresenter(this);
+        ButterKnife.bind(presenter, this.view);
 
-        initialize();
+        presenter.present(Optional.<Map>empty());
 
         return this.view;
     }
 
+    @Override
     public void viewGroupSchedule(Group group) {
         Log.d("ViewSched", "view schedule");
         Bundle bundle = NavigationUtils.enterStageRightBundle(getContext());
@@ -79,6 +67,7 @@ public class GroupsFragment extends Fragment {
         startActivity(intent, bundle);
     }
 
+    @Override
     public void viewGroupChat(Group group) {
         Log.d("ViewChat", "view chat");
         Bundle bundle = NavigationUtils.enterStageRightBundle(getContext());
@@ -87,6 +76,7 @@ public class GroupsFragment extends Fragment {
         startActivity(intent, bundle);
     }
 
+    @Override
     public void inviteMembers(Group group) {
         Intent intent = new AppInviteInvitation.IntentBuilder("Welcome to Partner")
                 .setMessage("You've been invited to join this Partner")
@@ -99,12 +89,14 @@ public class GroupsFragment extends Fragment {
             getActivity().overridePendingTransition(R.anim.slide_left, R.anim.slide_right);
     }
 
+    @Override
     public void createGroup() {
         Bundle bundle = NavigationUtils.enterStageRightBundle(getContext());
         Intent intent = new Intent(getContext(), GroupCreationActivity.class);
         startActivity(intent, bundle);
     }
 
+    @Override
     public void viewGroupTransactions(Group group) {
         Bundle bundle = NavigationUtils.enterStageRightBundle(getContext());
         Intent intent = new Intent(getContext(), GroupTransactionsActivity.class);
@@ -112,64 +104,30 @@ public class GroupsFragment extends Fragment {
         startActivity(intent, bundle);
     }
 
-    private void inflateFloatingActionButton(Group[] groups) {
-        if (groups.length == 0) {
-            speedDialView.inflate(R.menu.group_view_speed_dial_minimal);
-        } else {
-            speedDialView.inflate(R.menu.group_view_speed_dial);
-        }
+    @Override
+    public void inflateFloatingActionButton(Group[] groups) {
+        presenter.inflateSpeedDial();
     }
 
-    private void listenForCardViewAnimationEvents(GroupAdapter cardAdapter) {
+    @Override
+    public void listenForCardViewAnimationEvents(GroupAdapter cardAdapter) {
         cardAdapter.setViewAnimatedListener(new ViewAnimatedListener() {
             @Override
             public void onViewExpanded() {
-                speedDialView.hide();
-                viewPager.setPaused(true);
+                presenter.hideSpeedDialView();
+                presenter.pauseViewPager();
             }
 
             @Override
             public void onViewCollapsed() {
-                speedDialView.show();
-                viewPager.setPaused(false);
+                presenter.showSpeedDialView();
+                presenter.unpauseViewPager();
             }
         });
     }
 
-    private void prepareViewPager(final ViewPager viewPager, final GroupAdapter cardAdapter) {
-        int margin = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, -20,
-                getResources().getDisplayMetrics());
-        viewPager.setPageMargin(-margin);
-
-        viewPager.setPageMargin(margin);
-        viewPager.setAdapter(cardAdapter);
-        viewPager.setPageTransformer(false, new ShadowTransformer(viewPager, cardAdapter));
-        viewPager.setOffscreenPageLimit(5);
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                GroupsFragment.this.selectedGroup = groupArray[position];
-                cardAdapter.reset();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                if (state == SCROLL_STATE_DRAGGING)
-                    speedDialView.hide();
-                else if (state == SCROLL_STATE_SETTLING)
-                    speedDialView.show();
-                else
-                    speedDialView.show();
-            }
-        });
-    }
-
-    private void listenForSpeedDialSelections(SpeedDialView speedDial) {
+    @Override
+    public void listenForSpeedDialSelections(SpeedDialView speedDial) {
         speedDial.setOnActionSelectedListener(new SpeedDialView.OnActionSelectedListener() {
             @Override
             public boolean onActionSelected(SpeedDialActionItem speedDialActionItem) {
@@ -199,7 +157,13 @@ public class GroupsFragment extends Fragment {
         });
     }
 
-    private void findGroupsAssociatedWithUser(OnResponseListener<Group[], HttpError> onResponseListener) {
+    @Override
+    public void setSelectedGroup(Group group) {
+        this.selectedGroup = group;
+    }
+
+    @Override
+    public void findGroupsAssociatedWithUser(OnResponseListener<Group[], HttpError> onResponseListener) {
         Group[] groups = {
                 new Group("Family", 10),
                 new Group("Friends", 5),
@@ -209,24 +173,5 @@ public class GroupsFragment extends Fragment {
                 new Group("Frenemies", 21)
         };
         onResponseListener.onResponse(groups, null);
-    }
-
-    private void initialize() {
-        findGroupsAssociatedWithUser(new OnResponseListener<Group[], HttpError>() {
-            @Override
-            public void onResponse(Group[] groups, HttpError httpError) {
-                groupArray = groups;
-                final GroupAdapter cardAdapter = new GroupAdapter(getContext(), Arrays.asList(groupArray));
-
-                inflateFloatingActionButton(groups);
-
-                listenForCardViewAnimationEvents(cardAdapter);
-
-                prepareViewPager(viewPager, cardAdapter);
-
-                listenForSpeedDialSelections(speedDialView);
-
-            }
-        });
     }
 }

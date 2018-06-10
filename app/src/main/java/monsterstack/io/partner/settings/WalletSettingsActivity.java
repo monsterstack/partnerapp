@@ -1,5 +1,6 @@
 package monsterstack.io.partner.settings;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +11,10 @@ import java.util.Optional;
 
 import butterknife.ButterKnife;
 import monsterstack.io.partner.R;
+import monsterstack.io.partner.settings.control.WalletSettingsControl;
 import monsterstack.io.partner.settings.presenter.WalletSettingsPresenter;
 
-public class WalletSettingsActivity extends DetailSettingsActivity {
+public class WalletSettingsActivity extends DetailSettingsActivity implements WalletSettingsControl {
     private WalletSettingsPresenter presenter;
 
     @Override
@@ -32,6 +34,11 @@ public class WalletSettingsActivity extends DetailSettingsActivity {
     @Override
     public void setUpTransitions() {
 
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 
     @Override

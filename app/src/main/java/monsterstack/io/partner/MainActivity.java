@@ -81,6 +81,7 @@ public class MainActivity extends BasicActivity {
     }
 
     protected void init() {
+
         bottomNavigationView.enableShiftingMode(false);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -172,6 +173,8 @@ public class MainActivity extends BasicActivity {
                 // Code goes here
             }
         });
+
+        //skeletonScreen.hide();
     }
 
     @Override

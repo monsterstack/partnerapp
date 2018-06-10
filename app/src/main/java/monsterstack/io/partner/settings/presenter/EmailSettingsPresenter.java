@@ -19,6 +19,7 @@ import monsterstack.io.partner.common.HasProgressBarSupport;
 import monsterstack.io.partner.common.presenter.PresenterAdapter;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.settings.EmailSettingsActivity;
+import monsterstack.io.partner.settings.control.EmailSettingsControl;
 
 import static android.view.View.GONE;
 
@@ -31,10 +32,10 @@ public class EmailSettingsPresenter extends PresenterAdapter implements HasProgr
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
 
-    private Context context;
+    private EmailSettingsControl control;
 
-    public EmailSettingsPresenter(Context context) {
-        this.context = context;
+    public EmailSettingsPresenter(EmailSettingsControl control) {
+        this.control = control;
     }
 
     public String getCapturedEmailAddress() {
@@ -54,13 +55,13 @@ public class EmailSettingsPresenter extends PresenterAdapter implements HasProgr
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        ((Activity)context).getMenuInflater().inflate(R.menu.update_action, menu);
+        ((Activity)control.getContext()).getMenuInflater().inflate(R.menu.update_action, menu);
 
         // Damn Coupling..
         menu.findItem(R.id.update_button).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                ((EmailSettingsActivity)context).onUpdate();
+                control.onUpdate();
                 return false;
             }
         });
@@ -74,7 +75,7 @@ public class EmailSettingsPresenter extends PresenterAdapter implements HasProgr
         keyboardView.setActivated(true);
         keyboardView.setEnabled(true);
 
-        UserSessionManager userSessionManager = new UserSessionManager(this.context);
+        UserSessionManager userSessionManager = new UserSessionManager(control.getContext());
         AuthenticatedUser user = userSessionManager.getUserDetails();
 
         /* clear it */

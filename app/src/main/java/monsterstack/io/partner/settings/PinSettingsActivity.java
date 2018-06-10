@@ -1,5 +1,6 @@
 package monsterstack.io.partner.settings;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,9 +13,10 @@ import butterknife.ButterKnife;
 import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.menu.SettingsActivity;
+import monsterstack.io.partner.settings.control.PinSettingsControl;
 import monsterstack.io.partner.settings.presenter.PinSettingsPresenter;
 
-public class PinSettingsActivity extends DetailSettingsActivity {
+public class PinSettingsActivity extends DetailSettingsActivity implements PinSettingsControl {
     protected PinSettingsPresenter presenter;
 
     @Override
@@ -46,6 +48,10 @@ public class PinSettingsActivity extends DetailSettingsActivity {
         return R.string.detail_settings_pin;
     }
 
+    @Override
+    public Context getContext() { return this; }
+
+    @Override
     public void onUpdate() {
         UserSessionManager sessionManager = new UserSessionManager(this);
         String pin = presenter.getCapturedPin();

@@ -1,5 +1,6 @@
 package monsterstack.io.partner.settings;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -8,9 +9,10 @@ import java.util.Optional;
 
 import butterknife.ButterKnife;
 import monsterstack.io.partner.R;
+import monsterstack.io.partner.settings.control.TwoStepVerificationSettingsControl;
 import monsterstack.io.partner.settings.presenter.TwoStepVerificationSettingsPresenter;
 
-public class TwoStepVerificationSettingsActivity extends DetailSettingsActivity {
+public class TwoStepVerificationSettingsActivity extends DetailSettingsActivity implements TwoStepVerificationSettingsControl {
     private TwoStepVerificationSettingsPresenter presenter;
 
     @Override
@@ -33,9 +35,13 @@ public class TwoStepVerificationSettingsActivity extends DetailSettingsActivity 
     }
 
     @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
     public int getActionTitle() {
         return R.string.detail_settings_two_step_verify;
     }
-
 
 }

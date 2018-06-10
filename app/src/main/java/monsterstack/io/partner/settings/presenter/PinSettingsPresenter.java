@@ -1,7 +1,6 @@
 package monsterstack.io.partner.settings.presenter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.inputmethodservice.KeyboardView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,10 +11,10 @@ import java.util.Map;
 import java.util.Optional;
 
 import butterknife.BindView;
+import monsterstack.io.partner.R;
 import monsterstack.io.partner.common.HasProgressBarSupport;
 import monsterstack.io.partner.common.presenter.PresenterAdapter;
-import monsterstack.io.partner.R;
-import monsterstack.io.partner.settings.PinSettingsActivity;
+import monsterstack.io.partner.settings.control.PinSettingsControl;
 import monsterstack.io.pincapture.PinCapture;
 
 import static android.view.View.GONE;
@@ -29,10 +28,10 @@ public class PinSettingsPresenter extends PresenterAdapter implements HasProgres
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
 
-    private Context context;
+    private PinSettingsControl control;
 
-    public PinSettingsPresenter(Context context) {
-        this.context = context;
+    public PinSettingsPresenter(PinSettingsControl control) {
+        this.control = control;
     }
 
     public String getCapturedPin() {
@@ -65,13 +64,12 @@ public class PinSettingsPresenter extends PresenterAdapter implements HasProgres
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        ((Activity)context).getMenuInflater().inflate(R.menu.update_action, menu);
+        ((Activity)control.getContext()).getMenuInflater().inflate(R.menu.update_action, menu);
 
-        // Damn Coupling..
         menu.findItem(R.id.update_button).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                ((PinSettingsActivity)context).onUpdate();
+                control.onUpdate();
                 return false;
             }
         });

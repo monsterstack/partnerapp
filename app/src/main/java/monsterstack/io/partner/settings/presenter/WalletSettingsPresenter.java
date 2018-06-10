@@ -1,6 +1,5 @@
 package monsterstack.io.partner.settings.presenter;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -12,9 +11,10 @@ import java.util.Optional;
 import butterknife.BindView;
 import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.resources.AuthenticatedUser;
+import monsterstack.io.partner.R;
 import monsterstack.io.partner.common.HasProgressBarSupport;
 import monsterstack.io.partner.common.presenter.PresenterAdapter;
-import monsterstack.io.partner.R;
+import monsterstack.io.partner.settings.control.WalletSettingsControl;
 
 public class WalletSettingsPresenter extends PresenterAdapter implements HasProgressBarSupport {
     @BindView(R.id.walletAddressEdit)
@@ -26,10 +26,10 @@ public class WalletSettingsPresenter extends PresenterAdapter implements HasProg
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
 
-    private Context context;
+    private WalletSettingsControl control;
 
-    public WalletSettingsPresenter(Context context) {
-        this.context = context;
+    public WalletSettingsPresenter(WalletSettingsControl control) {
+        this.control = control;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class WalletSettingsPresenter extends PresenterAdapter implements HasProg
 
     @Override
     public void present(Optional<Map> metadata) {
-        UserSessionManager userSessionManager = new UserSessionManager(this.context);
+        UserSessionManager userSessionManager = new UserSessionManager(control.getContext());
         AuthenticatedUser authenticatedUser = userSessionManager.getUserDetails();
 
         if(null != authenticatedUser.getWallet()) {

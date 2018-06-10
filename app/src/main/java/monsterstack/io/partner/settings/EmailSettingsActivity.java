@@ -1,5 +1,6 @@
 package monsterstack.io.partner.settings;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Menu;
@@ -16,9 +17,10 @@ import monsterstack.io.api.resources.AuthenticatedUser;
 import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.api.resources.User;
 import monsterstack.io.partner.R;
+import monsterstack.io.partner.settings.control.EmailSettingsControl;
 import monsterstack.io.partner.settings.presenter.EmailSettingsPresenter;
 
-public class EmailSettingsActivity extends DetailSettingsActivity {
+public class EmailSettingsActivity extends DetailSettingsActivity implements EmailSettingsControl {
     protected EmailSettingsPresenter presenter;
 
     @Override
@@ -55,9 +57,13 @@ public class EmailSettingsActivity extends DetailSettingsActivity {
         finish();
     }
 
+    @Override
     public void onUpdate() {
         updateEmailAddress();
     }
+
+    @Override
+    public Context getContext() { return this; }
 
     private void updateEmailAddress() {
         presenter.showProgressBar();

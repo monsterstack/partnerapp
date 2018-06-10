@@ -1,6 +1,5 @@
 package monsterstack.io.partner.settings.presenter;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.inputmethodservice.KeyboardView;
 import android.view.View;
@@ -13,9 +12,10 @@ import java.util.Optional;
 import butterknife.BindView;
 import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.resources.AuthenticatedUser;
+import monsterstack.io.partner.R;
 import monsterstack.io.partner.common.HasProgressBarSupport;
 import monsterstack.io.partner.common.presenter.PresenterAdapter;
-import monsterstack.io.partner.R;
+import monsterstack.io.partner.settings.control.MobileNumberSettingsControl;
 
 import static android.view.View.GONE;
 
@@ -29,10 +29,10 @@ public class MobileNumberSettingsPresenter extends PresenterAdapter implements H
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
 
-    private Context context;
+    private MobileNumberSettingsControl control;
 
-    public MobileNumberSettingsPresenter(Context context) {
-        this.context = context;
+    public MobileNumberSettingsPresenter(MobileNumberSettingsControl control) {
+        this.control = control;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class MobileNumberSettingsPresenter extends PresenterAdapter implements H
         keyboardView.setActivated(true);
         keyboardView.setEnabled(true);
 
-        UserSessionManager userSessionManager = new UserSessionManager(this.context);
+        UserSessionManager userSessionManager = new UserSessionManager(control.getContext());
         AuthenticatedUser user = userSessionManager.getUserDetails();
 
         if(null != user.getPhoneNumber()) {

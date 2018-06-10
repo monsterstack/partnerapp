@@ -2,36 +2,32 @@ package monsterstack.io.partner.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import monsterstack.io.api.listeners.OnResponseListener;
 import monsterstack.io.api.resources.HttpError;
-import monsterstack.io.gridlistview.GridListView;
-import monsterstack.io.gridlistview.SpacesItemDecoration;
 import monsterstack.io.partner.R;
-import monsterstack.io.partner.anim.AnimationOptions;
-import monsterstack.io.partner.anim.GroupCardJoinAnimator;
-import monsterstack.io.partner.anim.GroupCardMemberAnimator;
+import monsterstack.io.partner.adapter.control.GroupAdapterControl;
+import monsterstack.io.partner.adapter.presenter.GroupAdapterPresenter;
 import monsterstack.io.partner.domain.Group;
-import monsterstack.io.partner.domain.GroupEntryOpportunity;
 import monsterstack.io.partner.domain.Member;
+import monsterstack.io.partner.main.MemberActivity;
 import monsterstack.io.streamview.CardPagerAdapter;
 
-import static android.view.View.VISIBLE;
-
-public class GroupAdapter extends CardPagerAdapter<Group> {
+public class GroupAdapter extends CardPagerAdapter<Group> implements GroupAdapterControl {
     private Context context;
-    private CardView cardView;
 
-    @BindView(R.id.membersView)
-    RecyclerView memberDetailsView;
+
+
+    private GroupAdapterPresenter presenter;
 
     private ViewAnimatedListener viewAnimatedListener;
 
@@ -45,45 +41,38 @@ public class GroupAdapter extends CardPagerAdapter<Group> {
     }
 
     @Override
+    public Context getContext() {
+        return this.context;
+    }
+
+    @Override
+    public ViewAnimatedListener getViewAnimatedListener() {
+        return this.viewAnimatedListener;
+    }
+
+    @Override
+    public void onMemberSelected(Member selectedMember) {
+        Intent intent = new Intent(this.context, MemberActivity.class);
+        intent.putExtra(MemberActivity.EXTRA_MEMBER, selectedMember);
+        // Show Member Details Modal
+        context.startActivity(intent);
+        ((Activity)context).overridePendingTransition(R.anim.slide_up, R.anim.hold);
+    }
+
+    @Override
     public void bind(final Group data, final View cardView) {
-        this.cardView = (CardView)cardView;
-        ButterKnife.bind(this, cardView);
+        this.presenter = new GroupAdapterPresenter(this);
+        ButterKnife.bind(presenter, cardView);
 
-        // @TODO: All falls apart when this is moved into method.
-        final GridListView recyclerView = cardView.findViewById(R.id.membersView);
-        recyclerView.addItemDecoration(new SpacesItemDecoration(context, R.dimen.member_grid_item_offset));
-        findGroupMembers(data, new OnResponseListener<Member[], HttpError>() {
-            @Override
-            public void onResponse(final Member[] members, HttpError httpError) {
-                final MemberRecyclerViewAdapter adapter = new MemberRecyclerViewAdapter(cardView.getContext(), members);
-                adapter.setClickListener(new MemberRecyclerViewAdapter.ItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        if(recyclerView.getVisibility() == VISIBLE) {
-                            if (null != members[position]) {
-                                Member clickedMember = members[position];
-                                new GroupCardMemberAnimator((CardView) cardView,
-                                        AnimationOptions.options(350, 300)
-                                                .onViewAnimatedListener(viewAnimatedListener)
-                                ).animateIn(clickedMember);
-                            } else {
-                                new GroupCardJoinAnimator((CardView) cardView,
-                                        AnimationOptions.options(350, 300)
-                                                .onViewAnimatedListener(viewAnimatedListener)
-                                ).animateIn(new GroupEntryOpportunity(data, position+1));
-                            }
-                        }
-                    }
-                });
-
-                recyclerView.setAdapter(adapter);
-            }
-        });
-
+        Map<String, Object> metadata = new HashMap<>();
+        metadata.put("group", data);
+        presenter.present(Optional.<Map>of(metadata));
     }
 
     public void reset() {
     }
+
+
 
     @Override
     public int getCardViewId() {
@@ -95,7 +84,8 @@ public class GroupAdapter extends CardPagerAdapter<Group> {
         return R.layout.group_adapter;
     }
 
-    private void findGroupMembers(Group group, final OnResponseListener<Member[], HttpError> onResponseListener) {
+    @Override
+    public void findGroupMembers(Group group, final OnResponseListener<Member[], HttpError> onResponseListener) {
 
         AsyncTask.execute(new Runnable() {
             @Override
@@ -107,11 +97,9 @@ public class GroupAdapter extends CardPagerAdapter<Group> {
                 members[3] = new Member("Carl", "Morris", 4, Member.avatars[2]);
                 members[4] = new Member("Jay", "Darfler", 5, Member.avatars[4]);
                 members[5] = new Member("Zach", "Rote", 6, null);
-                members[6] = new Member("James", "Red", 7, Member.avatars[1]);
                 members[7] = new Member("Eddy", "Longin", 8, Member.avatars[3]);
                 members[8] = new Member("Carlos", "Manuel", 9, null);
                 members[9] = new Member("Jay", "Darfler", 10, Member.avatars[4]);
-                members[10] = new Member("Peter", "Mist", 11, null);
                 members[11] = new Member("Jeff", "Den", 12, Member.avatars[4]);
 
                 final Member[] copy = members;

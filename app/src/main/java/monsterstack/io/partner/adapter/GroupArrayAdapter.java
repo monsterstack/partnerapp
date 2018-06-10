@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.domain.Group;
 
+@Deprecated
 public class GroupArrayAdapter extends ArrayAdapter<Group> {
     private Context context;
     private Group[] values;

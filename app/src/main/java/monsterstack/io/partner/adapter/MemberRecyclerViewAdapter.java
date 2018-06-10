@@ -22,7 +22,7 @@ public class MemberRecyclerViewAdapter extends RecyclerView.Adapter<MemberRecycl
     private ItemClickListener clickListener;
 
     // data is passed into the constructor
-    MemberRecyclerViewAdapter(@NonNull Context context, @NonNull Member[] members) {
+    public MemberRecyclerViewAdapter(@NonNull Context context, @NonNull Member[] members) {
         super();
         Objects.requireNonNull(context);
         Objects.requireNonNull(members);

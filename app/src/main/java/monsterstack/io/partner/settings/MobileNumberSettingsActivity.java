@@ -1,6 +1,7 @@
 package monsterstack.io.partner.settings;
 
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,9 +19,10 @@ import monsterstack.io.api.resources.Challenge;
 import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.challenge.MobileNumberUpdateChallengeVerificationActivity;
+import monsterstack.io.partner.settings.control.MobileNumberSettingsControl;
 import monsterstack.io.partner.settings.presenter.MobileNumberSettingsPresenter;
 
-public class MobileNumberSettingsActivity extends DetailSettingsActivity {
+public class MobileNumberSettingsActivity extends DetailSettingsActivity implements MobileNumberSettingsControl {
 
     protected MobileNumberSettingsPresenter presenter;
 
@@ -62,6 +64,9 @@ public class MobileNumberSettingsActivity extends DetailSettingsActivity {
     public void setUpTransitions() {
 
     }
+
+    @Override
+    public Context getContext() { return this; }
 
     @Override
     public int getActionTitle() {

@@ -1,6 +1,6 @@
 package monsterstack.io.partner.settings.presenter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -20,10 +20,10 @@ import monsterstack.io.api.listeners.OnResponseListener;
 import monsterstack.io.api.resources.AuthenticatedUser;
 import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.api.resources.User;
+import monsterstack.io.partner.R;
 import monsterstack.io.partner.common.HasProgressBarSupport;
 import monsterstack.io.partner.common.presenter.PresenterAdapter;
-import monsterstack.io.partner.R;
-import monsterstack.io.partner.settings.TwoStepVerificationSettingsActivity;
+import monsterstack.io.partner.settings.control.TwoStepVerificationSettingsControl;
 
 import static android.view.View.GONE;
 
@@ -37,10 +37,10 @@ public class TwoStepVerificationSettingsPresenter extends PresenterAdapter imple
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
 
-    private Context context;
+    private TwoStepVerificationSettingsControl control;
 
-    public TwoStepVerificationSettingsPresenter(Context context) {
-        this.context = context;
+    public TwoStepVerificationSettingsPresenter(TwoStepVerificationSettingsControl control) {
+        this.control = control;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class TwoStepVerificationSettingsPresenter extends PresenterAdapter imple
 
     @Override
     public void present(Optional<Map> metadata) {
-        UserSessionManager userSessionManager = new UserSessionManager(this.context);
+        UserSessionManager userSessionManager = new UserSessionManager(control.getContext());
         AuthenticatedUser user = userSessionManager.getUserDetails();
 
         if(user.getTwoFactorAuth()) {
@@ -69,12 +69,12 @@ public class TwoStepVerificationSettingsPresenter extends PresenterAdapter imple
 
     @OnClick(R.id.two_step_verify_enable_button)
     public void onEnable(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(((TwoStepVerificationSettingsActivity)context).getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder((Activity)control.getContext());
 
-        ServiceLocator serviceLocator = ServiceLocator.getInstance(context);
+        ServiceLocator serviceLocator = ServiceLocator.getInstance(control.getContext());
         final UserServiceCustom userService = serviceLocator.getUserService();
 
-        final UserSessionManager userSessionManager = new UserSessionManager(context);
+        final UserSessionManager userSessionManager = new UserSessionManager(control.getContext());
         final AuthenticatedUser userToUpdate = userSessionManager.getUserDetails();
         if(userToUpdate.getTwoFactorAuth())
             userToUpdate.setTwoFactorAuth(false);
@@ -95,13 +95,13 @@ public class TwoStepVerificationSettingsPresenter extends PresenterAdapter imple
                             userSessionManager.createUserSession(userToUpdate);
                             progressBar.setVisibility(View.GONE);
 
-                            ((TwoStepVerificationSettingsActivity)context).finish();
+                            control.finish();
                         } else {
                             progressBar.setVisibility(View.GONE);
 
-                            ((TwoStepVerificationSettingsActivity)context).showHttpError(
-                                    ((TwoStepVerificationSettingsActivity)context).getResources().getString(
-                                            ((TwoStepVerificationSettingsActivity)context).getActionTitle()), httpError);
+                            control.showHttpError(
+                                    control.getContext().getResources().getString(
+                                            control.getActionTitle()), httpError);
                         }
                     }
                 });
@@ -112,7 +112,7 @@ public class TwoStepVerificationSettingsPresenter extends PresenterAdapter imple
         DialogInterface.OnClickListener no = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
-                ((TwoStepVerificationSettingsActivity)context).finish();
+                control.finish();
             }
         };
 
