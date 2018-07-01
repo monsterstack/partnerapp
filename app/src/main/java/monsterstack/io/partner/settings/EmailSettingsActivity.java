@@ -69,7 +69,7 @@ public class EmailSettingsActivity extends DetailSettingsActivity implements Ema
         presenter.showProgressBar();
         final UserSessionManager sessionManager = new UserSessionManager(getApplicationContext());
         final AuthenticatedUser authenticatedUser = sessionManager.getUserDetails();
-        ServiceLocator serviceLocator = ServiceLocator.getInstance(this);
+        ServiceLocator serviceLocator = getServiceLocator();
 
         UserServiceCustom userServiceCustom = serviceLocator.getUserService();
         final User userToUpdate = User.from(authenticatedUser);

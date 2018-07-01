@@ -10,10 +10,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
 
+import javax.inject.Inject;
+
 import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.resources.HttpError;
+import monsterstack.io.partner.Application;
 import monsterstack.io.partner.R;
+import monsterstack.io.partner.main.presenter.PresenterFactory;
 import monsterstack.io.partner.services.AnalyticsService;
+import monsterstack.io.partner.services.MessagingService;
 import monsterstack.io.partner.utils.NavigationUtils;
 
 import static android.view.View.GONE;
@@ -25,16 +30,24 @@ public abstract class BasicActivity extends AppCompatActivity {
     public abstract int getContentView();
     public abstract AppCompatActivity getActivity();
 
-    private ServiceLocator serviceLocator;
+    @Inject ServiceLocator serviceLocator;
+
+    @Inject PresenterFactory presenterFactory;
+
+    @Inject MessagingService messagingService;
+    @Inject AnalyticsService analyticsService;
+
+    public PresenterFactory getPresenterFactory() {
+        return presenterFactory;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Obtain the FirebaseAnalytics instance.
-        AnalyticsService analyticsService = new AnalyticsService(this);
-        analyticsService.logPageView(getActivity().getClass().getSimpleName());
+        injectDependencies(this);
 
-        this.serviceLocator = ServiceLocator.getInstance(getApplicationContext());
+        // Obtain the FirebaseAnalytics instance.
+        analyticsService.logPageView(getActivity().getClass().getSimpleName());
 
         setUpTransitions();
 
@@ -53,6 +66,10 @@ public abstract class BasicActivity extends AppCompatActivity {
             progressBar.setVisibility(GONE);
         }
 
+    }
+
+    public void injectDependencies(BasicActivity basicActivity) {
+        ((Application) getApplication()).component().inject(basicActivity);
     }
 
     public boolean displayHomeAsUp() {

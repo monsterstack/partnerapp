@@ -7,9 +7,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import javax.inject.Inject;
+
 import monsterstack.io.partner.R;
 
 public abstract class PreferenceMenuActivity extends AppCompatActivity implements ClosableMenu {
+
+    @Inject
+    MenuPreferenceFragment menuPreferenceFragment;
+
+    public PreferenceMenuActivity() {
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +30,7 @@ public abstract class PreferenceMenuActivity extends AppCompatActivity implement
         myToolbar.setTitle(getActionTitle());
         setSupportActionBar(myToolbar);
 
-        getFragmentManager().beginTransaction().add(R.id.content_frame, new MenuPreferenceFragment()).commit();
+        getFragmentManager().beginTransaction().add(R.id.content_frame, menuPreferenceFragment).commit();
     }
 
     @Override

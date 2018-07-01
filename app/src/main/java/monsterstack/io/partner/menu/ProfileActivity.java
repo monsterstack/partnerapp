@@ -1,5 +1,6 @@
 package monsterstack.io.partner.menu;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,30 +18,31 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.util.Map;
 import java.util.Optional;
 
-import butterknife.ButterKnife;
 import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.custom.UserServiceCustom;
-import monsterstack.io.api.listeners.OnResponseListener;
 import monsterstack.io.api.resources.AuthenticatedUser;
-import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.avatarview.User;
+import monsterstack.io.partner.Application;
 import monsterstack.io.partner.R;
+import monsterstack.io.partner.menu.control.ProfileControl;
 import monsterstack.io.partner.menu.presenter.ProfilePresenter;
 
-public class ProfileActivity extends MenuActivity {
+public class ProfileActivity extends MenuActivity implements ProfileControl {
     protected ProfilePresenter presenter;
+
+    public ProfileActivity() {
+        super();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new ProfilePresenter(this);
-        ButterKnife.bind(presenter, this);
+        presenter = getPresenterFactory().getProfilePresenter(this, this);
 
-        presenter.present(Optional.<Map>empty());
+        presenter.present(Optional.empty());
     }
 
     @Override
@@ -56,6 +58,12 @@ public class ProfileActivity extends MenuActivity {
     @Override
     public int getContentView() {
         return R.layout.profile;
+    }
+
+    @Override
+    public void injectDependencies(MenuActivity menuActivity) {
+        super.injectDependencies(menuActivity);
+        ((Application) getApplication()).component().inject(this);
     }
 
     @Override
@@ -86,6 +94,11 @@ public class ProfileActivity extends MenuActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
     private void streamUpload(final String name, final String filePath) {
         UserSessionManager userSessionManager = new UserSessionManager(this);
         final AuthenticatedUser userToUpdate = userSessionManager.getUserDetails();
@@ -114,16 +127,11 @@ public class ProfileActivity extends MenuActivity {
             final AuthenticatedUser userToUpdate,
             final StorageReference avatarRef) {
 
-        return new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                avatarRef.getDownloadUrl().addOnSuccessListener(downloadUrlSuccessListener(userToUpdate));
-            }
-        };
+        return taskSnapshot -> avatarRef.getDownloadUrl().addOnSuccessListener(downloadUrlSuccessListener(userToUpdate));
     }
 
     private OnSuccessListener<Uri> downloadUrlSuccessListener(final AuthenticatedUser userToUpdate) {
-        ServiceLocator serviceLocator = ServiceLocator.getInstance(this);
+        ServiceLocator serviceLocator = getServiceLocator();
         final UserServiceCustom userServiceCustom = serviceLocator.getUserService();
 
         return new OnSuccessListener<Uri>() {
@@ -131,19 +139,15 @@ public class ProfileActivity extends MenuActivity {
             public void onSuccess(Uri uri) {
                 String userId = userToUpdate.getId();
                 userToUpdate.setAvatarUrl(uri.toString());
-                userServiceCustom.updateUser(userId, userToUpdate, new OnResponseListener<monsterstack.io.api.resources.User,
-                        HttpError>() {
-                    @Override
-                    public void onResponse(monsterstack.io.api.resources.User user, HttpError httpError) {
-                        if (null != user) {
-                            presenter.hideProgressBar();
-                            reload(new AuthenticatedUser(user));
+                userServiceCustom.updateUser(userId, userToUpdate, (user, httpError) -> {
+                    if (null != user) {
+                        presenter.hideProgressBar();
+                        reload(new AuthenticatedUser(user));
 
-                            announceAvatarUpdate();
-                        } else {
-                            presenter.hideProgressBar();
-                            showHttpError(getResources().getString(getActionTitle()), httpError);
-                        }
+                        announceAvatarUpdate();
+                    } else {
+                        presenter.hideProgressBar();
+                        showHttpError(getResources().getString(getActionTitle()), httpError);
                     }
                 });
             }
@@ -163,4 +167,6 @@ public class ProfileActivity extends MenuActivity {
         Intent intent = new Intent("monsterstack.io.AvatarUpdated");
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
+
+
 }

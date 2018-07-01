@@ -47,6 +47,8 @@
     <string name="group_new">New Group</string>
     <string name="group_transactions">Group Transactions</string>
 
+    <string name="invite_members">Invite Members</string>
+
     <string name="verification_code_not_found">Verification Code not found!</string>
 
     <!-- Descriptions -->

@@ -1,7 +1,6 @@
 package monsterstack.io.partner.challenge.presenter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.res.Configuration;
 import android.inputmethodservice.KeyboardView;
 import android.view.Menu;
@@ -15,13 +14,13 @@ import java.util.Optional;
 
 import butterknife.BindView;
 import monsterstack.io.partner.R;
-import monsterstack.io.partner.challenge.PhoneCaptureActivity;
+import monsterstack.io.partner.challenge.control.PhoneCaptureControl;
 import monsterstack.io.partner.common.HasProgressBarSupport;
-import monsterstack.io.partner.common.presenter.PresenterAdapter;
+import monsterstack.io.partner.common.presenter.Presenter;
 
 import static android.view.View.GONE;
 
-public class PhoneCapturePresenter extends PresenterAdapter implements HasProgressBarSupport {
+public class PhoneCapturePresenter implements Presenter<PhoneCaptureControl>, HasProgressBarSupport {
     @BindView(R.id.keyboard)
     KeyboardView keyboardView;
 
@@ -31,14 +30,14 @@ public class PhoneCapturePresenter extends PresenterAdapter implements HasProgre
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
 
-    private Context context;
+    private PhoneCaptureControl control;
 
-    public PhoneCapturePresenter(Context context) {
-        this.context = context;
+    public PhoneCapturePresenter(PhoneCaptureControl control) {
+        this.control = control;
     }
 
     @Override
-    public void present(Optional<Map> metadata) {
+    public Presenter<PhoneCaptureControl> present(Optional<Map> metadata) {
         progressBar.setVisibility(GONE);
 
         editText.setSelection(editText.getText().length());
@@ -46,19 +45,21 @@ public class PhoneCapturePresenter extends PresenterAdapter implements HasProgre
 
         keyboardView.setActivated(true);
         keyboardView.setEnabled(true);
+
+        return this;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        ((Activity)context).getMenuInflater().inflate(R.menu.next_action, menu);
+        ((Activity)control.getContext()).getMenuInflater().inflate(R.menu.next_action, menu);
 
         MenuItem nextButton = menu.findItem(R.id.next_button);
 
         nextButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                ((PhoneCaptureActivity)context).onCapture();
+                control.onCapture();
                 return false;
             }
         });
@@ -76,5 +77,16 @@ public class PhoneCapturePresenter extends PresenterAdapter implements HasProgre
 
     public String getPhoneNumber() {
         return editText.getText().toString();
+    }
+
+    @Override
+    public Presenter<PhoneCaptureControl> bind(PhoneCaptureControl control) {
+        this.control = control;
+        return this;
+    }
+
+    @Override
+    public PhoneCaptureControl getControl() {
+        return control;
     }
 }

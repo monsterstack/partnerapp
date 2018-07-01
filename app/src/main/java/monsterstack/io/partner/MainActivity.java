@@ -23,7 +23,6 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import monsterstack.io.api.RedirectHandler;
 import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.resources.AuthenticatedUser;
 import monsterstack.io.api.resources.User;
@@ -174,7 +173,6 @@ public class MainActivity extends BasicActivity {
             }
         });
 
-        //skeletonScreen.hide();
     }
 
     @Override
@@ -194,21 +192,23 @@ public class MainActivity extends BasicActivity {
 
     @Override
     public void onActivityResult(int requestCode, final int resultCode, Intent data) {
-        UserSessionManager sessionManager = new UserSessionManager(this);
-        AuthenticatedUser authenticatedUser = sessionManager.getUserDetails();
-        avatar.setUser(new monsterstack.io.avatarview.User(authenticatedUser.getFullName(),
-                authenticatedUser.getAvatarUrl(), R.color.colorAccent));
-        avatar.refreshDrawableState();
+        if (PROFILE_UPDATE_REQUEST_CODE == resultCode) {
+
+            UserSessionManager sessionManager = new UserSessionManager(this);
+            AuthenticatedUser authenticatedUser = sessionManager.getUserDetails();
+            avatar.setUser(new monsterstack.io.avatarview.User(authenticatedUser.getFullName(),
+                    authenticatedUser.getAvatarUrl(), R.color.colorAccent));
+            avatar.refreshDrawableState();
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     public void onProfileClicked(View view) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                startActivityForResult(intent, PROFILE_UPDATE_REQUEST_CODE);
-                overridePendingTransition(R.anim.slide_up, R.anim.hold);
-            }
+        new Handler().postDelayed(() -> {
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivityForResult(intent, PROFILE_UPDATE_REQUEST_CODE);
+            overridePendingTransition(R.anim.slide_up, R.anim.hold);
         }, 300);
     }
 
@@ -239,60 +239,42 @@ public class MainActivity extends BasicActivity {
 
         final Context context = MainActivity.this;
 
-        buyCurrencyMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                startActivity(new Intent(context, BuyCurrencyActivity.class),
-                        NavigationUtils.enterStageBottom(MainActivity.this));
-                return false;
-            }
-        });
-
-        backUpMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                startActivity(new Intent(MainActivity.this, BackupActivity.class),
+        buyCurrencyMenuItem.setOnMenuItemClickListener(item -> {
+            startActivity(new Intent(context, BuyCurrencyActivity.class),
                     NavigationUtils.enterStageBottom(MainActivity.this));
-                return false;
-            }
+            return false;
         });
 
-        settingsMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class),
-                        NavigationUtils.enterStageBottom(MainActivity.this));
-                return false;
-            }
+        backUpMenuItem.setOnMenuItemClickListener(item -> {
+            startActivity(new Intent(MainActivity.this, BackupActivity.class),
+                NavigationUtils.enterStageBottom(MainActivity.this));
+            return false;
         });
 
-        walletsMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                startActivity(new Intent(MainActivity.this, WalletsActivity.class),
-                        NavigationUtils.enterStageBottom(MainActivity.this));
-                return false;
-            }
+        settingsMenuItem.setOnMenuItemClickListener(item -> {
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class),
+                    NavigationUtils.enterStageBottom(MainActivity.this));
+            return false;
         });
 
-        logoutMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                UserSessionManager sessionManager = new UserSessionManager(MainActivity.this);
-                sessionManager.logoutUser(new RedirectHandler() {
-                    @Override
-                    public void go(Context context) {
-                        RefreshTokenService.cancelRefreshTokenCheck(getApplicationContext());
+        walletsMenuItem.setOnMenuItemClickListener(item -> {
+            startActivity(new Intent(MainActivity.this, WalletsActivity.class),
+                    NavigationUtils.enterStageBottom(MainActivity.this));
+            return false;
+        });
 
-                        Intent intent = new Intent(context, LaunchActivity.class);
-                        Bundle bundle = ActivityOptions.makeCustomAnimation(getApplicationContext(),
-                                R.anim.back_slide_right, R.anim.back_slide_left).toBundle();
-                        startActivity(intent, bundle);
-                    }
-                });
+        logoutMenuItem.setOnMenuItemClickListener(item -> {
+            UserSessionManager sessionManager = new UserSessionManager(MainActivity.this);
+            sessionManager.logoutUser(sessionContext -> {
+                RefreshTokenService.cancelRefreshTokenCheck(getApplicationContext());
 
-                return false;
-            }
+                Intent intent = new Intent(sessionContext, LaunchActivity.class);
+                Bundle bundle = ActivityOptions.makeCustomAnimation(getApplicationContext(),
+                        R.anim.back_slide_right, R.anim.back_slide_left).toBundle();
+                startActivity(intent, bundle);
+            });
+
+            return false;
         });
 
     }

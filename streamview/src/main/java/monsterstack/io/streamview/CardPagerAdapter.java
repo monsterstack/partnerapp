@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class CardPagerAdapter<T> extends PagerAdapter implements CardAdapter {
@@ -17,6 +18,12 @@ public abstract class CardPagerAdapter<T> extends PagerAdapter implements CardAd
     public CardPagerAdapter(List<T> dataList) {
         this.cardViewList = new CardView[dataList.size()];
         this.dataList = dataList;
+    }
+
+    public void replaceDataList(T[] data) {
+        this.dataList = Arrays.asList(data);
+
+        this.notifyDataSetChanged();
     }
 
     @Override

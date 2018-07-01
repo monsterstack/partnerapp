@@ -13,9 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import butterknife.ButterKnife;
 import monsterstack.io.api.listeners.OnResponseListener;
 import monsterstack.io.api.resources.HttpError;
+import monsterstack.io.partner.Application;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.common.BasicActivity;
 import monsterstack.io.partner.domain.Member;
@@ -33,8 +33,7 @@ public class MemberActivity extends BasicActivity implements MemberControl {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new MemberPresenter(this);
-        ButterKnife.bind(presenter, this);
+        presenter = getPresenterFactory().getMemberPresenter(this, this);
 
         this.member = (Member)getIntent().getSerializableExtra(EXTRA_MEMBER);
 
@@ -61,6 +60,13 @@ public class MemberActivity extends BasicActivity implements MemberControl {
     @Override
     public int getContentView() {
         return R.layout.activity_member;
+    }
+
+    @Override
+    public void injectDependencies(BasicActivity basicActivity) {
+        super.injectDependencies(basicActivity);
+
+        ((Application)getApplication()).component().inject(this);
     }
 
     @Override

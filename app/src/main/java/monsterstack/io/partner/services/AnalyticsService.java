@@ -6,6 +6,9 @@ import android.os.Bundle;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class AnalyticsService {
     private FirebaseAnalytics firebaseAnalytics;
 

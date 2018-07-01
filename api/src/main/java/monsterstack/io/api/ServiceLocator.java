@@ -2,7 +2,6 @@ package monsterstack.io.api;
 
 import android.content.Context;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,24 +21,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class ServiceLocator {
-    private Retrofit retrofit;
+    Retrofit retrofit;
     private Map<String, Object> services;
 
-    private static ServiceLocator instance;
-
-    public static ServiceLocator getInstance(Context context) {
-        String apiBaseUrl = BuildConfig.FB_API_BASE_URL;
-        if(null == instance) {
-            try {
-                instance = new ServiceLocator(context, new URL(apiBaseUrl));
-            } catch (IOException ioException) {
-                throw new RuntimeException(ioException);
-            }
-        }
-        return instance;
-    }
-
-    ServiceLocator(Context context, URL baseUrl) {
+    public ServiceLocator(Context context, URL baseUrl) {
         this.retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl.toString())
                 .client(new OkHttpClient.Builder()

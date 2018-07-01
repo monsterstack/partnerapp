@@ -1,6 +1,7 @@
 package monsterstack.io.partner.main.presenter;
 
 import android.content.Context;
+import android.view.Menu;
 
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
@@ -13,22 +14,38 @@ import java.util.Optional;
 
 import butterknife.BindView;
 import monsterstack.io.partner.R;
-import monsterstack.io.partner.common.presenter.PresenterAdapter;
+import monsterstack.io.partner.common.presenter.Presenter;
+import monsterstack.io.partner.main.control.GroupScheduleControl;
 
-public class GroupSchedulePresenter extends PresenterAdapter {
+public class GroupSchedulePresenter implements Presenter<GroupScheduleControl> {
 
     @BindView(R.id.calendarView)
     CalendarView calendarView;
 
     private Context context;
 
-    public GroupSchedulePresenter(Context context) {
-        this.context = context;
+    private GroupScheduleControl control;
+
+    @Override
+    public Presenter<GroupScheduleControl> present(Optional<Map> metadata) {
+        loadCalendar();
+        return this;
     }
 
     @Override
-    public void present(Optional<Map> metadata) {
-        loadCalendar();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return false;
+    }
+
+    @Override
+    public Presenter<GroupScheduleControl> bind(GroupScheduleControl control) {
+        this.control = control;
+        return this;
+    }
+
+    @Override
+    public GroupScheduleControl getControl() {
+        return control;
     }
 
     private void loadCalendar() {

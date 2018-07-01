@@ -7,19 +7,23 @@ import android.support.annotation.Nullable;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import monsterstack.io.partner.R;
+import monsterstack.io.partner.main.presenter.PresenterFactory;
 import monsterstack.io.partner.settings.control.TwoStepVerificationSettingsControl;
 import monsterstack.io.partner.settings.presenter.TwoStepVerificationSettingsPresenter;
 
 public class TwoStepVerificationSettingsActivity extends DetailSettingsActivity implements TwoStepVerificationSettingsControl {
     private TwoStepVerificationSettingsPresenter presenter;
 
+    @Inject PresenterFactory presenterFactory;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new TwoStepVerificationSettingsPresenter(this);
-        ButterKnife.bind(presenter, this);
+        presenter = presenterFactory.getTwoSetVerificationSettingsPresenter(this, this);
 
         presenter.present(Optional.<Map>empty());
     }

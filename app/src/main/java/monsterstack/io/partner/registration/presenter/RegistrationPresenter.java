@@ -15,12 +15,13 @@ import java.util.Optional;
 import butterknife.BindView;
 import monsterstack.io.api.resources.MinimalUser;
 import monsterstack.io.api.resources.Registration;
-import monsterstack.io.partner.common.HasProgressBarSupport;
-import monsterstack.io.partner.common.presenter.PresenterAdapter;
 import monsterstack.io.partner.R;
+import monsterstack.io.partner.common.HasProgressBarSupport;
+import monsterstack.io.partner.common.presenter.Presenter;
 import monsterstack.io.partner.registration.RegistrationActivity;
+import monsterstack.io.partner.registration.control.RegistrationControl;
 
-public class RegistrationPresenter extends PresenterAdapter implements HasProgressBarSupport {
+public class RegistrationPresenter implements Presenter<RegistrationControl>, HasProgressBarSupport {
     @BindView(R.id.first_name)
     EditText firstNameEdit;
 
@@ -38,6 +39,8 @@ public class RegistrationPresenter extends PresenterAdapter implements HasProgre
 
     private Context context;
 
+    private RegistrationControl control;
+
     public RegistrationPresenter(Context context) {
         this.context = context;
     }
@@ -53,8 +56,9 @@ public class RegistrationPresenter extends PresenterAdapter implements HasProgre
     }
 
     @Override
-    public void present(Optional<Map> metadata) {
+    public Presenter<RegistrationControl> present(Optional<Map> metadata) {
         hideProgressBar();
+        return this;
     }
 
     @Override
@@ -85,5 +89,16 @@ public class RegistrationPresenter extends PresenterAdapter implements HasProgre
         registration.setUser(minimalUser);
 
         return registration;
+    }
+
+    @Override
+    public Presenter<RegistrationControl> bind(RegistrationControl control) {
+        this.control = control;
+        return this;
+    }
+
+    @Override
+    public RegistrationControl getControl() {
+        return control;
     }
 }

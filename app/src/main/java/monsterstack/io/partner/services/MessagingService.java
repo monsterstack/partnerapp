@@ -9,14 +9,19 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class MessagingService extends FirebaseMessagingService {
     private static final String TAG = "FCM";
     private static final String PARTNER_TOPIC = "partner.topic";
 
-    public static void initialize(Context context) {
-        String token = FirebaseInstanceId.getInstance().getToken();
-        new PartnerFirebaseInstanceIdService().sendRegistrationToServer(token, context);
+    private PartnerFirebaseInstanceIdService partnerFirebaseInstanceIdService;
 
+    public MessagingService(Context context, PartnerFirebaseInstanceIdService partnerFirebaseInstanceIdService) {
+        String token = FirebaseInstanceId.getInstance().getToken();
+        partnerFirebaseInstanceIdService.sendRegistrationToServer(token, context);
+        this.partnerFirebaseInstanceIdService = partnerFirebaseInstanceIdService;
         FirebaseMessaging.getInstance().subscribeToTopic(PARTNER_TOPIC);
     }
 

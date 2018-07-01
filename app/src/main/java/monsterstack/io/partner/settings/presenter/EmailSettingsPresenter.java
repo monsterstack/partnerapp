@@ -1,7 +1,6 @@
 package monsterstack.io.partner.settings.presenter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.inputmethodservice.KeyboardView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,15 +14,14 @@ import java.util.Optional;
 import butterknife.BindView;
 import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.resources.AuthenticatedUser;
-import monsterstack.io.partner.common.HasProgressBarSupport;
-import monsterstack.io.partner.common.presenter.PresenterAdapter;
 import monsterstack.io.partner.R;
-import monsterstack.io.partner.settings.EmailSettingsActivity;
+import monsterstack.io.partner.common.HasProgressBarSupport;
+import monsterstack.io.partner.common.presenter.Presenter;
 import monsterstack.io.partner.settings.control.EmailSettingsControl;
 
 import static android.view.View.GONE;
 
-public class EmailSettingsPresenter extends PresenterAdapter implements HasProgressBarSupport {
+public class EmailSettingsPresenter implements Presenter<EmailSettingsControl>, HasProgressBarSupport {
     @BindView(R.id.emailEdit)
     EditText editText;
     @BindView(R.id.keyboard)
@@ -69,7 +67,7 @@ public class EmailSettingsPresenter extends PresenterAdapter implements HasProgr
     }
 
     @Override
-    public void present(Optional<Map> metadata) {
+    public Presenter<EmailSettingsControl> present(Optional<Map> metadata) {
         editText.setSelection(editText.getText().length());
 
         keyboardView.setActivated(true);
@@ -84,5 +82,18 @@ public class EmailSettingsPresenter extends PresenterAdapter implements HasProgr
         if(null != user) {
             editText.setText(user.getEmailAddress());
         }
+
+        return this;
+    }
+
+    @Override
+    public Presenter<EmailSettingsControl> bind(EmailSettingsControl control) {
+        this.control = control;
+        return this;
+    }
+
+    @Override
+    public EmailSettingsControl getControl() {
+        return control;
     }
 }

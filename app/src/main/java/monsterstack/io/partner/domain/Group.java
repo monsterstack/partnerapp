@@ -30,10 +30,15 @@ public class Group implements Serializable {
         this.id = UUID.randomUUID().toString();
     }
 
-    public Group(String name, Integer numberOfSlots) {
+    public Group(String name, Integer numberOfSlots,
+                 Currency currency, Double drawAmount,
+                 Double baseContribution) {
         this();
         this.name = name;
         this.numberOfSlots = numberOfSlots;
+        this.currency = currency;
+        this.drawAmount = drawAmount;
+        this.baseContribution = baseContribution;
     }
 
 }

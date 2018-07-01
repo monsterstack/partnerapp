@@ -6,16 +6,22 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+import javax.inject.Singleton;
+
 import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.custom.UserServiceCustom;
-import monsterstack.io.api.listeners.OnResponseListener;
 import monsterstack.io.api.resources.AuthenticatedUser;
-import monsterstack.io.api.resources.HttpError;
-import monsterstack.io.api.resources.User;
 
+@Singleton
 public class PartnerFirebaseInstanceIdService extends FirebaseInstanceIdService {
     private static final String TAG = "FCM";
+
+    private ServiceLocator serviceLocator;
+
+    public PartnerFirebaseInstanceIdService(ServiceLocator serviceLocator) {
+        this.serviceLocator = serviceLocator;
+    }
 
     @Override
     public void onTokenRefresh() {
@@ -39,13 +45,10 @@ public class PartnerFirebaseInstanceIdService extends FirebaseInstanceIdService 
             // Set device id
             authenticatedUser.setPushRegistrationToken(refreshToken);
 
-            UserServiceCustom userServiceCustom = ServiceLocator.getInstance(context).getUserService();
-            userServiceCustom.updateUser(authenticatedUser.getId(), authenticatedUser, new OnResponseListener<User, HttpError>() {
-                @Override
-                public void onResponse(User user, HttpError httpError) {
-                    if (null != user) {
-                        userSessionManager.createUserSession(new AuthenticatedUser(user));
-                    }
+            UserServiceCustom userServiceCustom = serviceLocator.getUserService();
+            userServiceCustom.updateUser(authenticatedUser.getId(), authenticatedUser, (user, httpError) -> {
+                if (null != user) {
+                    userSessionManager.createUserSession(new AuthenticatedUser(user));
                 }
             });
         }

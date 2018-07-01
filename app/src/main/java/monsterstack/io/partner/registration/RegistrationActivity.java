@@ -1,5 +1,6 @@
 package monsterstack.io.partner.registration;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,10 +16,11 @@ import monsterstack.io.api.resources.Registration;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.challenge.RegistrationPhoneCaptureActivity;
 import monsterstack.io.partner.common.BasicActivity;
+import monsterstack.io.partner.registration.control.RegistrationControl;
 import monsterstack.io.partner.registration.presenter.RegistrationPresenter;
 import monsterstack.io.partner.utils.NavigationUtils;
 
-public class RegistrationActivity extends BasicActivity {
+public class RegistrationActivity extends BasicActivity implements RegistrationControl {
 
     private RegistrationPresenter presenter;
 
@@ -61,5 +63,10 @@ public class RegistrationActivity extends BasicActivity {
         intent.putExtra(RegistrationPhoneCaptureActivity.REGISTRATION_EXTRA, registration);
         startActivity(intent, bundle);
         presenter.hideProgressBar();
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 }

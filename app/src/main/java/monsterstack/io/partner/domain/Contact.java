@@ -23,6 +23,13 @@ public class Contact extends Friend {
         setAvatar(avatars[n]);
     }
 
+    public Contact(String fullName, String emailAddress, String phoneNumber) {
+        super(fullName, emailAddress, phoneNumber);
+        this.alreadyPartnering = Boolean.FALSE;
+        Integer n = (int)Math.floor(Math.random()* avatars.length);
+        setAvatar(avatars[n]);
+    }
+
     public Contact(String firstName, String lastName, String emailAddress, String phoneNumber) {
         super(firstName, lastName, emailAddress, phoneNumber);
         this.alreadyPartnering = Boolean.FALSE;

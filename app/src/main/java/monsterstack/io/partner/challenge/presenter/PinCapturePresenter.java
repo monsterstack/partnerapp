@@ -1,7 +1,6 @@
 package monsterstack.io.partner.challenge.presenter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.inputmethodservice.KeyboardView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,13 +11,13 @@ import java.util.Map;
 import java.util.Optional;
 
 import butterknife.BindView;
-import monsterstack.io.partner.common.HasProgressBarSupport;
 import monsterstack.io.partner.R;
-import monsterstack.io.partner.challenge.PinCaptureActivity;
-import monsterstack.io.partner.common.presenter.PresenterAdapter;
+import monsterstack.io.partner.challenge.control.PinCaptureControl;
+import monsterstack.io.partner.common.HasProgressBarSupport;
+import monsterstack.io.partner.common.presenter.Presenter;
 import monsterstack.io.pincapture.PinCapture;
 
-public class PinCapturePresenter extends PresenterAdapter implements HasProgressBarSupport {
+public class PinCapturePresenter implements Presenter<PinCaptureControl>, HasProgressBarSupport {
     @BindView(R.id.pinCaptureEdit)
     PinCapture editText;
     @BindView(R.id.keyboard)
@@ -27,10 +26,10 @@ public class PinCapturePresenter extends PresenterAdapter implements HasProgress
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
 
-    private Context context;
+    private PinCaptureControl control;
 
-    public PinCapturePresenter(Context context) {
-        this.context = context;
+    public PinCapturePresenter(PinCaptureControl control) {
+        this.control = control;
     }
 
     public void showProgressBar() {
@@ -46,31 +45,41 @@ public class PinCapturePresenter extends PresenterAdapter implements HasProgress
     }
 
     @Override
-    public void present(Optional<Map> metadata) {
-        editText.setOnFinishListener(new PinCapture.OnFinishListener() {
-            @Override
-            public void onFinish(String enteredText) {
+    public Presenter<PinCaptureControl> present(Optional<Map> metadata) {
+        editText.setOnFinishListener(enteredText -> {
 
-            }
         });
 
         progressBar.setVisibility(View.GONE);
         keyboardView.setActivated(true);
         keyboardView.setEnabled(true);
+
+        return this;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        ((Activity)context).getMenuInflater().inflate(R.menu.next_action, menu);
+        ((Activity)control.getContext()).getMenuInflater().inflate(R.menu.next_action, menu);
 
         menu.findItem(R.id.next_button).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                ((PinCaptureActivity)context).onNext();
+                control.onNext();
                 return false;
             }
         });
         return true;
+    }
+
+    @Override
+    public Presenter<PinCaptureControl> bind(PinCaptureControl control) {
+        this.control = control;
+        return this;
+    }
+
+    @Override
+    public PinCaptureControl getControl() {
+        return control;
     }
 }

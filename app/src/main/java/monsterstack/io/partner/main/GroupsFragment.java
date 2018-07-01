@@ -8,12 +8,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 
-import java.util.Map;
+import java.util.Currency;
+import java.util.Locale;
 import java.util.Optional;
 
 import butterknife.ButterKnife;
@@ -28,11 +30,14 @@ import monsterstack.io.partner.main.presenter.GroupFragmentPresenter;
 import monsterstack.io.partner.utils.NavigationUtils;
 
 public class GroupsFragment extends Fragment implements GroupFragmentControl {
+    private static final Integer CREATE_GROUP_REQUEST_CODE = 101;
+    private static final Integer INVITE_MEMBERS_REQUEST_CODE = 1000;
+
     private View view;
 
     private Group selectedGroup;
 
-    private GroupFragmentPresenter presenter;
+    GroupFragmentPresenter presenter;
 
     public static GroupsFragment newInstance(String title) {
         Bundle args = new Bundle();
@@ -50,10 +55,11 @@ public class GroupsFragment extends Fragment implements GroupFragmentControl {
         this.view = inflater.inflate(
                 R.layout.fragment_groups, container, false);
 
-        presenter = new GroupFragmentPresenter(this);
+        presenter = new GroupFragmentPresenter();
+        presenter.bind(this);
         ButterKnife.bind(presenter, this.view);
 
-        presenter.present(Optional.<Map>empty());
+        presenter.present(Optional.empty());
 
         return this.view;
     }
@@ -83,7 +89,7 @@ public class GroupsFragment extends Fragment implements GroupFragmentControl {
                 .setDeepLink(Uri.parse("http://localhost:2020/invite.html"))
                 .setCallToActionText("Join Now")
                 .build();
-        startActivityForResult(intent, 1000);
+        startActivityForResult(intent, INVITE_MEMBERS_REQUEST_CODE);
 
         if (null != getActivity())
             getActivity().overridePendingTransition(R.anim.slide_left, R.anim.slide_right);
@@ -92,8 +98,8 @@ public class GroupsFragment extends Fragment implements GroupFragmentControl {
     @Override
     public void createGroup() {
         Bundle bundle = NavigationUtils.enterStageRightBundle(getContext());
-        Intent intent = new Intent(getContext(), GroupCreationActivity.class);
-        startActivity(intent, bundle);
+        Intent intent = new Intent(getContext(), InviteMembersActivity.class);
+        startActivityForResult(intent, CREATE_GROUP_REQUEST_CODE, bundle);
     }
 
     @Override
@@ -163,15 +169,27 @@ public class GroupsFragment extends Fragment implements GroupFragmentControl {
     }
 
     @Override
-    public void findGroupsAssociatedWithUser(OnResponseListener<Group[], HttpError> onResponseListener) {
+    public void findGroupsAssociatedWithUser(boolean empty, OnResponseListener<Group[], HttpError> onResponseListener) {
         Group[] groups = {
-                new Group("Family", 10),
-                new Group("Friends", 5),
-                new Group("Coworkers", 4),
-                new Group("Acquaintances", 34),
-                new Group("Enemies", 23),
-                new Group("Frenemies", 21)
+                new Group("Family", 10, Currency.getInstance(Locale.US), 500.00, 25.00),
+                new Group("Friends", 5, Currency.getInstance(Locale.UK), 234.00, 34.55),
+                new Group("Coworkers", 4, Currency.getInstance(Locale.US), 345.33, 12.34),
+                new Group("Acquaintances", 34, Currency.getInstance(Locale.UK), 432.34, 23.22),
+                new Group("Enemies", 23, Currency.getInstance(Locale.UK), 123.33, 22.22),
+                new Group("Frenemies", 21, Currency.getInstance(Locale.US), 675.00, 25.00)
         };
+
+        if (empty) {
+            groups = new Group[0];
+        }
         onResponseListener.onResponse(groups, null);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == CREATE_GROUP_REQUEST_CODE) {
+            Toast.makeText(getContext(), "Hello", Toast.LENGTH_LONG).show();
+            presenter.refreshGroups();
+        }
     }
 }

@@ -5,7 +5,12 @@ import android.view.Menu;
 import java.util.Map;
 import java.util.Optional;
 
-public interface Presenter {
-    void present(Optional<Map> metadata);
+import monsterstack.io.partner.common.Control;
+
+public interface Presenter<T extends Control> {
+    Presenter<T> present(Optional<Map> metadata);
+    Presenter<T> bind(T control);
     boolean onCreateOptionsMenu(Menu menu);
+
+    T getControl();
 }

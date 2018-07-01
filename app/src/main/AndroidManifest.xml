@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="monsterstack.io.partner">
+    <uses-sdk/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -32,18 +33,6 @@
             android:name="monsterstack.io.api.service.RefreshTokenService">
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
-            </intent-filter>
-        </service>
-
-        <service android:name=".services.PartnerFirebaseInstanceIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
-            </intent-filter>
-        </service>
-
-        <service android:name=".services.MessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
 
@@ -197,7 +186,13 @@
 
         </activity>
 
-        <activity android:name=".main.MiniMemberDetailsFragment">
+        <activity android:name=".transaction.TransactionActivity">
+
+        </activity>
+
+
+        <!-- Invite Members -->
+        <activity android:name=".main.InviteMembersActivity">
 
         </activity>
     </application>

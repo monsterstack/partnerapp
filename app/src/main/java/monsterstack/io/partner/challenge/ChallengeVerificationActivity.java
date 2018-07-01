@@ -1,39 +1,37 @@
 package monsterstack.io.partner.challenge;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 
-import java.util.Map;
 import java.util.Optional;
 
 import butterknife.ButterKnife;
-import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.custom.ChallengeServiceCustom;
 import monsterstack.io.api.listeners.OnResponseListener;
 import monsterstack.io.api.resources.Challenge;
 import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.partner.MainActivity;
 import monsterstack.io.partner.R;
+import monsterstack.io.partner.challenge.control.ChallengeVerificationControl;
 import monsterstack.io.partner.challenge.presenter.ChallengeVerificationPresenter;
 import monsterstack.io.partner.common.BasicActivity;
 import monsterstack.io.partner.menu.SettingsActivity;
 import monsterstack.io.partner.settings.MobileNumberSettingsActivity;
 
-public class ChallengeVerificationActivity extends BasicActivity {
+public class ChallengeVerificationActivity extends BasicActivity implements ChallengeVerificationControl {
 
     protected ChallengeVerificationPresenter presenter;
-    private ServiceLocator serviceLocator;
 
     @Override
     protected void onCreate(Bundle savedBundleState) {
         super.onCreate(savedBundleState);
-        this.serviceLocator = ServiceLocator.getInstance(getApplicationContext());
         presenter = new ChallengeVerificationPresenter(this);
         ButterKnife.bind(presenter, this);
 
-        presenter.present(Optional.<Map>empty());
+        presenter.present(Optional.empty());
     }
 
     @Override
@@ -44,6 +42,11 @@ public class ChallengeVerificationActivity extends BasicActivity {
     @Override
     public void setUpTransitions() {
 
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 
     @Override
@@ -61,12 +64,13 @@ public class ChallengeVerificationActivity extends BasicActivity {
         return this;
     }
 
+    @Override
     public void onVerify() {
         presenter.showProgressBar();
 
         final String source = (String)getIntent().getExtras().get("source");
 
-        ChallengeServiceCustom challengeServiceCustom = serviceLocator.getChallengeService();
+        ChallengeServiceCustom challengeServiceCustom = getServiceLocator().getChallengeService();
 
         String code = presenter.getCapturedCode();
         challengeServiceCustom.verifyChallengeCode(code, new OnResponseListener<Challenge, HttpError>() {

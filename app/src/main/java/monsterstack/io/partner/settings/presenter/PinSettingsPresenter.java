@@ -13,13 +13,13 @@ import java.util.Optional;
 import butterknife.BindView;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.common.HasProgressBarSupport;
-import monsterstack.io.partner.common.presenter.PresenterAdapter;
+import monsterstack.io.partner.common.presenter.Presenter;
 import monsterstack.io.partner.settings.control.PinSettingsControl;
 import monsterstack.io.pincapture.PinCapture;
 
 import static android.view.View.GONE;
 
-public class PinSettingsPresenter extends PresenterAdapter implements HasProgressBarSupport {
+public class PinSettingsPresenter implements Presenter<PinSettingsControl>, HasProgressBarSupport {
     @BindView(R.id.pinCaptureEdit)
     PinCapture editText;
     @BindView(R.id.keyboard)
@@ -49,16 +49,15 @@ public class PinSettingsPresenter extends PresenterAdapter implements HasProgres
     }
 
     @Override
-    public void present(Optional<Map> metadata) {
-        editText.setOnFinishListener(new PinCapture.OnFinishListener() {
-            @Override
-            public void onFinish(String enteredText) {
+    public Presenter<PinSettingsControl> present(Optional<Map> metadata) {
+        editText.setOnFinishListener(enteredText -> {
 
-            }
         });
 
         keyboardView.setActivated(true);
         keyboardView.setEnabled(true);
+
+        return this;
     }
 
     @Override
@@ -74,5 +73,16 @@ public class PinSettingsPresenter extends PresenterAdapter implements HasProgres
             }
         });
         return true;
+    }
+
+    @Override
+    public Presenter<PinSettingsControl> bind(PinSettingsControl control) {
+        this.control = control;
+        return this;
+    }
+
+    @Override
+    public PinSettingsControl getControl() {
+        return control;
     }
 }

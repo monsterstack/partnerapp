@@ -12,6 +12,8 @@ import android.util.Log;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.custom.UserServiceCustom;
@@ -36,6 +38,13 @@ import static android.content.Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS;
 public class MenuPreferenceFragment extends PreferenceFragment {
     private Map<CharSequence, Class> namespace;
 
+    @Inject
+    ServiceLocator serviceLocator;
+
+    @Inject
+    public MenuPreferenceFragment() {
+    }
+
     @Override
     public void onCreate(final Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -43,7 +52,6 @@ public class MenuPreferenceFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.preferences);
         init();
 
-        ServiceLocator serviceLocator = ServiceLocator.getInstance(getContext());
         final UserServiceCustom userServiceCustom = serviceLocator.getUserService();
         final UserSessionManager userSessionManager = new UserSessionManager(getContext());
         final AuthenticatedUser authenticatedUser = userSessionManager.getUserDetails();

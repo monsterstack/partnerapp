@@ -1,57 +1,46 @@
 package monsterstack.io.partner.main;
 
+import android.content.Context;
+import android.content.Intent;
 import android.icu.text.NumberFormat;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+
+import monsterstack.io.partner.Application;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.common.BasicActivity;
+import monsterstack.io.partner.common.HasDimmingSupport;
+import monsterstack.io.partner.domain.Contact;
+import monsterstack.io.partner.main.control.GroupCreationControl;
+import monsterstack.io.partner.main.presenter.GroupCreationPresenter;
 
-public class GroupCreationActivity extends BasicActivity {
-    @BindView(R.id.group_name)
-    EditText groupNameInput;
+public class GroupCreationActivity extends BasicActivity implements GroupCreationControl, HasDimmingSupport {
+    private static final Integer CREATE_GROUP_RESULT_CODE = 101;
+    public static final String EXTRA_INVITES = "invited.contacts";
 
-    @BindView(R.id.group_numberOfSlots_display)
-    TextView numberOfSlotsDisplay;
-
-    @BindView(R.id.seekBar_numberOfSlots)
-    SeekBar numberOfSlotsInput;
-
-    @BindView(R.id.group_goal_display)
-    TextView groupGoalDisplay;
-
-    @BindView(R.id.seekBar_goal)
-    SeekBar groupGoalInput;
-
-    @BindView(R.id.group_calculated_duration)
-    TextView calculatedDuration;
-
-    @BindView(R.id.group_calculated_baseContribution)
-    TextView calculatedBaseContribution;
-
-    @BindView(R.id.group_contribution_freq_input)
-    SwitchCompat contributionFrequencyInput;
-
-    @BindView(R.id.group_contribution_freq_display)
-    TextView contributionFrequencyDisplay;
+    private GroupCreationPresenter presenter;
+    private List<Contact> contactList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.presenter = getPresenterFactory().getGroupCreationPresenter(this, this);
 
-        ButterKnife.bind(this);
+        this.contactList = (List<Contact>)getIntent().getSerializableExtra(EXTRA_INVITES);
 
-        setUpForm();
+        Map<String, Object> metadata = new HashMap<>();
+        metadata.put(EXTRA_INVITES, contactList);
+        presenter.present(Optional.of(metadata));
     }
 
     @Override
@@ -59,14 +48,17 @@ public class GroupCreationActivity extends BasicActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.submit_action, menu);
 
-        menu.findItem(R.id.submit_button).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                onSubmit(item);
-                return false;
-            }
+        menu.findItem(R.id.submit_button).setOnMenuItemClickListener(item -> {
+            onSubmit(item);
+            return false;
         });
         return true;
+    }
+
+    @Override
+    public void injectDependencies(BasicActivity basicActivity) {
+        super.injectDependencies(basicActivity);
+        ((Application) getApplication()).component().inject(this);
     }
 
     @Override
@@ -85,105 +77,46 @@ public class GroupCreationActivity extends BasicActivity {
     }
 
 
-    private void setUpForm() {
+    @Override
+    public void onSubmit(MenuItem menuItem) {
+        Intent data = new Intent();
+        data.putExtra("groupId", UUID.randomUUID());
+        data.putExtra("members", (Serializable)this.contactList);
+        setResult(CREATE_GROUP_RESULT_CODE, data);
 
-        Boolean weeklyContributionSelected = contributionFrequencyInput.isChecked();
-
-        if (weeklyContributionSelected) {
-            calculatedBaseContribution.setText(calculateBaseContributionInAmountPerWeek() + " / w");
-            contributionFrequencyDisplay.setText("Weekly");
-        } else {
-            calculatedBaseContribution.setText(calculateBaseContributionInAmountPerMonth() + " / m");
-            contributionFrequencyDisplay.setText("Monthly");
-        }
-
-        calculatedDuration.setText(calculateDurationInMonths() + " months");
-        groupGoalDisplay.setText(NumberFormat.getCurrencyInstance().format(groupGoalInput.getProgress()));
-        numberOfSlotsDisplay.setText(String.valueOf(numberOfSlotsInput.getProgress()));
-
-        contributionFrequencyInput.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    calculatedBaseContribution.setText(calculateBaseContributionInAmountPerWeek() + " / w");
-                    contributionFrequencyDisplay.setText("Weekly");
-                } else {
-                    calculatedBaseContribution.setText(calculateBaseContributionInAmountPerMonth() + " / m");
-                    contributionFrequencyDisplay.setText("Monthly");
-                }
-            }
-        });
-
-
-        groupGoalInput.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                groupGoalDisplay.setText(NumberFormat.getCurrencyInstance().format(progress));
-                Boolean weeklyContributionSelected = contributionFrequencyInput.isChecked();
-
-                if (weeklyContributionSelected) {
-                    calculatedBaseContribution.setText(calculateBaseContributionInAmountPerWeek() + " / w");
-                } else {
-                    calculatedBaseContribution.setText(calculateBaseContributionInAmountPerMonth() + " / m");
-                }
-                calculatedDuration.setText(calculateDurationInMonths() + " months");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        numberOfSlotsInput.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                numberOfSlotsDisplay.setText(String.valueOf(progress));
-                Boolean weeklyContributionSelected = contributionFrequencyInput.isChecked();
-
-                if (weeklyContributionSelected) {
-                    calculatedBaseContribution.setText(calculateBaseContributionInAmountPerWeek() + " / w");
-                } else {
-                    calculatedBaseContribution.setText(calculateBaseContributionInAmountPerMonth() + " / m");
-                }                calculatedDuration.setText(calculateDurationInMonths() + " months");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+        finish();
     }
 
-    private void onSubmit(MenuItem menuItem) {
+    @Override
+    public String calculateBaseContributionInAmountPerMonth() {
+        int numberOfSlots = presenter.getNumberOfSlots();
+        double goal = presenter.getGoal();
 
+        return NumberFormat.getCurrencyInstance().format(goal/numberOfSlots);
     }
 
-    private String calculateBaseContributionInAmountPerMonth() {
-        int numberOfSlots = numberOfSlotsInput.getProgress();
-        int goal = groupGoalInput.getProgress();
+    @Override
+    public String calculateBaseContributionInAmountPerWeek() {
+        int numberOfSlots = presenter.getNumberOfSlots();
+        double goal = presenter.getGoal();
 
-        return NumberFormat.getCurrencyInstance().format((double) (goal/numberOfSlots));
+        return NumberFormat.getCurrencyInstance().format(goal/numberOfSlots /4);
     }
 
-    private String calculateBaseContributionInAmountPerWeek() {
-        int numberOfSlots = numberOfSlotsInput.getProgress();
-        int goal = groupGoalInput.getProgress();
-
-        return NumberFormat.getCurrencyInstance().format(((double) (goal/numberOfSlots)/4));
+    @Override
+    public String calculateBaseContributionPercentageOfGoal() {
+        int numberOfSlots = presenter.getNumberOfSlots();
+        double goal = presenter.getGoal();
+        return NumberFormat.getPercentInstance().format((goal/numberOfSlots)/goal);
     }
 
-    private int calculateDurationInMonths() {
-        return numberOfSlotsInput.getProgress();
+    @Override
+    public int calculateDurationInMonths() {
+        return presenter.getNumberOfSlots();
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 }

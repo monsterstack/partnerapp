@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/toolbar_layout"/>
+
+    <include layout="@layout/progress_bar"/>
+
+    <LinearLayout
+        android:layout_marginTop="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@drawable/separator_vertical"
+        android:showDividers="middle"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/transactionType"
+                android:text="RECEIVED"
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/calculatedTransactionAmount"
+                android:layout_toEndOf="@id/transactionType"
+                android:layout_alignParentEnd="true"
+                android:textAlignment="viewEnd"
+                android:textSize="15sp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:text="$8.75"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/transactionAmount"
+                android:layout_below="@id/calculatedTransactionAmount"
+                android:layout_alignParentEnd="true"
+                android:paddingTop="2.5dp"
+                android:paddingBottom="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="Value when received $14.25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/transactionDescriptionLabel"
+                android:text="Description"
+
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_toEndOf="@id/transactionDescriptionLabel"
+                android:text="Partner Draw"
+                android:layout_alignParentEnd="true"
+                android:textAlignment="viewEnd"
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/transactionToLabel"
+                android:text="To"
+                android:textStyle="bold"
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/transactionTo"
+                android:layout_toEndOf="@id/transactionToLabel"
+                android:layout_alignParentEnd="true"
+                android:textAlignment="viewEnd"
+                android:padding="10dp"
+                android:text="My Digital Wallet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/transactionFromLabel"
+                android:text="From"
+                android:layout_below="@id/transactionToLabel"
+                android:textStyle="bold"
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_below="@id/transactionTo"
+                android:layout_toEndOf="@id/transactionFromLabel"
+                android:layout_alignParentEnd="true"
+                android:textAlignment="viewEnd"
+                android:padding="10dp"
+                android:text="324234234xxdxse324234324"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/transactionTimestampLabel"
+                android:text="Date"
+
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_toEndOf="@id/transactionTimestampLabel"
+                android:text="April 21, 2018 @ 9:39pm"
+                android:layout_alignParentEnd="true"
+                android:textAlignment="viewEnd"
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/transactionStatusLabel"
+                android:text="Status"
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_toEndOf="@id/transactionStatusLabel"
+                android:text="Confirmed"
+                android:layout_alignParentEnd="true"
+                android:textAlignment="viewEnd"
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <Button
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorSecondary"
+        android:textColor="@color/white"
+        android:text="View Receipt"
+        android:layout_margin="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

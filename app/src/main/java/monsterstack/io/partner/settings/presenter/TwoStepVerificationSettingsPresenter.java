@@ -1,8 +1,8 @@
 package monsterstack.io.partner.settings.presenter;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import java.util.Map;
 import java.util.Optional;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -22,12 +24,12 @@ import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.api.resources.User;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.common.HasProgressBarSupport;
-import monsterstack.io.partner.common.presenter.PresenterAdapter;
+import monsterstack.io.partner.common.presenter.Presenter;
 import monsterstack.io.partner.settings.control.TwoStepVerificationSettingsControl;
 
 import static android.view.View.GONE;
 
-public class TwoStepVerificationSettingsPresenter extends PresenterAdapter implements HasProgressBarSupport {
+public class TwoStepVerificationSettingsPresenter implements Presenter<TwoStepVerificationSettingsControl>, HasProgressBarSupport {
     @BindView(R.id.two_step_verify_enable_button)
     Button enableTwoFactorButton;
 
@@ -37,10 +39,12 @@ public class TwoStepVerificationSettingsPresenter extends PresenterAdapter imple
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
 
+    @Inject
+    ServiceLocator serviceLocator;
+
     private TwoStepVerificationSettingsControl control;
 
-    public TwoStepVerificationSettingsPresenter(TwoStepVerificationSettingsControl control) {
-        this.control = control;
+    public TwoStepVerificationSettingsPresenter() {
     }
 
     @Override
@@ -54,7 +58,7 @@ public class TwoStepVerificationSettingsPresenter extends PresenterAdapter imple
     }
 
     @Override
-    public void present(Optional<Map> metadata) {
+    public Presenter<TwoStepVerificationSettingsControl> present(Optional<Map> metadata) {
         UserSessionManager userSessionManager = new UserSessionManager(control.getContext());
         AuthenticatedUser user = userSessionManager.getUserDetails();
 
@@ -65,13 +69,30 @@ public class TwoStepVerificationSettingsPresenter extends PresenterAdapter imple
             enableTwoFactorButton.setText("Enable Two-Factor Auth");
             description.setText(R.string.enable_two_factor_description);
         }
+
+        return this;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return false;
+    }
+
+    @Override
+    public Presenter<TwoStepVerificationSettingsControl> bind(TwoStepVerificationSettingsControl control) {
+        this.control = control;
+        return this;
+    }
+
+    @Override
+    public TwoStepVerificationSettingsControl getControl() {
+        return control;
     }
 
     @OnClick(R.id.two_step_verify_enable_button)
     public void onEnable(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder((Activity)control.getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(control.getContext());
 
-        ServiceLocator serviceLocator = ServiceLocator.getInstance(control.getContext());
         final UserServiceCustom userService = serviceLocator.getUserService();
 
         final UserSessionManager userSessionManager = new UserSessionManager(control.getContext());

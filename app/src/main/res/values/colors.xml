@@ -19,5 +19,7 @@
 
 
     <color name="red">#f16448</color>
-    <color name="green">#66e2ce</color>
+    <color name="green">#5ebeae</color>
+
+    <color name="black">#212121</color>
 </resources>

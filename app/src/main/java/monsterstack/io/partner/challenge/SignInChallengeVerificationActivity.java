@@ -3,6 +3,8 @@ package monsterstack.io.partner.challenge;
 import android.content.Intent;
 import android.os.Bundle;
 
+import javax.inject.Inject;
+
 import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.custom.AuthServiceCustom;
@@ -15,6 +17,8 @@ import monsterstack.io.partner.services.MessagingService;
 import monsterstack.io.partner.utils.NavigationUtils;
 
 public class SignInChallengeVerificationActivity extends ChallengeVerificationActivity {
+
+    @Inject MessagingService messagingService;
 
     @Override
     public void onVerify() {
@@ -33,7 +37,6 @@ public class SignInChallengeVerificationActivity extends ChallengeVerificationAc
                 if(null != user) {
                     /* Add to session */
                     sessionManager.createUserSession(user);
-                    MessagingService.initialize(getApplicationContext());
 
                     String pin = sessionManager.getUserPin();
 

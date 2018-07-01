@@ -1,5 +1,6 @@
 package monsterstack.io.partner.challenge;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,10 +16,11 @@ import monsterstack.io.api.listeners.OnResponseListener;
 import monsterstack.io.api.resources.Challenge;
 import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.partner.R;
+import monsterstack.io.partner.challenge.control.PhoneCaptureControl;
 import monsterstack.io.partner.challenge.presenter.PhoneCapturePresenter;
 import monsterstack.io.partner.common.BasicActivity;
 
-public class PhoneCaptureActivity extends BasicActivity {
+public class PhoneCaptureActivity extends BasicActivity implements PhoneCaptureControl {
 
     protected PhoneCapturePresenter presenter;
 
@@ -42,6 +44,11 @@ public class PhoneCaptureActivity extends BasicActivity {
     }
 
     @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return presenter.onCreateOptionsMenu(menu);
     }
@@ -51,6 +58,7 @@ public class PhoneCaptureActivity extends BasicActivity {
         return R.string.phone_capture;
     }
 
+    @Override
     public void onCapture() {
         presenter.showProgressBar();
 

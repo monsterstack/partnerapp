@@ -10,13 +10,31 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import javax.inject.Inject;
+
+import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.resources.HttpError;
+import monsterstack.io.partner.Application;
 import monsterstack.io.partner.R;
+import monsterstack.io.partner.main.presenter.PresenterFactory;
 
 public abstract class MenuActivity extends AppCompatActivity implements ClosableMenu {
+
+    @Inject PresenterFactory presenterFactory;
+    @Inject ServiceLocator serviceLocator;
+
+    public PresenterFactory getPresenterFactory() {
+        return presenterFactory;
+    }
+
+    public ServiceLocator getServiceLocator() {
+        return serviceLocator;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        injectDependencies(this);
         setContentView(getContentView());
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
@@ -39,14 +57,14 @@ public abstract class MenuActivity extends AppCompatActivity implements Closable
         return true;
     }
 
+    public void injectDependencies(MenuActivity menuActivity) {
+        ((Application) getApplication()).component().inject(menuActivity);
+    }
 
     public MenuItem.OnMenuItemClickListener getCloseListener() {
-        return new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                finish();
-                return false;
-            }
+        return item -> {
+            finish();
+            return false;
         };
     }
 

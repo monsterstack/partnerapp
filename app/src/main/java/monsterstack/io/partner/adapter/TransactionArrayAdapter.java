@@ -1,6 +1,8 @@
 package monsterstack.io.partner.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,6 +20,8 @@ import butterknife.ButterKnife;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.domain.Transaction;
 import monsterstack.io.partner.domain.TransactionType;
+import monsterstack.io.partner.transaction.TransactionActivity;
+import monsterstack.io.partner.utils.NavigationUtils;
 
 public class TransactionArrayAdapter extends RecyclerView.Adapter<TransactionArrayAdapter.ViewHolder> {
     private LayoutInflater inflater;
@@ -40,11 +44,13 @@ public class TransactionArrayAdapter extends RecyclerView.Adapter<TransactionArr
         TransactionArrayAdapter.ViewHolder viewHolder = new TransactionArrayAdapter.ViewHolder(view);
         ButterKnife.bind(viewHolder, view);
 
+
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        // Needs to be in Presenter layer
         Transaction transaction = transactions[position];
         if (transaction != null) {
             // Empty slot
@@ -58,7 +64,6 @@ public class TransactionArrayAdapter extends RecyclerView.Adapter<TransactionArr
             holder.timestamp.setText(formattedDate);
             holder.type.setText(transaction.getType().getCode());
 
-            // Needs to be in Presenter layer
             if (transaction.getType().equals(TransactionType.CREDIT)) {
                 holder.type.setTextColor(context.getColor(R.color.red));
                 holder.amount.setTextColor(context.getColor(R.color.red));
@@ -66,6 +71,15 @@ public class TransactionArrayAdapter extends RecyclerView.Adapter<TransactionArr
                 holder.type.setTextColor(context.getColor(R.color.green));
                 holder.amount.setTextColor(context.getColor(R.color.green));
             }
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Go to Transaction View
+                    Bundle animationBundle = NavigationUtils.enterStageRightBundle(context);
+                    context.startActivity(new Intent(context, TransactionActivity.class), animationBundle);
+                }
+            });
         }
     }
 

@@ -1,8 +1,6 @@
 package monsterstack.io.partner.challenge;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -10,7 +8,6 @@ import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.resources.AuthenticatedUser;
 import monsterstack.io.partner.MainActivity;
 import monsterstack.io.partner.R;
-import monsterstack.io.partner.services.MessagingService;
 
 public class SignInPinCaptureActivity extends PinCaptureActivity {
 
@@ -37,13 +34,8 @@ public class SignInPinCaptureActivity extends PinCaptureActivity {
                 } else {
                     sessionManager.createUserSession(user);
 
-                    final Context context = getApplicationContext();
-                    AsyncTask.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            MessagingService.initialize(context);
-                        }
-                    });
+//                    final Context context = getApplicationContext();
+//                    AsyncTask.execute(() -> MessagingService.initialize(context));
                 }
             }
 

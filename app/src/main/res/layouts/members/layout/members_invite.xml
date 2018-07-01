@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/memberInviteView"
+        android:foreground="@drawable/shape_window_dim">
+        <include layout="@layout/toolbar_layout"/>
+
+        <include layout="@layout/progress_bar"/>
+
+        <LinearLayout
+            android:layout_marginTop="70dp"
+            android:layout_width="match_parent"
+            android:layout_height="550dp"
+            android:divider="@drawable/separator_vertical"
+            android:showDividers="middle"
+            android:orientation="vertical">
+
+            <SearchView
+                android:id="@+id/contactSearchText"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:queryBackground="@android:color/transparent"
+                android:submitBackground="@android:color/transparent">
+
+            </SearchView>
+            <!-- Inviting Members -->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/contactList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+    <!-- include bottom sheet -->
+    <include layout="@layout/member_invite_bottom_sheet"/>
+</android.support.design.widget.CoordinatorLayout>

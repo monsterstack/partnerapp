@@ -10,7 +10,7 @@ import monsterstack.io.partner.domain.Group;
 
 public interface GroupFragmentControl extends Control {
     void setSelectedGroup(Group group);
-    void findGroupsAssociatedWithUser(OnResponseListener<Group[], HttpError> listener);
+    void findGroupsAssociatedWithUser(boolean empty, OnResponseListener<Group[], HttpError> listener);
 
     void inflateFloatingActionButton(Group[] groups);
 

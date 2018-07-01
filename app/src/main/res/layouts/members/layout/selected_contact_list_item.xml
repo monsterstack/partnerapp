@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/miniMemberListItem"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <monsterstack.io.avatarview.AvatarView
+        android:id="@+id/selectedContactListItem_avatar"
+        android:layout_width="105dp"
+        android:layout_height="105dp"
+        android:padding="0dp"
+        app:avatar_shape="Rectangle"
+        app:name_size="8sp"/>
+</LinearLayout>

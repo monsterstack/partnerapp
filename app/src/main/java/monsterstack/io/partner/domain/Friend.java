@@ -1,5 +1,7 @@
 package monsterstack.io.partner.domain;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Friend {
+public class Friend implements Serializable {
+    private String fullName;
     private String firstName;
     private String lastName;
     private String emailAddress;
@@ -28,5 +31,17 @@ public class Friend {
         this.lastName = lastName;
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
+
+        this.fullName = firstName + " " + lastName;
+    }
+
+    public Friend(String fullName, String emailAddress, String phoneNumber) {
+        this.fullName = fullName;
+        this.emailAddress = emailAddress;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getFullName() {
+        return this.fullName;
     }
 }

@@ -2,6 +2,7 @@ package monsterstack.io.partner.menu.presenter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -17,11 +18,12 @@ import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.resources.AuthenticatedUser;
 import monsterstack.io.avatarview.AvatarView;
 import monsterstack.io.avatarview.User;
-import monsterstack.io.partner.common.HasProgressBarSupport;
-import monsterstack.io.partner.common.presenter.PresenterAdapter;
 import monsterstack.io.partner.R;
+import monsterstack.io.partner.common.HasProgressBarSupport;
+import monsterstack.io.partner.common.presenter.Presenter;
+import monsterstack.io.partner.menu.control.ProfileControl;
 
-public class ProfilePresenter extends PresenterAdapter implements HasProgressBarSupport {
+public class ProfilePresenter implements Presenter<ProfileControl>, HasProgressBarSupport {
     @BindView(R.id.userImage)
     AvatarView avatarView;
 
@@ -33,17 +35,18 @@ public class ProfilePresenter extends PresenterAdapter implements HasProgressBar
 
     private Context context;
 
-    public ProfilePresenter(Context context) {
-        this.context = context;
-    }
+    private ProfileControl control;
+
 
     @Override
-    public void present(Optional<Map> metadata) {
+    public Presenter<ProfileControl> present(Optional<Map> metadata) {
         UserSessionManager sessionManager = new UserSessionManager(this.context);
         AuthenticatedUser authenticatedUser = sessionManager.getUserDetails();
         fullName.setText(authenticatedUser.getFullName());
         avatarView.setUser(new User(authenticatedUser.getFullName(),
                 authenticatedUser.getAvatarUrl(), R.color.colorAccent));
+
+        return this;
     }
 
     public void showProgressBar() {
@@ -65,5 +68,23 @@ public class ProfilePresenter extends PresenterAdapter implements HasProgressBar
     public void onClick(View view) {
         ImagePicker.create((Activity)context) // Activity or Fragment
                 .start();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return false;
+    }
+
+    @Override
+    public Presenter<ProfileControl> bind(ProfileControl control) {
+        this.control = control;
+        this.context = control.getContext();
+
+        return this;
+    }
+
+    @Override
+    public ProfileControl getControl() {
+        return control;
     }
 }

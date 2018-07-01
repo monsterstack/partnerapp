@@ -5,6 +5,24 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
+    <include layout="@layout/progress_bar"/>
+
+    <LinearLayout
+        android:id="@+id/emptyState_get_started"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="200dp"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/create_group_button"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_gravity="center|center_horizontal"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:text="Create a Group"/>
+    </LinearLayout>
 
     <monsterstack.io.streamview.PausingViewPager
         android:id="@+id/viewPager"
@@ -29,6 +47,8 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="50dp"
         android:layout_gravity="bottom|end"
+        android:visibility="gone"
         app:sdMainFabClosedSrc="@drawable/ic_close_white_24dp"/>
+
 
 </RelativeLayout>

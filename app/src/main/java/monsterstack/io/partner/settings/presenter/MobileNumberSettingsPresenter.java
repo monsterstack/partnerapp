@@ -2,6 +2,7 @@ package monsterstack.io.partner.settings.presenter;
 
 import android.content.res.Configuration;
 import android.inputmethodservice.KeyboardView;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -14,12 +15,12 @@ import monsterstack.io.api.UserSessionManager;
 import monsterstack.io.api.resources.AuthenticatedUser;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.common.HasProgressBarSupport;
-import monsterstack.io.partner.common.presenter.PresenterAdapter;
+import monsterstack.io.partner.common.presenter.Presenter;
 import monsterstack.io.partner.settings.control.MobileNumberSettingsControl;
 
 import static android.view.View.GONE;
 
-public class MobileNumberSettingsPresenter extends PresenterAdapter implements HasProgressBarSupport {
+public class MobileNumberSettingsPresenter implements Presenter<MobileNumberSettingsControl>, HasProgressBarSupport {
     @BindView(R.id.mobileEdit)
     EditText editText;
 
@@ -46,7 +47,7 @@ public class MobileNumberSettingsPresenter extends PresenterAdapter implements H
     }
 
     @Override
-    public void present(Optional<Map> metadata) {
+    public Presenter<MobileNumberSettingsControl> present(Optional<Map> metadata) {
         editText.setSelection(editText.getText().length());
         editText.setRawInputType(Configuration.KEYBOARD_12KEY);
 
@@ -59,9 +60,28 @@ public class MobileNumberSettingsPresenter extends PresenterAdapter implements H
         if(null != user.getPhoneNumber()) {
             editText.setText(user.getPhoneNumber());
         }
+
+        return this;
     }
 
     public String getCapturedPhoneNumber() {
         return editText.getText().toString();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return false;
+    }
+
+    @Override
+    public Presenter<MobileNumberSettingsControl> bind(MobileNumberSettingsControl control) {
+        this.control = control;
+
+        return this;
+    }
+
+    @Override
+    public MobileNumberSettingsControl getControl() {
+        return control;
     }
 }

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="400dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/member_base_contribution_bottom_sheet"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+    <!-- Base Contribution Banner -->
+    <RelativeLayout
+        android:id="@+id/baseContributionHeader"
+        android:layout_marginTop="30dp"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="56dp">
+
+        <ImageButton
+            android:id="@+id/base_contribution_bottom_sheet_arrow"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_keyboard_arrow_down_white_24dp"
+            android:background="@color/colorPrimary"
+            android:layout_width="55dp"
+            android:layout_height="55dp" />
+        <TextView
+            android:id="@+id/baseContributionLabel"
+            android:layout_toEndOf="@id/base_contribution_bottom_sheet_arrow"
+            android:text="Base Contribution"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:paddingTop="15dp"
+            android:paddingBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="56dp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="344dp">
+        <TextView
+            android:id="@+id/group_calculated_baseContribution"
+            android:text="$25.00 / m"
+            android:layout_marginTop="35dp"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white"
+            android:textSize="50sp"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/baseContribution_divider"
+            android:text="-- or --"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@id/group_calculated_baseContribution"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/group_calculated_baseContributionPercentage"
+            android:text="56.00 %"
+            android:layout_below="@id/baseContribution_divider"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white"
+            android:textSize="50sp"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+
+</LinearLayout>

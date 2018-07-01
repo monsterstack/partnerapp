@@ -1,5 +1,6 @@
 package monsterstack.io.partner.challenge;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,12 +15,13 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import monsterstack.io.partner.MainActivity;
 import monsterstack.io.partner.R;
+import monsterstack.io.partner.challenge.control.PinCaptureControl;
 import monsterstack.io.partner.challenge.presenter.PinCapturePresenter;
 import monsterstack.io.partner.common.BasicActivity;
 import monsterstack.io.partner.menu.MenuPreferenceFragment;
 import monsterstack.io.partner.settings.PinSettingsActivity;
 
-public class PinCaptureActivity extends BasicActivity {
+public class PinCaptureActivity extends BasicActivity implements PinCaptureControl {
     @Inject
     PinCapturePresenter presenter;
 
@@ -30,6 +32,11 @@ public class PinCaptureActivity extends BasicActivity {
 
         ButterKnife.bind(presenter, this);
         presenter.present(Optional.<Map>empty());
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 
     @Override
@@ -56,6 +63,7 @@ public class PinCaptureActivity extends BasicActivity {
         return presenter.getEnteredPin();
     }
 
+    @Override
     public void onNext() {
         String source = (String)getIntent().getExtras().get("source");
         if(null != source && source.equals(MenuPreferenceFragment.class.getCanonicalName())) {
