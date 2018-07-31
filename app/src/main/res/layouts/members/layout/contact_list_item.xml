@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/contactEmail"
-        android:layout_below="@id/contactName"
+        android:layout_below="@id/contactPhoneNumber"
         android:layout_toEndOf="@id/contactAvatar"
         android:layout_marginLeft="40dp"
         android:text="sally.johnson@gmail.com"
@@ -32,7 +32,7 @@
 
     <TextView
         android:id="@+id/contactPhoneNumber"
-        android:layout_below="@id/contactEmail"
+        android:layout_below="@id/contactName"
         android:layout_toEndOf="@id/contactAvatar"
         android:layout_centerInParent="true"
         android:layout_marginLeft="40dp"

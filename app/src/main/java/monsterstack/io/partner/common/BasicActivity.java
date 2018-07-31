@@ -16,7 +16,7 @@ import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.partner.Application;
 import monsterstack.io.partner.R;
-import monsterstack.io.partner.main.presenter.PresenterFactory;
+import monsterstack.io.partner.PresenterFactory;
 import monsterstack.io.partner.services.AnalyticsService;
 import monsterstack.io.partner.services.MessagingService;
 import monsterstack.io.partner.utils.NavigationUtils;
@@ -32,14 +32,11 @@ public abstract class BasicActivity extends AppCompatActivity {
 
     @Inject ServiceLocator serviceLocator;
 
-    @Inject PresenterFactory presenterFactory;
-
     @Inject MessagingService messagingService;
     @Inject AnalyticsService analyticsService;
 
-    public PresenterFactory getPresenterFactory() {
-        return presenterFactory;
-    }
+    @Inject
+    PresenterFactory presenterFactory;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +54,7 @@ public abstract class BasicActivity extends AppCompatActivity {
         myToolbar.setTitle(getActionTitle());
         setSupportActionBar(myToolbar);
 
-        if(displayHomeAsUp())
+        if(displayHomeAsUp() && null != getSupportActionBar())
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ProgressBar progressBar = findViewById(R.id.progressbar);
@@ -66,10 +63,6 @@ public abstract class BasicActivity extends AppCompatActivity {
             progressBar.setVisibility(GONE);
         }
 
-    }
-
-    public void injectDependencies(BasicActivity basicActivity) {
-        ((Application) getApplication()).component().inject(basicActivity);
     }
 
     public boolean displayHomeAsUp() {
@@ -89,6 +82,10 @@ public abstract class BasicActivity extends AppCompatActivity {
         }
     }
 
+    public PresenterFactory getPresenterFactory() {
+        return presenterFactory;
+    }
+
     public ServiceLocator getServiceLocator() {
         return serviceLocator;
     }
@@ -106,6 +103,10 @@ public abstract class BasicActivity extends AppCompatActivity {
         super.finish();
         if(!isClosable)
             this.overridePendingTransition(R.anim.back_slide_right, R.anim.back_slide_left);
+    }
+
+    public void injectDependencies(BasicActivity basicActivity) {
+        ((Application) getApplication()).component().inject(basicActivity);
     }
 
 
@@ -145,15 +146,13 @@ public abstract class BasicActivity extends AppCompatActivity {
                 alertDialog.setMessage("Server error");
             } else if (error.getStatusCode() == 0) {
                 alertDialog.setMessage("Unknown Server Error");
+            } else if (error.getStatusCode() == 409) {
+                alertDialog.setMessage("Resource conflict discovered");
             }
         }
 
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                (dialog, which) -> dialog.dismiss());
         alertDialog.show();
     }
 

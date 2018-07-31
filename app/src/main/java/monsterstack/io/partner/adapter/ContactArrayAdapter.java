@@ -130,6 +130,7 @@ public class ContactArrayAdapter extends RecyclerView.Adapter<ContactArrayAdapte
                 if (ContactArrayAdapter.this.itemStateArray.indexOfKey(position) == -1) {
                     itemStateArray.append(position, true);
                     checkBox.setChecked(true);
+                    onContactSelectedHandler.apply(ContactArrayAdapter.this.contacts.get(position));
                 } else if (!ContactArrayAdapter.this.itemStateArray.get(position)) {
                     checkBox.setChecked(true);
                     itemStateArray.put(position, true);

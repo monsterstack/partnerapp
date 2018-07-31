@@ -38,7 +38,7 @@
             android:layout_height="56dp" />
     </RelativeLayout>
     <RelativeLayout
-        android:background="@color/colorPrimary"
+        android:background="@color/colorPrimaryLight"
         android:layout_width="match_parent"
         android:layout_height="344dp">
         <TextView

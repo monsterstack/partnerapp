@@ -10,6 +10,7 @@ import java.util.Optional;
 import monsterstack.io.partner.Application;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.common.BasicActivity;
+
 import monsterstack.io.partner.main.control.GroupScheduleControl;
 import monsterstack.io.partner.main.presenter.GroupSchedulePresenter;
 
@@ -34,8 +35,7 @@ public class GroupScheduleActivity extends BasicActivity implements GroupSchedul
     @Override
     public void injectDependencies(BasicActivity basicActivity) {
         super.injectDependencies(basicActivity);
-
-        ((Application)getApplication()).component().inject(this);
+        ((Application) getApplication()).component().inject(this);
     }
 
     @Override

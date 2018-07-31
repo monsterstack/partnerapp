@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/registration_email_capture"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/toolbar_layout"/>
+    <include layout="@layout/progress_bar"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:id="@+id/registration_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progress="50"
+            android:progressBackgroundTint="@color/green"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="And, your email?"
+            android:textAlignment="viewStart"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textAlignment="viewStart"
+            android:textSize="15sp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/email_address_label"
+                android:text="Email Address"
+                android:textAllCaps="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <EditText
+                android:id="@+id/email_address"
+                android:layout_below="@id/email_address_label"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height" />
+
+            <TextView
+                android:id="@+id/legal_notes"
+                android:layout_marginTop="10dp"
+                android:text="We'll send you marketing promotions, special offers, inspiratoin, and policy updates via email."
+                android:layout_below="@id/email_address"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/legal_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="I don't want to receive marketing messages. I can opt out at anytime in my account settings."
+                    android:layout_width="310dp"
+                    android:layout_height="50dp" />
+                <CheckBox
+                    android:checked="true"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,6 +1,8 @@
 package monsterstack.io.partner.domain;
 
 import java.io.Serializable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Friend implements Serializable {
+    private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
     private String fullName;
     private String firstName;
     private String lastName;
@@ -29,7 +34,7 @@ public class Friend implements Serializable {
     public Friend(String firstName, String lastName, String emailAddress, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.emailAddress = emailAddress;
+        this.emailAddress = validEmailOrNull(emailAddress);
         this.phoneNumber = phoneNumber;
 
         this.fullName = firstName + " " + lastName;
@@ -37,11 +42,21 @@ public class Friend implements Serializable {
 
     public Friend(String fullName, String emailAddress, String phoneNumber) {
         this.fullName = fullName;
-        this.emailAddress = emailAddress;
+        this.emailAddress = validEmailOrNull(emailAddress);
         this.phoneNumber = phoneNumber;
     }
 
     public String getFullName() {
         return this.fullName;
+    }
+
+    public String validEmailOrNull(String emailAddress) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailAddress);
+
+        if(!matcher.find()) {
+            return null;
+        }
+
+        return emailAddress;
     }
 }

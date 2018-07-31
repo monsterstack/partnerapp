@@ -16,11 +16,13 @@ import butterknife.BindView;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.challenge.control.PhoneCaptureControl;
 import monsterstack.io.partner.common.HasProgressBarSupport;
+import monsterstack.io.partner.common.HasSnackBarSupport;
 import monsterstack.io.partner.common.presenter.Presenter;
+import monsterstack.io.partner.common.support.TextWatcherAdapter;
 
 import static android.view.View.GONE;
 
-public class PhoneCapturePresenter implements Presenter<PhoneCaptureControl>, HasProgressBarSupport {
+public class PhoneCapturePresenter implements Presenter<PhoneCaptureControl>, HasProgressBarSupport, HasSnackBarSupport {
     @BindView(R.id.keyboard)
     KeyboardView keyboardView;
 
@@ -30,10 +32,18 @@ public class PhoneCapturePresenter implements Presenter<PhoneCaptureControl>, Ha
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
 
+    @BindView(R.id.phone_capture)
+    View rootView;
+
     private PhoneCaptureControl control;
 
     public PhoneCapturePresenter(PhoneCaptureControl control) {
         this.control = control;
+    }
+
+    @Override
+    public View getRootView() {
+        return rootView;
     }
 
     @Override
@@ -42,6 +52,18 @@ public class PhoneCapturePresenter implements Presenter<PhoneCaptureControl>, Ha
 
         editText.setSelection(editText.getText().length());
         editText.setRawInputType(Configuration.KEYBOARD_12KEY);
+
+        editText.addTextChangedListener(new TextWatcherAdapter() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (control.isValidPhoneNumber(s.toString(), "US")) {
+                    markPhoneNumberGood();
+                } else {
+                    markPhoneNumberBad();
+                }
+            }
+        });
 
         keyboardView.setActivated(true);
         keyboardView.setEnabled(true);
@@ -56,12 +78,9 @@ public class PhoneCapturePresenter implements Presenter<PhoneCaptureControl>, Ha
 
         MenuItem nextButton = menu.findItem(R.id.next_button);
 
-        nextButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                control.onCapture();
-                return false;
-            }
+        nextButton.setOnMenuItemClickListener(item -> {
+            control.onCapture();
+            return false;
         });
 
         return true;
@@ -88,5 +107,15 @@ public class PhoneCapturePresenter implements Presenter<PhoneCaptureControl>, Ha
     @Override
     public PhoneCaptureControl getControl() {
         return control;
+    }
+
+    private void markPhoneNumberGood() {
+        editText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_black_24dp, 0);
+        showReaffirmation("Good Phone Number");
+    }
+
+    private void markPhoneNumberBad() {
+        editText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_warning_black_24dp, 0);
+        showError("Invalid Phone Number");
     }
 }

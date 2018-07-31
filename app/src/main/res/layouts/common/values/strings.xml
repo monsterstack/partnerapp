@@ -60,6 +60,13 @@
         Disabling 2-step Verification puts your wallet at risk. Protect your wallet from unauthorized access by having 2-Step Verification enabled.
     </string>
 
+    <string name="insufficient_members_warning">
+        You must select at least 4 potential members to invite.
+    </string>
+    <string name="invalid_group_data_name">
+        You must give the Group a name.
+    </string>
+
     <!-- Material Calander -->
     <string name="material_calendar_monday">M</string>
     <string name="material_calendar_tuesday">T</string>

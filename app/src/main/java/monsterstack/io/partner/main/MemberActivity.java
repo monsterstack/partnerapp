@@ -18,6 +18,7 @@ import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.partner.Application;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.common.BasicActivity;
+
 import monsterstack.io.partner.domain.Member;
 import monsterstack.io.partner.domain.Transaction;
 import monsterstack.io.partner.domain.TransactionType;
@@ -65,8 +66,7 @@ public class MemberActivity extends BasicActivity implements MemberControl {
     @Override
     public void injectDependencies(BasicActivity basicActivity) {
         super.injectDependencies(basicActivity);
-
-        ((Application)getApplication()).component().inject(this);
+        ((Application) getApplication()).component().inject(this);
     }
 
     @Override

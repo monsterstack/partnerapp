@@ -4,8 +4,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public interface HasDimmingSupport {
-    static final Integer LIGHTER = 0;
-    static final Integer DARKER = 150;
+    Integer LIGHTER = 0;
+    Integer DARKER = 150;
 
     default void dim(ViewGroup view) {
         view.getForeground().setAlpha(DARKER);

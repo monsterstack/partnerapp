@@ -6,7 +6,7 @@ import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
-import monsterstack.io.partner.main.presenter.PresenterFactory;
+import monsterstack.io.partner.PresenterFactory;
 
 @Module
 public class MainModule {

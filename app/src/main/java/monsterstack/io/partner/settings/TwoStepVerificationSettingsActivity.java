@@ -9,9 +9,8 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
 import monsterstack.io.partner.R;
-import monsterstack.io.partner.main.presenter.PresenterFactory;
+import monsterstack.io.partner.PresenterFactory;
 import monsterstack.io.partner.settings.control.TwoStepVerificationSettingsControl;
 import monsterstack.io.partner.settings.presenter.TwoStepVerificationSettingsPresenter;
 

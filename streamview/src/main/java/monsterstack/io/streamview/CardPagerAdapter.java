@@ -22,6 +22,7 @@ public abstract class CardPagerAdapter<T> extends PagerAdapter implements CardAd
 
     public void replaceDataList(T[] data) {
         this.dataList = Arrays.asList(data);
+        this.cardViewList = new CardView[dataList.size()];
 
         this.notifyDataSetChanged();
     }

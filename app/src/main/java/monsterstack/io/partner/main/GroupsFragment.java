@@ -15,19 +15,29 @@ import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 
 import java.util.Currency;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import butterknife.ButterKnife;
+import javax.inject.Inject;
+
+import monsterstack.io.api.PartnerService;
 import monsterstack.io.api.listeners.OnResponseListener;
 import monsterstack.io.api.resources.HttpError;
+import monsterstack.io.api.resources.Partner;
+import monsterstack.io.partner.Application;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.adapter.GroupAdapter;
 import monsterstack.io.partner.adapter.ViewAnimatedListener;
 import monsterstack.io.partner.domain.Group;
 import monsterstack.io.partner.main.control.GroupFragmentControl;
 import monsterstack.io.partner.main.presenter.GroupFragmentPresenter;
+import monsterstack.io.partner.PresenterFactory;
 import monsterstack.io.partner.utils.NavigationUtils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GroupsFragment extends Fragment implements GroupFragmentControl {
     private static final Integer CREATE_GROUP_REQUEST_CODE = 101;
@@ -38,6 +48,12 @@ public class GroupsFragment extends Fragment implements GroupFragmentControl {
     private Group selectedGroup;
 
     GroupFragmentPresenter presenter;
+
+    @Inject
+    PartnerService partnerService;
+
+    @Inject
+    PresenterFactory presenterFactory;
 
     public static GroupsFragment newInstance(String title) {
         Bundle args = new Bundle();
@@ -54,10 +70,10 @@ public class GroupsFragment extends Fragment implements GroupFragmentControl {
                              Bundle savedInstanceState) {
         this.view = inflater.inflate(
                 R.layout.fragment_groups, container, false);
+        ((Application)getActivity().getApplication()).component().inject(this);
 
-        presenter = new GroupFragmentPresenter();
-        presenter.bind(this);
-        ButterKnife.bind(presenter, this.view);
+        presenter = (GroupFragmentPresenter)presenterFactory.getGroupsFragmentPresenter(this, this.view)
+            .bind(this);
 
         presenter.present(Optional.empty());
 
@@ -169,20 +185,28 @@ public class GroupsFragment extends Fragment implements GroupFragmentControl {
     }
 
     @Override
-    public void findGroupsAssociatedWithUser(boolean empty, OnResponseListener<Group[], HttpError> onResponseListener) {
-        Group[] groups = {
-                new Group("Family", 10, Currency.getInstance(Locale.US), 500.00, 25.00),
-                new Group("Friends", 5, Currency.getInstance(Locale.UK), 234.00, 34.55),
-                new Group("Coworkers", 4, Currency.getInstance(Locale.US), 345.33, 12.34),
-                new Group("Acquaintances", 34, Currency.getInstance(Locale.UK), 432.34, 23.22),
-                new Group("Enemies", 23, Currency.getInstance(Locale.UK), 123.33, 22.22),
-                new Group("Frenemies", 21, Currency.getInstance(Locale.US), 675.00, 25.00)
-        };
+    public void findGroupsAssociatedWithUser(OnResponseListener<Group[], HttpError> onResponseListener) {
 
-        if (empty) {
-            groups = new Group[0];
-        }
-        onResponseListener.onResponse(groups, null);
+        Call<List<Partner>> call = partnerService.getPartners(null, 100);
+
+        call.enqueue(new Callback<List<Partner>>() {
+            @Override
+            public void onResponse(Call<List<Partner>> call, Response<List<Partner>> response) {
+                if (response.isSuccessful()) {
+                    List<Partner> partners = response.body();
+                    List<Group> groups = partners.stream().map(partner -> map(partner)).collect(Collectors.toList());
+
+                    onResponseListener.onResponse(groups.toArray(new Group[groups.size()]), null);
+                } else {
+                    onResponseListener.onResponse(null, new HttpError(response));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Partner>> call, Throwable t) {
+                onResponseListener.onResponse(null, new HttpError(500, "Internal Server Error"));
+            }
+        });
     }
 
     @Override
@@ -191,5 +215,13 @@ public class GroupsFragment extends Fragment implements GroupFragmentControl {
             Toast.makeText(getContext(), "Hello", Toast.LENGTH_LONG).show();
             presenter.refreshGroups();
         }
+    }
+
+    private Group map(Partner partner) {
+        return new Group(partner.getName(),
+                partner.getNumberOfDrawSlots(),
+                Currency.getInstance(Locale.US),
+                partner.getGoal(),
+                partner.getBaseContribution());
     }
 }

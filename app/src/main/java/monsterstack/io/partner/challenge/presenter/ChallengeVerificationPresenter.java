@@ -13,17 +13,21 @@ import butterknife.BindView;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.challenge.control.ChallengeVerificationControl;
 import monsterstack.io.partner.common.HasProgressBarSupport;
+import monsterstack.io.partner.common.HasSnackBarSupport;
 import monsterstack.io.partner.common.presenter.Presenter;
 import monsterstack.io.pincapture.PinCapture;
 
 import static android.view.View.GONE;
 
-public class ChallengeVerificationPresenter implements Presenter<ChallengeVerificationControl>, HasProgressBarSupport {
+public class ChallengeVerificationPresenter implements Presenter<ChallengeVerificationControl>, HasProgressBarSupport, HasSnackBarSupport {
     @BindView(R.id.challengeVerificationEdit)
     PinCapture editText;
 
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
+
+    @BindView(R.id.challenge_verification)
+    View rootView;
 
     private ChallengeVerificationControl control;
 
@@ -41,6 +45,11 @@ public class ChallengeVerificationPresenter implements Presenter<ChallengeVerifi
 
     public String getCapturedCode() {
         return editText.getEnteredText();
+    }
+
+    @Override
+    public View getRootView() {
+        return rootView;
     }
 
     @Override

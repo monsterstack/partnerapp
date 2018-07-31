@@ -66,42 +66,47 @@ public class ChallengeVerificationActivity extends BasicActivity implements Chal
 
     @Override
     public void onVerify() {
-        presenter.showProgressBar();
+        if(!isValidChallengeCode(presenter.getCapturedCode())) {
+            presenter.showError("Challenge code required to proceed");
+        } else {
+            presenter.showProgressBar();
 
-        final String source = (String)getIntent().getExtras().get("source");
+            final String source = (String) getIntent().getExtras().get("source");
 
-        ChallengeServiceCustom challengeServiceCustom = getServiceLocator().getChallengeService();
+            ChallengeServiceCustom challengeServiceCustom = getServiceLocator().getChallengeService();
 
-        String code = presenter.getCapturedCode();
-        challengeServiceCustom.verifyChallengeCode(code, new OnResponseListener<Challenge, HttpError>() {
-            @Override
-            public void onResponse(Challenge challenge, HttpError httpError) {
-                if (null != challenge) {
-                    if (source.equals(PhoneCaptureActivity.class.getCanonicalName())) {
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent, enterStageRightBundle());
-                        presenter.showProgressBar();
-                    } else if (source.equals(MobileNumberSettingsActivity.class.getCanonicalName())) {
-                        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent, exitStageLeftBundle());
+            String code = presenter.getCapturedCode();
+            challengeServiceCustom.verifyChallengeCode(code, new OnResponseListener<Challenge, HttpError>() {
+                @Override
+                public void onResponse(Challenge challenge, HttpError httpError) {
+                    if (null != challenge) {
+                        if (source.equals(PhoneCaptureActivity.class.getCanonicalName())) {
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent, enterStageRightBundle());
+                            presenter.showProgressBar();
+                        } else if (source.equals(MobileNumberSettingsActivity.class.getCanonicalName())) {
+                            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent, exitStageLeftBundle());
+                            presenter.hideProgressBar();
+                        }
+                    } else {
+                        if (httpError.getStatusCode() == 404) {
+                            showHttpError(getResources().getString(getActionTitle()),
+                                    getResources().getString(R.string.verification_code_not_found),
+                                    httpError);
+                        } else {
+                            showHttpError(getResources().getString(getActionTitle()),
+                                    httpError);
+                        }
+
                         presenter.hideProgressBar();
                     }
-                } else {
-                    if (httpError.getStatusCode() == 404) {
-                        showHttpError(getResources().getString(getActionTitle()),
-                                getResources().getString(R.string.verification_code_not_found),
-                                httpError);
-                    } else {
-                        showHttpError(getResources().getString(getActionTitle()),
-                                httpError);
-                    }
-
-                    presenter.hideProgressBar();
                 }
-            }
-        });
+            });
+
+        }
 
     }
 }

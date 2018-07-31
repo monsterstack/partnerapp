@@ -11,7 +11,6 @@ import monsterstack.io.api.custom.ChallengeServiceCustom;
 import monsterstack.io.api.custom.RegistrationServiceCustom;
 import monsterstack.io.api.listeners.OnResponseListener;
 import monsterstack.io.api.resources.AuthenticatedUser;
-import monsterstack.io.api.resources.Challenge;
 import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.api.resources.Registration;
 import monsterstack.io.partner.R;
@@ -21,19 +20,20 @@ public class RegistrationChallengeVerificationActivity extends ChallengeVerifica
 
     @Override
     public void onVerify() {
-        presenter.showProgressBar();
+        if(!isValidChallengeCode(presenter.getCapturedCode())) {
+            presenter.showError("Challenge code required to proceed");
+        } else {
+            presenter.showProgressBar();
 
-        final ServiceLocator serviceLocator = getServiceLocator();
-        ChallengeServiceCustom challengeServiceCustom = serviceLocator.getChallengeService();
-        final RegistrationServiceCustom registrationServiceCustom = serviceLocator.getRegistrationService();
+            final ServiceLocator serviceLocator = getServiceLocator();
+            ChallengeServiceCustom challengeServiceCustom = serviceLocator.getChallengeService();
+            final RegistrationServiceCustom registrationServiceCustom = serviceLocator.getRegistrationService();
 
-        String code = presenter.getCapturedCode();
+            String code = presenter.getCapturedCode();
 
-        final UserSessionManager sessionManager = new UserSessionManager(getApplicationContext());
+            final UserSessionManager sessionManager = new UserSessionManager(getApplicationContext());
 
-        challengeServiceCustom.verifyChallengeCode(code, new OnResponseListener<Challenge, HttpError>() {
-            @Override
-            public void onResponse(Challenge challenge, HttpError httpError) {
+            challengeServiceCustom.verifyChallengeCode(code, (challenge, httpError) -> {
                 if (null != challenge) {
                     Serializable registration = getIntent().getSerializableExtra("registration");
                     if (null != registration) {
@@ -56,8 +56,8 @@ public class RegistrationChallengeVerificationActivity extends ChallengeVerifica
 
                     presenter.hideProgressBar();
                 }
-            }
-        });
+            });
+        }
     }
 
     private void registerUser(final UserSessionManager sessionManager,

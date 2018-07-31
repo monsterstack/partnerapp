@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:attr="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/pin_capture">
     <include layout="@layout/toolbar_layout"/>
 
     <include layout="@layout/progress_bar"/>

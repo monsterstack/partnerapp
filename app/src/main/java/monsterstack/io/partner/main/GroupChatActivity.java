@@ -1,30 +1,29 @@
 package monsterstack.io.partner.main;
 
-import android.graphics.Color;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
-import com.github.bassaer.chatmessageview.view.MessageView;
+import java.util.Optional;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.common.BasicActivity;
+import monsterstack.io.partner.main.control.GroupChatControl;
+import monsterstack.io.partner.main.presenter.GroupChatPresenter;
 
-public class GroupChatActivity extends BasicActivity {
+public class GroupChatActivity extends BasicActivity implements GroupChatControl {
     public static final String EXTRA_GROUP = "group";
 
-    @BindView(R.id.group_message_view)
-    MessageView chatView;
+    private GroupChatPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
 
-        this.initializeMessaging();
+        this.presenter = (GroupChatPresenter)getPresenterFactory().getGroupChatPresenter(this, this)
+                .bind(this).present(Optional.empty());
+
     }
 
     @Override
@@ -42,16 +41,8 @@ public class GroupChatActivity extends BasicActivity {
         return R.string.group_chat;
     }
 
-    public void initializeMessaging() {
-        //Set UI parameters if you need
-        chatView.setRightBubbleColor(ContextCompat.getColor(this, R.color.green500));
-        chatView.setLeftBubbleColor(Color.WHITE);
-        chatView.setBackgroundColor(ContextCompat.getColor(this, R.color.blueGray500));
-        chatView.setRightMessageTextColor(Color.WHITE);
-        chatView.setLeftMessageTextColor(Color.BLACK);
-        chatView.setUsernameTextColor(Color.WHITE);
-        chatView.setSendTimeTextColor(Color.WHITE);
-        chatView.setMessageMarginTop(5);
-        chatView.setMessageMarginBottom(5);
+    @Override
+    public Context getContext() {
+        return this;
     }
 }

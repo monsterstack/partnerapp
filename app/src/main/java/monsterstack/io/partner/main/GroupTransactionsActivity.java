@@ -34,8 +34,7 @@ public class GroupTransactionsActivity extends BasicActivity implements GroupTra
     @Override
     public void injectDependencies(BasicActivity basicActivity) {
         super.injectDependencies(basicActivity);
-
-        ((Application)getApplication()).component().inject(this);
+        ((Application) getApplication()).component().inject(this);
     }
 
     @Override

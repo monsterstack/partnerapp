@@ -12,6 +12,9 @@ public interface GroupCreationControl extends Control {
 
     String calculateBaseContributionPercentageOfGoal();
 
+    Double calculateBaseContributionPerMonth();
+    Double calculateBaseContributionPerWeek();
+
     int calculateDurationInMonths();
 
     void onSubmit(MenuItem menuItem);

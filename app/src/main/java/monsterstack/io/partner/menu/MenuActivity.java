@@ -16,7 +16,7 @@ import monsterstack.io.api.ServiceLocator;
 import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.partner.Application;
 import monsterstack.io.partner.R;
-import monsterstack.io.partner.main.presenter.PresenterFactory;
+import monsterstack.io.partner.PresenterFactory;
 
 public abstract class MenuActivity extends AppCompatActivity implements ClosableMenu {
 

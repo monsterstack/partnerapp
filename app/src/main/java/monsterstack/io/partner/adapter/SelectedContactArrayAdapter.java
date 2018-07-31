@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
@@ -20,10 +19,9 @@ import monsterstack.io.partner.R;
 import monsterstack.io.partner.domain.Contact;
 
 public class SelectedContactArrayAdapter extends RecyclerView.Adapter<SelectedContactArrayAdapter.ViewHolder> {
-    private static final String TAG = "SelectedContactArrayAdapter";
 
     private View view;
-    private List<Contact> selectedContacts;
+    private Contact[] selectedContacts;
     private LayoutInflater inflater;
 
     private Function<Integer, Void> onContactAdded;
@@ -32,7 +30,7 @@ public class SelectedContactArrayAdapter extends RecyclerView.Adapter<SelectedCo
     public SelectedContactArrayAdapter(Context context, Contact[] contacts) {
         super();
         this.inflater = LayoutInflater.from(context);
-        this.selectedContacts = new ArrayList<>(Arrays.asList(contacts));
+        this.selectedContacts = contacts;
     }
 
     @NonNull
@@ -55,7 +53,7 @@ public class SelectedContactArrayAdapter extends RecyclerView.Adapter<SelectedCo
 
     @Override
     public void onBindViewHolder(@NonNull SelectedContactArrayAdapter.ViewHolder holder, int position) {
-        Contact contact = selectedContacts.get(position);
+        Contact contact = selectedContacts[position];
         if (contact != null) {
             holder.avatarView.setUser(new User(contact.getFullName(), contact.getAvatar(), R.color.green));
         }
@@ -63,40 +61,65 @@ public class SelectedContactArrayAdapter extends RecyclerView.Adapter<SelectedCo
 
     @Override
     public int getItemCount() {
-        return this.selectedContacts.size();
+        return this.selectedContacts.length;
     }
 
-    public void appendContact(Contact contact) {
-        this.selectedContacts.add(contact);
+    /**
+     * Add Contact to adapter
+     * @param contact   Contact
+     */
+    public void addContact(Contact contact) {
+        Contact[] newContacts = new Contact[this.selectedContacts.length+1];
+
+        System.arraycopy(selectedContacts, 0, newContacts, 0, this.selectedContacts.length);
+
+        this.selectedContacts = newContacts;
+
+        this.selectedContacts[newContacts.length-1] = contact;
 
         if (null != this.view) {
-            notifyItemInserted(getItemCount());
+            notifyItemInserted(getItemCount()-1);
 
             if (null != onContactAdded) {
-                onContactAdded.apply(selectedContacts.size());
+                onContactAdded.apply(selectedContacts.length);
             }
         }
     }
 
+    /**
+     * Remove Contact from adapter
+     * @param contact Contact
+     */
     public void removeContact(Contact contact) {
         Integer index = -1;
-        for (int i = 0; i < selectedContacts.size(); i++) {
-            if (selectedContacts.get(i).getFullName().equalsIgnoreCase(contact.getFullName())) {
+        for (int i = 0; i < selectedContacts.length; i++) {
+            if (selectedContacts[i].getPhoneNumber().equalsIgnoreCase(contact.getPhoneNumber())) {
                 index = i;
                 break;
             }
         }
 
         if (index != -1) {
-            this.selectedContacts.remove(contact);
+            this.selectedContacts[index] = null;
 
-            final Integer itemIndex = index;
+            Contact[] newContacts = new Contact[this.selectedContacts.length - 1];
+            List<Contact> list = new ArrayList<>();
+            for (Contact selectedContact : selectedContacts) {
+                if (selectedContact != null) {
+                    list.add(selectedContact);
+                }
+            }
+
+            newContacts = list.toArray(newContacts);
+
+            this.selectedContacts = newContacts;
+
             if (null != this.view) {
-                notifyItemRemoved(itemIndex);
+                notifyItemRemoved(index);
             }
 
             if (null != onContactRemoved) {
-                onContactAdded.apply(selectedContacts.size());
+                onContactAdded.apply(newContacts.length);
             }
         }
     }

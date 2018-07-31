@@ -14,10 +14,11 @@ import butterknife.BindView;
 import monsterstack.io.partner.R;
 import monsterstack.io.partner.challenge.control.PinCaptureControl;
 import monsterstack.io.partner.common.HasProgressBarSupport;
+import monsterstack.io.partner.common.HasSnackBarSupport;
 import monsterstack.io.partner.common.presenter.Presenter;
 import monsterstack.io.pincapture.PinCapture;
 
-public class PinCapturePresenter implements Presenter<PinCaptureControl>, HasProgressBarSupport {
+public class PinCapturePresenter implements Presenter<PinCaptureControl>, HasProgressBarSupport, HasSnackBarSupport {
     @BindView(R.id.pinCaptureEdit)
     PinCapture editText;
     @BindView(R.id.keyboard)
@@ -25,6 +26,9 @@ public class PinCapturePresenter implements Presenter<PinCaptureControl>, HasPro
 
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
+
+    @BindView(R.id.pin_capture)
+    View rootView;
 
     private PinCaptureControl control;
 
@@ -42,6 +46,11 @@ public class PinCapturePresenter implements Presenter<PinCaptureControl>, HasPro
 
     public String getEnteredPin() {
         return editText.getEnteredText();
+    }
+
+    @Override
+    public View getRootView() {
+        return rootView;
     }
 
     @Override

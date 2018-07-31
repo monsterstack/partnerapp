@@ -111,6 +111,10 @@ public class AvatarView extends AppCompatImageView {
         init();
     }
 
+    public User getUser() {
+        return user;
+    }
+
     private void getAttributes(AttributeSet attrs) {
 
         TypedArray a = getContext().obtainStyledAttributes(

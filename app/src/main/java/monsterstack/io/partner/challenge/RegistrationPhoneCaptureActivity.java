@@ -12,33 +12,35 @@ public class RegistrationPhoneCaptureActivity extends PhoneCaptureActivity {
 
     @Override
     public void onCapture() {
-        presenter.showProgressBar();
+        // Where??
+        if (!isValidPhoneNumber(this.presenter.getPhoneNumber(), "US")) {
+            presenter.showError("Phone number is required to proceed");
+        } else {
+            presenter.showProgressBar();
 
-        Challenge challenge = new Challenge();
-        challenge.setPhoneNumber(presenter.getPhoneNumber());
-        ChallengeServiceCustom challengeService = getServiceLocator().getChallengeService();
+            Challenge challenge = new Challenge();
+            challenge.setPhoneNumber(presenter.getPhoneNumber());
+            ChallengeServiceCustom challengeService = getServiceLocator().getChallengeService();
 
-        challengeService.submitChallenge(challenge, onResponseListener());
+            challengeService.submitChallenge(challenge, onResponseListener());
+        }
     }
 
     private OnResponseListener<Void, HttpError> onResponseListener() {
-        return new OnResponseListener<Void, HttpError>() {
-            @Override
-            public void onResponse(Void aVoid, HttpError httpError) {
-                if (null == aVoid && null == httpError) {
-                    Intent intent = new Intent(RegistrationPhoneCaptureActivity.this,
-                            RegistrationChallengeVerificationActivity.class);
-                    /* Copy all extras */
-                    intent.putExtras(getIntent().getExtras());
-                    applySourceToIntent(intent, PhoneCaptureActivity.class);
+        return (aVoid, httpError) -> {
+            if (null == aVoid && null == httpError) {
+                Intent intent = new Intent(RegistrationPhoneCaptureActivity.this,
+                        RegistrationChallengeVerificationActivity.class);
+                /* Copy all extras */
+                intent.putExtras(getIntent().getExtras());
+                applySourceToIntent(intent, PhoneCaptureActivity.class);
 
-                    startActivity(intent, enterStageRightBundle());
-                    presenter.hideProgressBar();
+                startActivity(intent, enterStageRightBundle());
+                presenter.hideProgressBar();
 
-                } else {
-                    showHttpError(getResources().getString(getActionTitle()), httpError);
-                    presenter.showProgressBar();
-                }
+            } else {
+                showHttpError(getResources().getString(getActionTitle()), httpError);
+                presenter.showProgressBar();
             }
         };
     }

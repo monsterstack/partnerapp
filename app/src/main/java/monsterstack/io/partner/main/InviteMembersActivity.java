@@ -1,27 +1,21 @@
 package monsterstack.io.partner.main;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import butterknife.ButterKnife;
 import monsterstack.io.api.listeners.OnResponseListener;
 import monsterstack.io.api.resources.HttpError;
 import monsterstack.io.partner.Application;
@@ -29,23 +23,40 @@ import monsterstack.io.partner.R;
 import monsterstack.io.partner.common.BasicActivity;
 import monsterstack.io.partner.domain.Contact;
 import monsterstack.io.partner.main.control.InviteMembersControl;
-import monsterstack.io.partner.main.presenter.InviteMembersPresenter;
+import monsterstack.io.partner.main.presenter.impl.InviteMembersPresenterImpl;
+import monsterstack.io.partner.support.content.ContactPagingSupport;
 import monsterstack.io.partner.utils.NavigationUtils;
 
-public class InviteMembersActivity extends BasicActivity implements InviteMembersControl {
-    private static final Integer CREATE_GROUP_RESULT_CODE = 101;
+import static monsterstack.io.partner.support.content.ContactPagingSupport.CONTACTS_PROJECTION;
 
-    private InviteMembersPresenter presenter;
+public class InviteMembersActivity extends BasicActivity implements InviteMembersControl {
+
+    private static final Integer CREATE_GROUP_RESULT_CODE = 101;
+    private static final Integer MIN_MEMBER_SIZE = 4;
+
+    private InviteMembersPresenterImpl presenter;
 
     private List<Contact> selectedContacts;
+
+    private transient int page = 0;
+
+    @Override
+    public int getPage() {
+        return page;
+    }
+
+    @Override
+    public void resetPage() {
+        page = 0;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((Application) getApplication()).component().inject(this);
 
-        presenter = getPresenterFactory().getInviteMembersPresenter(this, this);
-        presenter.present(Optional.empty());
+        presenter = (InviteMembersPresenterImpl)getPresenterFactory().getInviteMembersPresenter(
+                this, this).present(Optional.empty());
 
         this.selectedContacts = new ArrayList<>();
     }
@@ -88,10 +99,14 @@ public class InviteMembersActivity extends BasicActivity implements InviteMember
     @Override
     public MenuItem.OnMenuItemClickListener getNextListener() {
         return item -> {
-            Intent createGroupIntent = new Intent(getContext(), GroupCreationActivity.class);
-            createGroupIntent.putExtra(GroupCreationActivity.EXTRA_INVITES, (Serializable)selectedContacts );
-            ((Activity)getContext()).startActivityForResult(createGroupIntent,
-                    CREATE_GROUP_RESULT_CODE, NavigationUtils.enterStageRightBundle(getContext()));
+            if (selectedContacts.size() < MIN_MEMBER_SIZE) {
+                presenter.showError(getResources().getString(R.string.insufficient_members_warning));
+            } else {
+                Intent createGroupIntent = new Intent(getContext(), GroupCreationActivity.class);
+                createGroupIntent.putExtra(GroupCreationActivity.EXTRA_INVITES, (Serializable) selectedContacts);
+                ((Activity) getContext()).startActivityForResult(createGroupIntent,
+                        CREATE_GROUP_RESULT_CODE, NavigationUtils.enterStageRightBundle(getContext()));
+            }
             return false;
         };
     }
@@ -100,37 +115,38 @@ public class InviteMembersActivity extends BasicActivity implements InviteMember
      * Search
      * @param listener OnResponseListener
      *
-     * @see InviteMembersControl#search(OnResponseListener)
+     * @see InviteMembersControl#search(int, OnResponseListener)
      */
     @Override
-    public void search(OnResponseListener<Contact[], HttpError> listener) {
-        List<Contact> friends = getFriends();
-        List<Contact> phoneContacts = getPhoneContacts();
-
-        List<Contact> contacts = new ArrayList<>(friends);
-        contacts.addAll(phoneContacts);
+    public void search(int page, OnResponseListener<Contact[], HttpError> listener) {
+        List<Contact> phoneContacts = getPhoneContacts(page, Optional.empty());
 
         new Handler().postDelayed(() ->
-                listener.onResponse(contacts.toArray(new Contact[contacts.size()]), null),
+                listener.onResponse(phoneContacts
+                        .toArray(new Contact[phoneContacts.size()]), null),
                 1000);
     }
 
     /**
      * Search
+     * @param page      int
      * @param query     CharSequence
      * @param listener  OnResponseListener
      *
-     * @see InviteMembersControl#search(CharSequence, OnResponseListener)
+     * @see InviteMembersControl#search(int page, CharSequence, OnResponseListener)
      */
     @Override
-    public void search(CharSequence query, OnResponseListener<Contact[], HttpError> listener) {
+    public void search(int page, CharSequence query, OnResponseListener<Contact[], HttpError> listener) {
         final String queryString = query.toString();
 
+        List<Contact> phoneContacts = getPhoneContacts(page, Optional.of(queryString));
+
+        List<Contact> contacts = new ArrayList<>();
+        contacts.addAll(phoneContacts);
+
         new Handler().postDelayed(() ->
-            listener.onResponse(getFriends().stream().filter(
-                    friend -> friend.getFullName().startsWith(queryString)).toArray(Contact[]::new),
-                    null),
-            1000);
+                        listener.onResponse(contacts.toArray(new Contact[contacts.size()]), null),
+                1000);
     }
 
     /**
@@ -168,57 +184,22 @@ public class InviteMembersActivity extends BasicActivity implements InviteMember
         }
     }
 
-    // Private -------------------
-    private List<Contact> getFriends() {
-        Contact[] friends = new Contact[] {
-                new Contact("Lois", "Armstrong",
-                        "lois.armstrong@gmail.com", "+1 954 678 9090"),
-                new Contact("Samuel", "Anderson",
-                        "samuel.anderson@gmail.com", "+1 954 678 9090"),
-                new Contact("Paris", "Arnold",
-                        "paris.arnold@gmail.com", "+1 954 678 9090"),
-                new Contact("Janet", "Lansing",
-                        "janet.lansing@gmail.com", "+1 954 678 9090"),
-                new Contact("Lois", "Armstrong",
-                        "lois.armstrong@gmail.com", "+1 954 678 9090"),
-                new Contact("Samuel", "Anderson",
-                        "samuel.anderson@gmail.com", "+1 954 678 9090"),
-                new Contact("Paris", "Arnold",
-                        "paris.arnold@gmail.com", "+1 954 678 9090"),
-                new Contact("Janet", "Lansing",
-                        "janet.lansing@gmail.com", "+1 954 678 9090"),
-                new Contact("Lois", "Armstrong",
-                        "lois.armstrong@gmail.com", "+1 954 678 9090"),
-                new Contact("Samuel", "Anderson",
-                        "samuel.anderson@gmail.com", "+1 954 678 9090"),
-                new Contact("Paris", "Arnold",
-                        "paris.arnold@gmail.com", "+1 954 678 9090"),
-                new Contact("Janet", "Lansing",
-                        "janet.lansing@gmail.com", "+1 954 678 9090"),
-                new Contact("Jonathan", "Armstrong",
-                        "jon.armstrong@gmail.com", "+1 954 678 9090")
-        };
+    public List<Contact> getPhoneContacts(int page, Optional<String> query) {
+        String selection = null;
+        String[] selectionArgs = null;
+        String sortOrder = "_id limit 12 offset " + (12 * page);
 
-        return new ArrayList<>(Arrays.asList(friends));
-    }
-
-    private List<Contact> getPhoneContacts() {
-        List<Contact> phoneContacts = new ArrayList<>();
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
-                == PackageManager.PERMISSION_GRANTED) {
-            Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
-            if (null != phones) {
-                while (phones.moveToNext()) {
-                    String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                    String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                    String emailAddress = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS));
-                    phoneContacts.add(new Contact(name, emailAddress, phoneNumber));
-                }
-                phones.close();
-            }
+        if(query.isPresent()) {
+            selection = "display_name LIKE ?";
+            selectionArgs = new String[] { "%"+query.get()+"%" };
         }
 
-        return phoneContacts;
+        return new ContactPagingSupport().builder()
+                .contentResolver(getContentResolver())
+                .contentUri(ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
+                .projection(CONTACTS_PROJECTION)
+                .selection(selection)
+                .selectionArgs(selectionArgs)
+                .sortOrder(sortOrder).build().query();
     }
 }

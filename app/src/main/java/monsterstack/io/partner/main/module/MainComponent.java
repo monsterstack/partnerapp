@@ -3,12 +3,20 @@ package monsterstack.io.partner.main.module;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import monsterstack.io.partner.LaunchActivity;
+import monsterstack.io.partner.MainActivity;
+import monsterstack.io.partner.challenge.RegistrationPinCaptureActivity;
+import monsterstack.io.partner.challenge.SignInChallengeVerificationActivity;
+import monsterstack.io.partner.challenge.SignInPhoneCaptureActivity;
+import monsterstack.io.partner.challenge.SignInPinCaptureActivity;
 import monsterstack.io.partner.common.BasicActivity;
 import monsterstack.io.partner.main.GroupChatActivity;
 import monsterstack.io.partner.main.GroupCreationActivity;
 import monsterstack.io.partner.main.GroupScheduleActivity;
 import monsterstack.io.partner.main.GroupTransactionsActivity;
+import monsterstack.io.partner.main.GroupsFragment;
 import monsterstack.io.partner.main.InviteMembersActivity;
+import monsterstack.io.partner.main.WalletsFragment;
 import monsterstack.io.partner.menu.MenuActivity;
 import monsterstack.io.partner.menu.ProfileActivity;
 import monsterstack.io.partner.menu.SettingsActivity;
@@ -29,6 +37,13 @@ public interface MainComponent {
     void inject(GroupChatActivity groupChatActivity);
 
     void inject(SettingsActivity settingsActivity);
+    void inject(RegistrationPinCaptureActivity registrationPinCaptureActivity);
+    void inject(SignInChallengeVerificationActivity signInChallengeVerificationActivity);
+    void inject(SignInPinCaptureActivity signInPinCaptureActivity);
+    void inject(SignInPhoneCaptureActivity signInPhoneCaptureActivity);
+
+    void inject(LaunchActivity launchActivity);
+    void inject(MainActivity mainActivity);
 
     void inject(MessagingService messagingService);
     void inject(AnalyticsService analyticsService);
@@ -36,4 +51,9 @@ public interface MainComponent {
     // Menu
     void inject(MenuActivity menuActivity);
     void inject(ProfileActivity profileActivity);
+
+
+    // Fragments
+    void inject(GroupsFragment groupsFragment);
+    void inject(WalletsFragment walletsFragment);
 }

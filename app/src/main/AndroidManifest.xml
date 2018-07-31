@@ -48,7 +48,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".registration.RegistrationActivity"
+        <activity android:name=".registration.RegistrationNameCaptureActivity"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
+
+        <activity android:name=".registration.RegistrationEmailCaptureActivity"
             android:windowSoftInputMode="adjustResize">
 
         </activity>
@@ -174,7 +179,8 @@
 
         </activity>
 
-        <activity android:name=".main.GroupCreationActivity">
+        <activity android:name=".main.GroupCreationActivity"
+            android:configChanges="orientation|keyboardHidden">
 
         </activity>
 
